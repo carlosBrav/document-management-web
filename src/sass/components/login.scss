@@ -1,0 +1,23 @@
+.login-form{
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  height: 80%;
+
+  .login-form-container-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85%;
+    height: 150px;
+  }
+
+  .login-form-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 85%;
+    height: 200px;
+  }
+}

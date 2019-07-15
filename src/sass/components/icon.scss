@@ -1,0 +1,22 @@
+.icon{
+  display: inline-block;
+  fill: #E9E9E9;
+  height: 2rem;
+  width: 2rem;
+  vertical-align: middle;
+  z-index: 10;
+
+  svg {
+    display: block;
+    fill: #E9E9E9;
+    opacity: 1;
+    height: inherit;
+    width: inherit;
+
+    &:hover,
+    &:active,
+    &:focus {
+      fill:#707070;
+    }
+  }
+}

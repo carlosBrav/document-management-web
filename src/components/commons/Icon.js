@@ -2,6 +2,8 @@ import React from 'react';
 
 export const ICON_TYPE = {
   SHIELD_UNMSM : 'shield',
+  LOGO_USER: 'user',
+  PADLOCK: 'padlock'
 }
 
 
@@ -3962,19 +3964,50 @@ function getShieldUNMSM(){
   </svg>)
 }
 
+function getUser(){
+  return(
+    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 299.997 299.997" style={{enableBackground:"new 0 0 299.997 299.997"}} space="preserve" width="512" height="512">
+      <g>
+        <g>
+          <path d="M149.996,0C67.157,0,0.001,67.158,0.001,149.997c0,82.837,67.156,150,149.995,150s150-67.163,150-150    C299.996,67.156,232.835,0,149.996,0z M150.453,220.763v-0.002h-0.916H85.465c0-46.856,41.152-46.845,50.284-59.097l1.045-5.587    c-12.83-6.502-21.887-22.178-21.887-40.512c0-24.154,15.712-43.738,35.089-43.738c19.377,0,35.089,19.584,35.089,43.738    c0,18.178-8.896,33.756-21.555,40.361l1.19,6.349c10.019,11.658,49.802,12.418,49.802,58.488H150.453z" data-original="#000000" fill="#000000"/>
+        </g>
+      </g>
+    </svg>
+  )
+}
+
+function getPadlock(){
+  return(
+    <svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 486.733 486.733" style={{enableBackground:"new 0 0 486.733 486.733"}} space="preserve">
+      <g>
+        <g>
+          <path d="M403.88,196.563h-9.484v-44.388c0-82.099-65.151-150.681-146.582-152.145c-2.225-0.04-6.671-0.04-8.895,0   C157.486,1.494,92.336,70.076,92.336,152.175v44.388h-9.485c-14.616,0-26.538,15.082-26.538,33.709v222.632   c0,18.606,11.922,33.829,26.539,33.829h321.028c14.616,0,26.539-15.223,26.539-33.829V230.272   C430.419,211.646,418.497,196.563,403.88,196.563z M273.442,341.362v67.271c0,7.703-6.449,14.222-14.158,14.222H227.45   c-7.71,0-14.159-6.519-14.159-14.222v-67.271c-7.477-7.36-11.83-17.537-11.83-28.795c0-21.334,16.491-39.666,37.459-40.513   c2.222-0.09,6.673-0.09,8.895,0c20.968,0.847,37.459,19.179,37.459,40.513C285.272,323.825,280.919,334.002,273.442,341.362z    M331.886,196.563h-84.072h-8.895h-84.072v-44.388c0-48.905,39.744-89.342,88.519-89.342c48.775,0,88.521,40.437,88.521,89.342   V196.563z" data-original="#000000" fill="#000000"/>
+        </g>
+      </g>
+    </svg>
+  )
+}
+
 function getIcon(type){
-  if(type === ICON_TYPE.SHIELD_UNMSM){
-    return getShieldUNMSM();
+  switch(type){
+    case ICON_TYPE.SHIELD_UNMSM:
+      return getShieldUNMSM();
+    case ICON_TYPE.LOGO_USER:
+      return getUser();
+    case ICON_TYPE.PADLOCK:
+      return getPadlock();
+    default: return null;
   }
 }
 
 const Icon =(props)=>{
-  const {type, styleIcon} = props
+  const {type, className} = props
+  const classToAdd = (className) ? `icon ${className}`:`icon`;
   return(
-    <span style={{...styleIcon}}>
+    <span className={classToAdd}>
       {getIcon(type)}
     </span>
   )
-}
+};
 
 export default Icon;

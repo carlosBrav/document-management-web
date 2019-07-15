@@ -7,21 +7,28 @@ class Login extends Component {
     return(
       <div className='login-form'>
         <div className='login-form-container-icon'>
-          <Icon styleIcon={{width: '150px', height: '150px'}} type={ICON_TYPE.SHIELD_UNMSM} />
+          <Icon className='login-form-icon-shield' type={ICON_TYPE.SHIELD_UNMSM} />
         </div>
-        <div className='login-form-content'>
-          <div>
+        <div className='login-form-labels'>
+          <div className='container-form-label'>
             <label>Usuario</label>
-            <input type='text' placeholder={'Usuario'} />
-          </div>
-          <div>
-            <label>Contraseña</label>
-            <input type='password' placeholder={'Contraseña'} />
-          </div>
-          <div>
-            <div>
-              <a>Enter</a>
+            <div className='form-label-content'>
+              <Icon type={ICON_TYPE.LOGO_USER}/>
+              <input className='input-text' type='text' placeholder={'Usuario'} />
             </div>
+          </div>
+          <div className='container-form-label'>
+            <label>Contraseña</label>
+            <div className='form-label-content'>
+              <Icon type={ICON_TYPE.PADLOCK}/>
+              <input className='input-text' type='password' placeholder={'Contraseña'} />
+            </div>
+          </div>
+        </div>
+        <div className='login-form-button-submit'>
+          <div style={{width: '40%', height: '20%', borderRadius: '15px', backgroundColor: '#bfbfbf',
+                      display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <a className='button'>Enter</a>
           </div>
         </div>
       </div>

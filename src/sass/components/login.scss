@@ -4,55 +4,98 @@
   justify-content: center;
   align-items: center;
   width: 25%;
-  height: 80%;
-  border: 2px solid #bfbfbf;
+  height: 65%;
+  background-color: rgba(212, 212, 212, 0.68);
   border-radius: 8px;
+  padding: 5px;
 
-  .login-form-container-icon{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 40%;
-
-    .login-form-icon-shield{
-      width: 9rem;
-      height: 9rem;
-    }
-  }
-  .login-form-labels{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 85%;
-    height: 40%;
-
-    .container-form-label{
+    .login-form-header-container{
+      height: 40%;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      margin-bottom: 1rem;
+      padding: 3px;
 
-      .form-label-content{
+      .login-form-header-title{
+        width: 100%;
+        height: 30px;
+        background-color: #000000;
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
 
-        .input-text{
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          height: 32px;
-          line-height: 32px;
+        p{
+          margin-bottom: 0px;
+          color: #FFFFFF;
+          margin-left: 5px;
+        }
+      }
+
+      .login-form-container-icon{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 85%;
+        padding-top: 20px;
+
+        .login-form-icon-shield{
+          width: 9rem;
+          height: 9rem;
         }
       }
     }
-  }
 
-  .login-form-button-submit{
-    width: 100%;
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
+    .login-form-labels{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 40%;
+
+      .container-form-label{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+
+        .form-label-content{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+
+          .icon{
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-top: 3px;
+            margin-right: 5px;
+          }
+
+          .input-text{
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            height: 32px;
+            line-height: 32px;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+
+    .login-form-button-submit{
+      width: 100%;
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .button-submit{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
 }

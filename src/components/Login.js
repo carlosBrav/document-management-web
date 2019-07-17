@@ -32,8 +32,7 @@ class Login extends Component {
             </div>
           </div>
           <div className='login-form-button-submit'>
-            <div style={{width: '40%', height: '40%', borderRadius: '15px', backgroundColor: '#000000',
-              display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', color: '#FFFFFF'}}>
+            <div className='button-submit'>
               <a className='button'>Ingresar</a>
             </div>
           </div>

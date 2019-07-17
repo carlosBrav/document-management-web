@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Login from '../../src/components/Login'
-import image_rectorado from '../../src/assets/images/rectorado-san-marcos.png'
+import Login from '../../src/components/Login';
+import rectorado_unmsm from '../../src/assets/images/rectorado_unmsm.jpg';
 
 class ContainerLogin extends Component {
 
@@ -12,7 +12,7 @@ class ContainerLogin extends Component {
           <h5>Sistema de Trámite Documentario v3.0</h5>
         </div>
         <div className='container-login-form'>
-          <img src={image_rectorado} alt={'rectorado'} className='image-login'/>
+          <img src={rectorado_unmsm} alt={'rectorado'} className='image-login'/>
           <Login />
         </div>
       </div>

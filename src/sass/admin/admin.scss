@@ -1,0 +1,22 @@
+.container-admin{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .admin-container-image{
+    width: 100%;
+    height: 80px;
+
+    img{
+      width: 100%;
+      height: 80px;
+    }
+  }
+
+  .container-menu-admin{
+    nav{
+      color: white;
+    }
+  }
+}

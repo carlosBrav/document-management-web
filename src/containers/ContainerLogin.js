@@ -4,7 +4,14 @@ import rectorado_unmsm from '../../src/assets/images/rectorado_unmsm.jpg';
 
 class ContainerLogin extends Component {
 
+  onLogin=()=>{
+    const {history} = this.props;
+    history.push('/admin')
+  }
+
   render(){
+
+    console.log('PROPS CONTAINER LOGIN ', this.props)
 
     return(
       <div className='container-login'>
@@ -13,7 +20,7 @@ class ContainerLogin extends Component {
         </div>
         <div className='container-login-form'>
           <img src={rectorado_unmsm} alt={'rectorado'} className='image-login'/>
-          <Login />
+          <Login onLogin={this.onLogin}/>
         </div>
       </div>
     )

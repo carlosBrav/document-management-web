@@ -103,6 +103,14 @@
         background-color: #000000;
         cursor: pointer;
         color: #FFFFFF;
+
+        .button{
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          height: 100%;
+          align-items: center;
+        }
       }
     }
 }

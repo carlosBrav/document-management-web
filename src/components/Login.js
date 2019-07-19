@@ -4,6 +4,9 @@ import Icon, {ICON_TYPE} from '../../src/components/commons/Icon'
 class Login extends Component {
 
   render(){
+
+    const {onLogin} = this.props
+
     return(
       <div className='login-form'>
           <div className='login-form-header-container'>
@@ -33,7 +36,7 @@ class Login extends Component {
           </div>
           <div className='login-form-button-submit'>
             <div className='button-submit'>
-              <a className='button'>Ingresar</a>
+              <a className='button' onClick={onLogin}>Ingresar</a>
             </div>
           </div>
       </div>

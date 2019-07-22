@@ -10,9 +10,6 @@ class ContainerLogin extends Component {
   }
 
   render(){
-
-    console.log('PROPS CONTAINER LOGIN ', this.props)
-
     return(
       <div className='container-login'>
         <div className='container-login-header'>

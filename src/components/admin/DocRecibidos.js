@@ -9,14 +9,14 @@ class DocRecibidos extends Component{
     totalPages: 10,
     currentPage: 1,
     docRecibTableStructure: [],
-    docRecibDataList: [],
-    docRecibSelectList: []
+    docRecibDataList: []
   }
 
-  onToggleAddDocSelect=(value)=>{
-    console.log('VALUE ', value)
-    let {docRecibSelectList} = this.state
-    docRecibSelectList.push(value)
+  onToggleAddDocSelect=(index)=>{
+    let {docRecibDataList} = this.state
+    let docuRow = docRecibDataList[index]
+    docuRow.check = !docuRow.check
+    this.setState({docRecibDataList})
   }
 
   getDataList=()=>{
@@ -29,7 +29,9 @@ class DocRecibidos extends Component{
     return ([
       {
         columnHeader: '',
-        cellRenderer: ({value}) => <input type='checkbox' onClick={()=>this.onToggleAddDocSelect(value)}/>
+        actions: [{
+          action: (index) => this.onToggleAddDocSelect(index)
+        }]
       },
       {
         columnHeader: 'Num. Tram.',
@@ -92,8 +94,7 @@ class DocRecibidos extends Component{
   }
 
   render(){
-    const {totalPages, currentPage, docRecibTableStructure, docRecibDataList, docRecibSelectList} = this.state;
-    console.log('docRecibSelectList ', docRecibSelectList)
+    const {totalPages, currentPage, docRecibTableStructure, docRecibDataList} = this.state;
     return(
       <div className='container-doc-recibidos'>
         <div className='container-header'>
@@ -108,8 +109,8 @@ class DocRecibidos extends Component{
                                 onChangeCurrentPageSubtract={this.onChangeCurrentPageSubtract}
                                 onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
             </div>
-            <div>
-              <CommonTable tableStructure={docRecibTableStructure} data={docRecibDataList}/>
+            <div className='container-table'>
+              <CommonTable tableStructure={docRecibTableStructure} data={docRecibDataList} onClick={this.onToggleAddDocSelect}/>
             </div>
             <div className='content-pagination'>
               <CommonPagination totalPages={totalPages}

@@ -2,21 +2,26 @@ import React, {Component} from 'react';
 import {Table} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
+const getButton=(actions, rowData, index)=>{
+  return actions.map((action, iterator)=>
+    <input key={iterator+'checkbox'} type="checkbox" checked={rowData['check']} onChange={()=>action.action(index)} />
+  )
+}
 
-const Rows = ({data, tableStructure}) => {
+const Rows = ({data, tableStructure, onClick}) => {
   return(
-    data.map((value) => {
+    data.map((value, index) => {
       const columns = tableStructure.map(column => {
-        const {rowProp, cellRenderer} = column;
+        const {actions, rowProp} = column;
         return(
           <td key={value['id']+rowProp}>
-            { cellRenderer ? cellRenderer(value) : value[rowProp]}
+            { actions ? getButton(actions,value, index) : value[rowProp]}
           </td>
         )
       });
 
       return(
-        <tr key={value['id']}>
+        <tr key={value['id']} onClick={() => onClick(index)}>
           {columns}
         </tr>
       )
@@ -28,7 +33,7 @@ class CommonTable extends Component{
 
   render(){
 
-    const {tableStructure, data} = this.props
+    const {tableStructure, data, onClick} = this.props
     return(
       <Table striped hover>
         <thead>
@@ -43,7 +48,7 @@ class CommonTable extends Component{
         </tr>
         </thead>
         <tbody>
-        <Rows data={data} tableStructure={tableStructure} />
+          <Rows data={data} tableStructure={tableStructure} onClick={onClick}/>
         </tbody>
       </Table>
     )
@@ -56,7 +61,8 @@ CommonTable.propTypes = {
       columnHeader: PropTypes.string,
       rowProp: PropTypes.string
     })),
-  data: PropTypes.arrayOf(PropTypes.object)
+  data: PropTypes.arrayOf(PropTypes.object),
+  onClick: PropTypes.func
 }
 
 CommonTable.defaultProps = {

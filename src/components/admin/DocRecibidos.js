@@ -1,14 +1,77 @@
 import React, {Component} from 'react';
-import CommonPagination from '../commons/CommonPagination'
+import CommonPagination from '../commons/CommonPagination';
+import CommonTable from '../commons/CommonTable';
+import {listData} from '../../fakedata/ListDocRecibidos'
 
 class DocRecibidos extends Component{
 
   state = {
     totalPages: 10,
-    currentPage: 1
+    currentPage: 1,
+    docRecibTableStructure: [],
+    docRecibDataList: [],
+    docRecibSelectList: []
   }
 
-  onChangeCurrentPageAdd = (value) =>{
+  onToggleAddDocSelect=(value)=>{
+    console.log('VALUE ', value)
+    let {docRecibSelectList} = this.state
+    docRecibSelectList.push(value)
+  }
+
+  getDataList=()=>{
+    return(
+      [...listData]
+    )
+  }
+
+  getTableStructure = () => {
+    return ([
+      {
+        columnHeader: '',
+        cellRenderer: ({value}) => <input type='checkbox' onClick={()=>this.onToggleAddDocSelect(value)}/>
+      },
+      {
+        columnHeader: 'Num. Tram.',
+        rowProp: 'num_tram'
+      },
+      {
+        columnHeader: 'Mov.',
+        rowProp: 'movimiento'
+      },
+      {
+        columnHeader: 'Destino',
+        rowProp: 'destino'
+      },
+      {
+        columnHeader: 'F. Envio',
+        rowProp: 'fech_envio'
+      },
+      {
+        columnHeader: 'Indicador',
+        rowProp: 'indic'
+      },
+      {
+        columnHeader: 'Observación',
+        rowProp: 'observacion'
+      },
+      {
+        columnHeader: 'Doc. Nombre',
+        rowProp: 'docum_nomb'
+      },
+      {
+        columnHeader: 'Estado',
+        rowProp: 'estado'
+      }
+    ])
+  }
+
+  componentDidMount(){
+    this.setState({docRecibTableStructure: this.getTableStructure(), docRecibDataList: this.getDataList()})
+  }
+
+
+  onChangeCurrentPageAdd = () =>{
     let {totalPages, currentPage} = this.state
     if(currentPage < totalPages){
       currentPage++
@@ -16,7 +79,7 @@ class DocRecibidos extends Component{
     this.setState({currentPage})
   }
 
-  onChangeCurrentPageSubtract = (value) =>{
+  onChangeCurrentPageSubtract = () =>{
     let {currentPage} = this.state
     if(currentPage > 1){
       currentPage--
@@ -29,7 +92,8 @@ class DocRecibidos extends Component{
   }
 
   render(){
-    const {totalPages, currentPage} = this.state
+    const {totalPages, currentPage, docRecibTableStructure, docRecibDataList, docRecibSelectList} = this.state;
+    console.log('docRecibSelectList ', docRecibSelectList)
     return(
       <div className='container-doc-recibidos'>
         <div className='container-header'>
@@ -44,8 +108,16 @@ class DocRecibidos extends Component{
                                 onChangeCurrentPageSubtract={this.onChangeCurrentPageSubtract}
                                 onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
             </div>
-            <div></div>
-            <div></div>
+            <div>
+              <CommonTable tableStructure={docRecibTableStructure} data={docRecibDataList}/>
+            </div>
+            <div className='content-pagination'>
+              <CommonPagination totalPages={totalPages}
+                                currentPage={currentPage}
+                                onChangeCurrentPage={this.onChangeCurrentPage}
+                                onChangeCurrentPageSubtract={this.onChangeCurrentPageSubtract}
+                                onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
+            </div>
             <div></div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Icon, {ICON_TYPE} from '../../src/components/commons/Icon'
+import CommonIcon, {ICON_TYPE} from './commons/CommonIcon'
 
 class Login extends Component {
 
@@ -14,7 +14,7 @@ class Login extends Component {
               <p>Oficina General de Planificacion</p>
             </div>
             <div className='login-form-container-icon'>
-              <Icon className='login-form-icon-shield' type={ICON_TYPE.SHIELD_UNMSM} />
+              <CommonIcon className='login-form-icon-shield' type={ICON_TYPE.SHIELD_UNMSM} />
             </div>
           </div>
 
@@ -22,14 +22,14 @@ class Login extends Component {
             <div className='container-form-label'>
               <label>Usuario</label>
               <div className='form-label-content'>
-                <Icon type={ICON_TYPE.LOGO_USER}/>
+                <CommonIcon type={ICON_TYPE.LOGO_USER}/>
                 <input className='input-text' type='text' placeholder={'Usuario'} />
               </div>
             </div>
             <div className='container-form-label'>
               <label>Contraseña</label>
               <div className='form-label-content'>
-                <Icon type={ICON_TYPE.PADLOCK}/>
+                <CommonIcon type={ICON_TYPE.PADLOCK}/>
                 <input className='input-text' type='password' placeholder={'Contraseña'} />
               </div>
             </div>

@@ -35,7 +35,9 @@ class DocRecibidos extends Component{
       },
       {
         columnHeader: 'Num. Tram.',
-        rowProp: 'num_tram'
+        rowProp: 'num_tram',
+        searchRow: <input type="text" />,
+        classSearchRow: 'container-search-field normal-size'
       },
       {
         columnHeader: 'Mov.',
@@ -43,11 +45,15 @@ class DocRecibidos extends Component{
       },
       {
         columnHeader: 'Destino',
-        rowProp: 'destino'
+        rowProp: 'destino',
+        searchRow: <input type="text" />,
+        classSearchRow: 'container-search-field long-size'
       },
       {
         columnHeader: 'F. Envio',
-        rowProp: 'fech_envio'
+        rowProp: 'fech_envio',
+        searchRow: <input type="text" />,
+        classSearchRow: 'container-search-field medium-size'
       },
       {
         columnHeader: 'Indicador',

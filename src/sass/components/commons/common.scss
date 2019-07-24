@@ -1,0 +1,14 @@
+.selected-row{
+  cursor: pointer;
+  background-color: #EEE2E0;
+}
+
+.unselected-row{
+  cursor: pointer;
+  &.row-par{
+    background-color: #ffff;
+  }
+  &.row-impar{
+    background-color: #F9F4F3;
+  }
+}

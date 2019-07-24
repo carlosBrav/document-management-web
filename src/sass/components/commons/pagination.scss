@@ -8,20 +8,20 @@
     height: 30px;
 
     &.btn-pagination{
-      border: 1px solid #5bc0de;
+      border: 1px solid #EEE2E0;
       background-color: #ffff;
-      color: #46b8da;
+      color: #000000;
       border-right: 1px transparent solid;
 
       &.btn-pag-first{
         border-right: 1px transparent solid !important;
       }
       &.btn-pag-last{
-        border-left: 1px #5bc0de solid;
-        border-right: 1px #5bc0de solid;
+        border-left: 1px #EEE2E0 solid;
+        border-right: 1px #EEE2E0 solid;
       }
       &.btn-pag-ultimate{
-        border-right: 1px #5bc0de solid;
+        border-right: 1px #EEE2E0 solid;
         border-left: 1px transparent solid;
       }
 

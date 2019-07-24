@@ -1,27 +1,28 @@
 import React, {Component} from 'react';
-import {Table} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const getButton=(actions, rowData, index)=>{
-  return actions.map((action, iterator)=>
-    <input key={iterator+'checkbox'} type="checkbox" checked={rowData['check']} onChange={()=>action.action(index)} />
+const getButton = (actions, rowData, index) => {
+  return actions.map((action, iterator) =>
+    <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
+           onChange={() => action.action(index)}/>
   )
 }
 
 const Rows = ({data, tableStructure, onClick}) => {
-  return(
+  return (
     data.map((value, index) => {
       const columns = tableStructure.map(column => {
         const {actions, rowProp} = column;
-        return(
-          <td key={value['id']+rowProp}>
-            { actions ? getButton(actions,value, index) : value[rowProp]}
+        return (
+          <td key={value['id'] + rowProp}>
+            {actions ? getButton(actions, value, index) : value[rowProp]}
           </td>
         )
       });
 
-      return(
-        <tr key={value['id']} onClick={() => onClick(index)}>
+      return (
+        <tr key={value['id']} onClick={() => onClick(index)}
+            className={(value['check'] ? 'selected-row' : 'unselected-row '+(index%2 === 0 ? 'row-par' : 'row-impar'))}>
           {columns}
         </tr>
       )
@@ -29,34 +30,39 @@ const Rows = ({data, tableStructure, onClick}) => {
   )
 }
 
-class CommonTable extends Component{
+class CommonTable extends Component {
 
-  render(){
+  render() {
 
     const {tableStructure, data, onClick} = this.props
-    return(
-      <Table striped hover>
-        <thead>
-        <tr>
-          {
-            tableStructure.map((value,i)=>
-              <th key={'th-'+i}>
-                {value.columnHeader}
-              </th>
-            )
-          }
-        </tr>
-        </thead>
-        <tbody>
+    return (
+        <table>
+          <thead>
+          <tr>
+            {
+              tableStructure.map((value, i) =>
+                <th key={'th-' + i}>
+                  {value.searchRow ?
+                    <span className={value.classSearchRow}>
+                    {value.columnHeader}
+                      {value.searchRow}
+                  </span>
+                    : value.columnHeader}
+                </th>
+              )
+            }
+          </tr>
+          </thead>
+          <tbody>
           <Rows data={data} tableStructure={tableStructure} onClick={onClick}/>
-        </tbody>
-      </Table>
+          </tbody>
+        </table>
     )
   }
 }
 
 CommonTable.propTypes = {
-  tableStructure : PropTypes.arrayOf(
+  tableStructure: PropTypes.arrayOf(
     PropTypes.shape({
       columnHeader: PropTypes.string,
       rowProp: PropTypes.string

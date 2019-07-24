@@ -1,3 +1,43 @@
-.table{
-  width: 90%;
+
+
+table{
+  width: 98%;
+
+  th{ text-align: center; padding: 16px 13px; background: #222; color: #FFFFFF; top: 0}
+
+  th:first-child{
+    border-radius:.4rem 0 0 .4rem;
+  }
+
+  th:last-child{
+    border-radius:0 .4rem .4rem 0;
+  }
+
+  td {padding: 2px 13px;}
+}
+
+.container-search-field{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &.normal-size{
+    input{
+      width: 113px;
+      @include inputSearchTable();
+    }
+  }
+  &.medium-size{
+    input{
+      width: 145px;
+      @include inputSearchTable();
+    }
+  }
+  &.long-size{
+    input{
+      width: 265px;
+      @include inputSearchTable();
+    }
+  }
 }

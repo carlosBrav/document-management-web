@@ -13,6 +13,7 @@ class DocRecibidos extends Component{
   }
 
   onToggleAddDocSelect=(index)=>{
+    console.log('INDEX ', index)
     let {docRecibDataList} = this.state
     let docuRow = docRecibDataList[index]
     docuRow.check = !docuRow.check
@@ -36,8 +37,8 @@ class DocRecibidos extends Component{
       {
         columnHeader: 'Num. Tram.',
         rowProp: 'num_tram',
-        searchRow: <input type="text" />,
-        classSearchRow: 'container-search-field normal-size'
+        classSearchRow: 'container-search-field normal-size',
+        filterHeader: true
       },
       {
         columnHeader: 'Mov.',
@@ -46,14 +47,14 @@ class DocRecibidos extends Component{
       {
         columnHeader: 'Destino',
         rowProp: 'destino',
-        searchRow: <input type="text" />,
-        classSearchRow: 'container-search-field long-size'
+        classSearchRow: 'container-search-field long-size',
+        filterHeader: true
       },
       {
         columnHeader: 'F. Envio',
         rowProp: 'fech_envio',
-        searchRow: <input type="text" />,
-        classSearchRow: 'container-search-field medium-size'
+        classSearchRow: 'container-search-field medium-size',
+        filterHeader: true
       },
       {
         columnHeader: 'Indicador',
@@ -116,7 +117,10 @@ class DocRecibidos extends Component{
                                 onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
             </div>
             <div className='container-table'>
-              <CommonTable tableStructure={docRecibTableStructure} data={docRecibDataList} onClick={this.onToggleAddDocSelect}/>
+              {(docRecibTableStructure && docRecibTableStructure.length > 0) ?
+                <CommonTable tableStructure={docRecibTableStructure} data={docRecibDataList}
+                             onClick={this.onToggleAddDocSelect}/> : null
+              }
             </div>
             <div className='content-pagination'>
               <CommonPagination totalPages={totalPages}

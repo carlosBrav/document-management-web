@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
+import keys from 'lodash/keys';
+import filter from 'lodash/filter';
 
 const getButton = (actions, rowData, index) => {
   return actions.map((action, iterator) =>
     <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
            onChange={() => action.action(index)}/>
   )
-}
+};
+
+const getInputFilter = (key, onChangeValue) => {
+  const onChange = (e) => onChangeValue(key, e.target.value);
+  return <input type='text' onChange={onChange}/>
+};
 
 const Rows = ({data, tableStructure, onClick}) => {
   return (
@@ -22,7 +30,7 @@ const Rows = ({data, tableStructure, onClick}) => {
 
       return (
         <tr key={value['id']} onClick={() => onClick(index)}
-            className={(value['check'] ? 'selected-row' : 'unselected-row '+(index%2 === 0 ? 'row-par' : 'row-impar'))}>
+            className={(value['check'] ? 'selected-row' : 'unselected-row ' + (index % 2 === 0 ? 'row-par' : 'row-impar'))}>
           {columns}
         </tr>
       )
@@ -32,31 +40,74 @@ const Rows = ({data, tableStructure, onClick}) => {
 
 class CommonTable extends Component {
 
-  render() {
+  constructor() {
+    super();
+    this.state = {
+      searchList: [],
+      filteredList: []
+    }
+  }
 
-    const {tableStructure, data, onClick} = this.props
+  changeSearchColumn = (key, value) => {
+    let {searchList} = this.state;
+    searchList[key] = value;
+    this.setState({searchList});
+    this.filterData()
+  }
+
+  filterData = () => {
+    const {searchList} = this.state;
+    const {data} = this.props;
+    const keysList = keys(searchList);
+    let keysEmpty = true
+    let filterData = data
+    keysList.map((key)=>{
+      if(searchList[key].length>0) {
+        filterData = filter(filterData, filter => {
+          return filter[key].toLowerCase().includes(searchList[key].toLowerCase())
+        });
+        keysEmpty=false
+      }
+    });
+    if(keysEmpty) {
+      this.setState({filteredList: data})
+    } else  this.setState({filteredList: filterData})
+  }
+
+  componentDidMount() {
+    const {filteredList} = this.state;
+    const {data} = this.props;
+    if (!isEqual(data, filteredList)) {
+      this.setState({filteredList: data})
+    }
+  }
+
+  render() {
+    const {tableStructure, onClick} = this.props;
+    const {filteredList} = this.state;
     return (
-        <table>
-          <thead>
-          <tr>
-            {
-              tableStructure.map((value, i) =>
-                <th key={'th-' + i}>
-                  {value.searchRow ?
-                    <span className={value.classSearchRow}>
+      <table>
+        <thead>
+        <tr>
+          {
+            tableStructure.map((value, i) =>
+              <th key={'th-' + i}>
+                {(value.filterHeader) ?
+                  <span className={value.classSearchRow}>
                     {value.columnHeader}
-                      {value.searchRow}
-                  </span>
-                    : value.columnHeader}
-                </th>
-              )
-            }
-          </tr>
-          </thead>
-          <tbody>
-          <Rows data={data} tableStructure={tableStructure} onClick={onClick}/>
-          </tbody>
-        </table>
+                    {getInputFilter(value.rowProp, this.changeSearchColumn)}
+                    </span>
+                  : value.columnHeader
+                }
+              </th>
+            )
+          }
+        </tr>
+        </thead>
+        <tbody>
+        <Rows data={filteredList} tableStructure={tableStructure} onClick={onClick}/>
+        </tbody>
+      </table>
     )
   }
 }
@@ -65,13 +116,12 @@ CommonTable.propTypes = {
   tableStructure: PropTypes.arrayOf(
     PropTypes.shape({
       columnHeader: PropTypes.string,
-      rowProp: PropTypes.string
+      rowProp: PropTypes.string,
+      classSearchRow: PropTypes.string,
+      filterHeader: PropTypes.bool
     })),
   data: PropTypes.arrayOf(PropTypes.object),
   onClick: PropTypes.func
 }
 
-CommonTable.defaultProps = {
-  data: []
-};
 export default CommonTable

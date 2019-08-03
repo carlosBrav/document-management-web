@@ -4,10 +4,10 @@ import isEqual from 'lodash/isEqual';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
 
-const getButton = (actions, rowData, index) => {
+const getButton = (actions, rowData) => {
   return actions.map((action, iterator) =>
     <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
-           onChange={() => action.action(index)}/>
+           onClick={(e) => {e.stopPropagation(); action.action(rowData['id'])}}/>
   )
 };
 
@@ -29,7 +29,7 @@ const Rows = ({data, tableStructure, onClick}) => {
       });
 
       return (
-        <tr key={value['id']} onClick={() => onClick(index)}
+        <tr key={value['id']} onClick={() => onClick(value['id'])}
             className={(value['check'] ? 'selected-row' : 'unselected-row ' + (index % 2 === 0 ? 'row-par' : 'row-impar'))}>
           {columns}
         </tr>

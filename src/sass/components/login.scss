@@ -93,7 +93,7 @@
 
       .button-submit{
         width: 40%;
-        height: 40%;
+        height: 50%;
         -webkit-border-radius: 15px;
         -moz-border-radius: 15px;
         border-radius: 15px;
@@ -103,14 +103,7 @@
         background-color: #000000;
         cursor: pointer;
         color: #FFFFFF;
-
-        .button{
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          height: 100%;
-          align-items: center;
-        }
+        border-color: #000000;
       }
     }
 }

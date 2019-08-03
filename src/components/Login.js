@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CommonIcon, {ICON_TYPE} from './commons/CommonIcon'
+import {Button} from 'react-bootstrap';
 
 class Login extends Component {
 
@@ -35,9 +36,7 @@ class Login extends Component {
             </div>
           </div>
           <div className='login-form-button-submit'>
-            <div className='button-submit'>
-              <a className='button' onClick={onLogin}>Ingresar</a>
-            </div>
+            <Button className='button-submit' onClick={onLogin}>Ingresar</Button>
           </div>
       </div>
     )

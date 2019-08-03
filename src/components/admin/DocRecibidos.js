@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import CommonPagination from '../commons/CommonPagination';
 import CommonTable from '../commons/CommonTable';
 import {listData} from '../../fakedata/ListDocRecibidos'
+import findIndex from 'lodash/findIndex';
+import {Button} from 'react-bootstrap'
+import {exportPDF} from '../utils/ExportPDF'
 
 class DocRecibidos extends Component{
 
@@ -12,19 +15,22 @@ class DocRecibidos extends Component{
     docRecibDataList: []
   }
 
-  onToggleAddDocSelect=(index)=>{
-    console.log('INDEX ', index)
-    let {docRecibDataList} = this.state
-    let docuRow = docRecibDataList[index]
-    docuRow.check = !docuRow.check
+  onToggleAddDocSelect=(id)=>{
+    let {docRecibDataList} = this.state;
+    const index = findIndex(docRecibDataList, {id: id});
+    docRecibDataList[index].check = !docRecibDataList[index].check;
     this.setState({docRecibDataList})
+  }
+
+  onExportDocumentsConfirms=()=>{
+    exportPDF()
   }
 
   getDataList=()=>{
     return(
       [...listData]
     )
-  }
+  };
 
   getTableStructure = () => {
     return ([
@@ -86,7 +92,7 @@ class DocRecibidos extends Component{
       currentPage++
     }
     this.setState({currentPage})
-  }
+  };
 
   onChangeCurrentPageSubtract = () =>{
     let {currentPage} = this.state
@@ -94,11 +100,11 @@ class DocRecibidos extends Component{
       currentPage--
     }
     this.setState({currentPage})
-  }
+  };
 
   onChangeCurrentPage = (value) => {
     this.setState({currentPage: value})
-  }
+  };
 
   render(){
     const {totalPages, currentPage, docRecibTableStructure, docRecibDataList} = this.state;
@@ -129,7 +135,14 @@ class DocRecibidos extends Component{
                                 onChangeCurrentPageSubtract={this.onChangeCurrentPageSubtract}
                                 onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
             </div>
-            <div></div>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '20%', height: 50}}>
+              <Button bsStyle="primary" style={{backgroundColor: '#222', height: 40, borderColor: '#222'}}>
+                Seguimiento
+              </Button>
+              <Button bsStyle="primary" style={{backgroundColor: '#222', height: 40, borderColor: '#222'}} onClick={()=> this.onExportDocumentsConfirms()}>
+                Imprimir
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import {listData} from '../../fakedata/ListDocRecibidos';
+import {listData_1} from '../../fakedata/ListDocRecibidos';
 import omit from 'lodash/omit';
 
 function appendZero(n){
@@ -43,7 +43,7 @@ export function exportPDF() {
   doc.setFontSize(12);
   doc.text(typeDocument, 80, 70);
 
-  let tableDocuments = listData.map((data) => {
+  let tableDocuments = listData_1.map((data) => {
     return omit(data, ['id', 'movimiento', 'destino', 'indic', 'estado', 'check'])
   });
 

@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import CommonTab from '../commons/CommonTab';
 import CommonTableManage from '../commons/CommonTableManage';
-import {listData_1} from "../../fakedata/ListDocRecibidos";
-import {exportPDF} from "../utils/ExportPDF";
+import {listData_1, listData_2} from "../../fakedata/ListDocRecibidos";
 
-class DocRecibidos extends Component{
+
+
+class DocRespuesta extends Component{
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
@@ -54,27 +56,43 @@ class DocRecibidos extends Component{
     ])
   }
 
-  onExportDocuments=()=>{
-    exportPDF()
+  getButtonsFooterDocInt=()=>{
+    return [
+      {text: 'Oficios', onClick: ()=> {}}
+    ]
   }
 
-  getButtonsFooter=()=>{
+  getButtonsFooterOficios=()=>{
     return [
-      {text: 'Seguimiento', onClick: ()=> {}},
-      {text: 'Imprimir', onClick: ()=> this.onExportDocuments()}]
-    }
+      {text: 'Crear',  onClick: ()=> {}},
+      {text: 'Eliminar', onClick: ()=> {}}
+    ]
+  }
 
   render(){
 
+    const tableDocumentInt = <CommonTableManage
+      tableStructure={this.getTableStructure}
+      title={'DOCUMENTOS INTERNOS'}
+      listData={listData_1}
+      buttonsFooter={this.getButtonsFooterDocInt()}
+    />
+
+    const tableOficios = <CommonTableManage
+      tableStructure={this.getTableStructure}
+      title={'OFICIOS'}
+      listData={listData_2}
+      buttonsFooter={this.getButtonsFooterOficios()}
+    />
+
+    const tabs =
+      [ {title: 'Doc. Internos', id: 'docuInt', component: tableDocumentInt},
+        {title: 'Oficios', id: 'oficios', component: tableOficios}
+      ]
+
     return(
-      <CommonTableManage
-        tableStructure={this.getTableStructure}
-        title={'DOCUMENTOS RECIBIDOS'}
-        listData={listData_1}
-        buttonsFooter={this.getButtonsFooter()}
-      />
+      <CommonTab tabTitles={tabs}/>
     )
   }
 }
-
-export default DocRecibidos
+export default DocRespuesta

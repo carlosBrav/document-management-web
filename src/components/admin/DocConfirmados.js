@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1} from "../../fakedata/ListDocRecibidos";
-import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
 
 class DocConfirmados extends Component{
 
@@ -64,7 +63,7 @@ class DocConfirmados extends Component{
 
   getButtonsFooter=()=>{
     return [
-      {text: 'Eliminar', style: {backgroundColor: '#222', height: 40, borderColor: '#222'}, onClick: ()=> {}}
+      {text: 'Eliminar', onClick: ()=> {}}
       ]
   }
 
@@ -72,24 +71,26 @@ class DocConfirmados extends Component{
     return(
       <div className='buttons-header'>
         <form>
-          <FormGroup controlId="formBasicText1" style={{display: 'flex', flexDirection: 'row', width: '40%', alignItems: 'center'}}>
-            <ControlLabel>Número de trámite: </ControlLabel>
-            <FormControl
+          <div className="form-group"  style={{display: 'flex', flexDirection: 'row', width: '40%', alignItems: 'center'}}>
+            <label>Número de trámite: </label>
+            <input
+              id="searchValue"
               type="text"
               value={this.state.search}
               onChange={this.onChangeValue}
+              className="form-control"
               style={{width: '30%', marginLeft: 10, marginRight: 10}}
             />
-            <Button bsStyle="primary" style={{backgroundColor: '#222', height: 35,borderColor: '#222'}}>
+            <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222'}}>
               Buscar
-            </Button>
-          </FormGroup>
-          <FormGroup controlId="formBasicText2" style={{display: 'flex', flexDirection: 'row', width: '40%', alignItems: 'center'}}>
-            <ControlLabel>Documento de hoy: </ControlLabel>
-            <Button bsStyle="primary" style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}}>
+            </button>
+          </div>
+          <div className="form-group" style={{display: 'flex', flexDirection: 'row', width: '40%', alignItems: 'center'}}>
+            <label>Documento de hoy: </label>
+            <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}}>
               Buscar
-            </Button>
-          </FormGroup>
+            </button>
+          </div>
         </form>
       </div>
     )

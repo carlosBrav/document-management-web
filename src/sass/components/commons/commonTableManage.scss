@@ -71,6 +71,16 @@
         padding-left: 25px;
         width: 20%;
         height: 50px;
+
+        button{
+          background-color: #222;
+          height: 35px;
+          border-color: #222;
+          margin-right: 8px;
+        }
+        button:last-child{
+          margin-right: 0px;
+        }
       }
     }
   }

@@ -12,3 +12,9 @@
     background-color: #F9F4F3;
   }
 }
+
+.hover-pointer{
+  &:hover{
+    cursor: pointer;
+  }
+}

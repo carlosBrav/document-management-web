@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import findIndex from "lodash/findIndex";
 import CommonPagination from '../commons/CommonPagination';
 import CommonTable from '../commons/CommonTable';
-import {Button} from 'react-bootstrap'
 
 class CommonTableManage extends Component{
 
@@ -85,9 +84,9 @@ class CommonTableManage extends Component{
                 <div className='container-buttons-footer'>
                   {
                     buttonsFooter.map((button)=>{
-                      return <Button bsStyle="primary" style={button.style} onClick={()=>button.onClick()}>
+                      return <button className='btn btn-dark' style={button.style} onClick={()=>button.onClick()}>
                         {button.text}
-                      </Button>
+                      </button>
                     })
                   }
                 </div> : null

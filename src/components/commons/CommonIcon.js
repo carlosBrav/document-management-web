@@ -5,7 +5,8 @@ export const ICON_TYPE = {
   LOGO_USER: 'user',
   PADLOCK: 'padlock',
   ARROW_LEFT: 'arrow-left',
-  ARROW_RIGHT: 'arrow-right'
+  ARROW_RIGHT: 'arrow-right',
+  TRASH: 'trash-icon'
 }
 
 
@@ -3990,6 +3991,22 @@ function getPadlock(){
   )
 }
 
+function getTrash(){
+  return(
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 384 384" style={{enableBackground:"new 0 0 384 384"}} space="preserve" width="512px" height="512px" >
+      <g>
+        <g>
+          <g>
+            <g>
+              <path d="M64,341.333C64,364.8,83.2,384,106.667,384h170.667C300.8,384,320,364.8,320,341.333v-256H64V341.333z M116.587,189.44     l30.187-30.187L192,204.48l45.227-45.227l30.187,30.187l-45.227,45.227l45.227,45.227l-30.187,30.187L192,264.853l-45.227,45.227     l-30.187-30.187l45.227-45.227L116.587,189.44z" data-original="#000000" data-old_color="#A43B1C" fill="#F0242A"/>
+              <polygon points="266.667,21.333 245.333,0 138.667,0 117.333,21.333 42.667,21.333 42.667,64 341.333,64 341.333,21.333    " data-original="#000000" className="active-path" data-old_color="#A43B1C" fill="#F0242A"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+  )
+}
 
 function getIcon(type){
   switch(type){
@@ -3999,6 +4016,8 @@ function getIcon(type){
       return getUser();
     case ICON_TYPE.PADLOCK:
       return getPadlock();
+    case ICON_TYPE.TRASH:
+      return getTrash();
     default: return null;
   }
 }

@@ -76,19 +76,19 @@ class DocRespuesta extends Component{
       title={'DOCUMENTOS INTERNOS'}
       listData={listData_1}
       buttonsFooter={this.getButtonsFooterDocInt()}
-    />
+    />;
 
     const tableOficios = <CommonTableManage
       tableStructure={this.getTableStructure}
       title={'OFICIOS'}
       listData={listData_2}
       buttonsFooter={this.getButtonsFooterOficios()}
-    />
+    />;
 
     const tabs =
       [ {title: 'Doc. Internos', id: 'docuInt', component: tableDocumentInt},
         {title: 'Oficios', id: 'oficios', component: tableOficios}
-      ]
+      ];
 
     return(
       <CommonTab tabTitles={tabs}/>

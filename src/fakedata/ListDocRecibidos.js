@@ -783,8 +783,7 @@ export const listData_2 =
       "check": false
     }]
 
-export const listData_3 =
-  [{
+export const listData_3 =[{
     "id": "31",
     "num_tram": "03111-FCA-2019",
     "movimiento": "23",
@@ -844,3 +843,107 @@ export const listData_3 =
       "docum_nomb": "SIN DOCU",
       "check": false
     }]
+
+export const lista_circulares = [
+  {
+    "id": "31",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "32",
+    "correlativo": "03521-UGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "33",
+    "correlativo": "01231-FGO-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE RACIONALIZACION",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "34",
+    "correlativo": "05341-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE RACIONALIZACION",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "35",
+    "correlativo": "42211-GUY-2019",
+    "asunto": "ASUNTO DE CIRCULAR ",
+    "area_resp": "OGPL-OFICINA DE RACIONALIZACION",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "36",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE ESTADISTICA E INFORMATICA",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "37",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR ",
+    "area_resp": "OGPL-OFICINA DE ESTADISTICA E INFORMATICA",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "38",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE RACIONALIZACION",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "31",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR ",
+    "area_resp": "OGPL-OFICINA DE CENTRO PRODUCCION",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  },
+  {
+    "id": "39",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "area_resp": "OGPL-OFICINA DE RACIONALIZACION",
+    "fech_envio": "02/07/2019 10:07:33",
+    "firma": "L. PEDRO VERANO",
+    "responsable": "SANDOVAL CATHERINE",
+    "check": false
+  }
+
+]

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class CommonMenu extends Component{
 
   render(){
-    const {goToDocRecibidos, goToDocConfirmados, goToDocumentRespuesta} = this.props
+    const {goToDocRecibidos, goToDocConfirmados, goToDocumentRespuesta, goToDocumentCirculares} = this.props
     return(
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="navbar-brand hover-pointer">Oficina General de Planificacion</div>
@@ -32,7 +32,7 @@ class CommonMenu extends Component{
                   <a className="dropdown-item dropdown-toggle" data-toggle="dropdown"  href="#">Gestión Documentos</a>
                   <ul className="dropdown-menu">
                     <div className="dropdown-item hover-pointer" onClick={()=> goToDocumentRespuesta()}>Doc. Respuesta</div>
-                    <div className="dropdown-item hover-pointer" >Doc. Circulares</div>
+                    <div className="dropdown-item hover-pointer" onClick={()=> goToDocumentCirculares()}>Doc. Circulares</div>
                     <div className="dropdown-item hover-pointer" >Doc. Proveidos</div>
                     <div className="dropdown-item hover-pointer" >Doc. Generados (otros)</div>
                   </ul>

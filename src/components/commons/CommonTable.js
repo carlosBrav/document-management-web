@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
+import CommonIcon from '../commons/CommonIcon';
 
 const getButton = (actions, rowData) => {
   return actions.map((action, iterator) =>
+    (action.actionType === 'button') ?
     <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
            onClick={(e) => {e.stopPropagation(); action.action(rowData['id'])}}/>
+      : <CommonIcon key={iterator + 'icon'} type={action.actionType}
+                    onClick={e => {
+                      e.stopPropagation();
+                      action.action(rowData)
+                    }}/>
   )
 };
 
@@ -19,17 +26,17 @@ const getInputFilter = (key, onChangeValue) => {
 const Rows = ({data, tableStructure, onClick}) => {
   return (
     data.map((value, index) => {
-      const columns = tableStructure.map(column => {
+      const columns = tableStructure.map((column, index) => {
         const {actions, rowProp} = column;
         return (
-          <td key={value['id'] + rowProp}>
-            {actions ? getButton(actions, value, index) : value[rowProp]}
+          <td key={index + 'td'} className={column.rowStyle}>
+            {actions ? getButton(actions, value) : value[rowProp]}
           </td>
         )
       });
 
       return (
-        <tr key={value['id']} onClick={() => onClick(value['id'])}
+        <tr key={value['id']+'tr'} onClick={() => onClick(value['id'])}
             className={(value['check'] ? 'selected-row' : 'unselected-row ' + (index % 2 === 0 ? 'row-par' : 'row-impar'))}>
           {columns}
         </tr>

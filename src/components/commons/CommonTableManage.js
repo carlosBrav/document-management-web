@@ -12,16 +12,12 @@ class CommonTableManage extends Component{
     documentsDataList: [],
   }
 
-
-
   onToggleAddDocSelect=(id)=>{
     let {documentsDataList} = this.state;
     const index = findIndex(documentsDataList, {id: id});
     documentsDataList[index].check = !documentsDataList[index].check;
     this.setState({documentsDataList})
   }
-
-
 
   onChangeCurrentPageAdd = () =>{
     let {totalPages, currentPage} = this.state
@@ -85,8 +81,8 @@ class CommonTableManage extends Component{
               buttonsFooter && buttonsFooter.length>0 ?
                 <div className='container-buttons-footer'>
                   {
-                    buttonsFooter.map((button)=>{
-                      return <button className='btn btn-dark' style={button.style} onClick={()=>button.onClick()}>
+                    buttonsFooter.map((button, index)=>{
+                      return <button key={'button'+index} className='btn btn-dark' style={button.style} onClick={()=>button.onClick()}>
                         {button.text}
                       </button>
                     })

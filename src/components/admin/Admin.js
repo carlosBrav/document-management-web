@@ -6,17 +6,19 @@ import DocConfirmados from "./DocConfirmados";
 import Menu from '../utils/test';
 import DocRespuesta from './DocRespuesta';
 import DocCirculares from "./DocCirculares";
+import DocProveidos from "./DocProveidos";
+import DocGenerados from "./DocGenerados";
 
 class Admin extends Component{
 
   goToDocRecibidos=()=>{
     const {history} = this.props
-    history.push('/admin/doc_recibidos')
+    history.push('/admin/document_recibidos')
   };
 
   goToDocConfirmados=()=>{
     const {history} = this.props
-    history.push('/admin/doc_confirmados')
+    history.push('/admin/document_confirmados')
   };
 
   goToTest=()=>{
@@ -50,7 +52,8 @@ class Admin extends Component{
       <div className='container-admin'>
         <div className='container-menu-admin'>
           <CommonMenu goToDocRecibidos={this.goToDocRecibidos} goToDocConfirmados={this.goToDocConfirmados}
-                      goToDocumentRespuesta={this.goToDocumentRespuesta} goToDocumentCirculares={this.goToDocumentCirculares}/>
+                      goToDocumentRespuesta={this.goToDocumentRespuesta} goToDocumentCirculares={this.goToDocumentCirculares}
+                      goToDocumentProveidos={this.goToDocumentProveidos} goToDocumentGenerados={this.goToDocumentGenerados}/>
         </div>
         <div className='admin-content'>
           <Route>
@@ -60,8 +63,8 @@ class Admin extends Component{
               <Route exact path="/admin/test" component={Menu}/>
               <Route exact path='/admin/document_respuesta' component={DocRespuesta}/>
               <Route exact path='/admin/document_circular' component={DocCirculares}/>
-              <Route exact path='/admin/document_proveido' component={DocRespuesta}/>
-              <Route exact path='/admin/document_generado' component={DocRespuesta}/>
+              <Route exact path='/admin/document_proveido' component={DocProveidos}/>
+              <Route exact path='/admin/document_generado' component={DocGenerados}/>
               <Route exact path='/admin/busqueda_avanzada' component={DocRespuesta}/>
               <Route exact path='/admin/mantenimiento' component={DocRespuesta}/>
             </Switch>

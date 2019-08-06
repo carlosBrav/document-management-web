@@ -926,7 +926,7 @@ export const lista_circulares = [
     "check": false
   },
   {
-    "id": "31",
+    "id": "39",
     "correlativo": "03321-DGA-2019",
     "asunto": "ASUNTO DE CIRCULAR ",
     "area_resp": "OGPL-OFICINA DE CENTRO PRODUCCION",
@@ -936,7 +936,7 @@ export const lista_circulares = [
     "check": false
   },
   {
-    "id": "39",
+    "id": "40",
     "correlativo": "03321-DGA-2019",
     "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
     "area_resp": "OGPL-OFICINA DE RACIONALIZACION",
@@ -944,6 +944,313 @@ export const lista_circulares = [
     "firma": "L. PEDRO VERANO",
     "responsable": "SANDOVAL CATHERINE",
     "check": false
-  }
+  }]
 
+export const lista_proveidos_1 = [
+  {
+    "id": "41",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "42",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "43",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "44",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "45",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "46",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "47",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "48",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "49",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+  {
+    "id": "50",
+    "correlativo": "03321-DGA-2019",
+    "asunto": "ASUNTO DE CIRCULAR QUE A VECES SUELE SER MUY LARGO ASI QUE HAY QUE PROBAR CUAN LARGO PUEDE SER",
+    "origen": "OGPL-OFICINA DE PRESUPUESTO",
+    "fech_registro": "02/07/2019 10:07:33",
+    "check": false
+  },
+]
+
+export const lista_proveidos_2 = [
+  {
+    "id": "50",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "51",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "52",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "53",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "54",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "55",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "56",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "57",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "58",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  },
+  {
+    "id": "59",
+    "documento": "PROVEIDO Nº 00412-OGPL-2019",
+    "num_doc": "OFICIO Nº 0010-OCCP-2019",
+    "fech_registro": "02/07/2019 10:07:33",
+    "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
+    "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "usuario": "CHUCHON OCHOA, ANA MARIA",
+    "check": false
+  }]
+
+export const lista_generados = [
+  {
+    "id": "69",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "70",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "71",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "72",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "73",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "74",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "75",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "76",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "77",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "78",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  },
+  {
+    "id": "79",
+    "documento": "03321-DGA-2019",
+    "fech_reg": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "origen": "OFICINA GENERAL DE PLANIFICACION",
+    "destino": "OGPL-OFICINA GENERAL DE PRESUPUESTO",
+    "responsable": "SANDOVAL CATHERINE",
+    "numero": "2155",
+    "check": false
+  }
 ]

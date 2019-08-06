@@ -12,6 +12,7 @@ class DocRespuesta extends Component{
       {
         columnHeader: '',
         actions: [{
+          actionType: 'button',
           action: (index) => onToggleAddDocSelect(index)
         }]
       },

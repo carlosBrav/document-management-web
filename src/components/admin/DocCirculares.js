@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {lista_circulares} from "../../fakedata/ListDocRecibidos";
+import {ICON_TYPE} from "../commons/CommonIcon";
 
 class DocCirculares extends Component{
 
+  toggleViewDocument=(data)=>{
+    console.log('DOCUMENT SELECTED ',data)
+  }
+
+  toggleEditDocument=(data)=>{
+    console.log('DOCUMENT EDIT ', data)
+  }
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
         columnHeader: '',
         actions: [{
+          actionType: 'button',
           action: (index) => onToggleAddDocSelect(index)
         }]
       },
@@ -26,7 +35,7 @@ class DocCirculares extends Component{
       {
         columnHeader: 'Area Resp.',
         rowProp: 'area_resp',
-        classSearchRow: 'container-search-field normal-size',
+        classSearchRow: 'container-search-field long-size',
         filterHeader: true
       },
       {
@@ -40,6 +49,20 @@ class DocCirculares extends Component{
       {
         columnHeader: 'Responsable',
         rowProp: 'responsable'
+      },
+      {
+        columnHeader: '',
+        rowStyle: 'container-icons',
+        actions: [
+          {
+           actionType: ICON_TYPE.SEARCH,
+           action: data => this.toggleViewDocument(data)
+          },
+          {
+            actionType: ICON_TYPE.EDIT,
+            action: data => this.toggleEditDocument(data)
+          }
+        ]
       }
     ])
   }

@@ -3,21 +3,6 @@ import findIndex from "lodash/findIndex";
 import CommonPagination from '../commons/CommonPagination';
 import CommonTable from '../commons/CommonTable';
 
-function getTableStructure(tableStructure, onDelete){
-  return !!onDelete ? tableStructure.concat([ {
-    columnHeader: '',
-    bodyColClass: 'text-right',
-    cellRenderer: ({itemData})=> {
-      return (
-        <Icon iconType={ICON_TYPE.TRASH_CAN} onClick={(e)=> {
-          e.stopPropagation();
-          onDelete(itemData)
-        }} />
-      )
-    }
-  }]) : tableStructure;
-}
-
 class CommonTableManage extends Component{
 
   state = {

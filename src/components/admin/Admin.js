@@ -3,14 +3,13 @@ import CommonMenu from '../commons/CommonMenu';
 import { Route, Switch } from 'react-router-dom';
 import DocRecibidos from "./DocRecibidos";
 import DocConfirmados from "./DocConfirmados";
-import Menu from '../utils/test';
 import DocRespuesta from './DocRespuesta';
 import DocCirculares from "./DocCirculares";
 import DocProveidos from "./DocProveidos";
 import DocGenerados from "./DocGenerados";
 import Busqueda_avanzada from "../../components/Busqueda_avanzada";
 import ControlDocumentos from "./ControlDocumentos";
-import MenuComponent from "../utils/test";
+import CommonPickList from "../commons/CommonPickList";
 
 class Admin extends Component{
 
@@ -75,14 +74,13 @@ class Admin extends Component{
             <Switch>
               <Route exact path="/admin/document_recibidos" component={DocRecibidos}/>
               <Route exact path="/admin/document_confirmados" component={DocConfirmados}/>
-              <Route exact path="/admin/test" component={Menu}/>
               <Route exact path='/admin/document_respuesta' component={DocRespuesta}/>
               <Route exact path='/admin/document_circular' component={DocCirculares}/>
               <Route exact path='/admin/document_proveido' component={DocProveidos}/>
               <Route exact path='/admin/document_generado' component={DocGenerados}/>
               <Route exact path='/admin/busqueda_avanzada' component={Busqueda_avanzada}/>
               <Route exact path='/admin/control_documentos' component={ControlDocumentos}/>
-              <Route exact path='/admin/test' component={MenuComponent}/>
+              <Route exact path='/admin/test' component={CommonPickList}/>
             </Switch>
           </Route>
         </div>

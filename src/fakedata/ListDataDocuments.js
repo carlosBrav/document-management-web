@@ -1347,3 +1347,185 @@ export const list_busqueda_avanzada =
       "check": false
     }
   ]
+
+export const list_dependencies =
+  [
+    {
+      "id": "1",
+      "value":"OFICINA DE PRESUPUESTO"
+    },
+    {
+      "id": "2",
+      "value":"OFICINA DE RACIONALIZACION"
+    },
+    {
+      "id": "3",
+      "value":"OFICINA DE PLANES Y PROGRAMAS"
+    },
+    {
+      "id": "4",
+      "value":"OFICINA DE CENTRO DE PRODUCCION"
+    },
+    {
+      "id": "5",
+      "value":"OFICINA DE ESTADISTICA E INFORMATICA"
+    }
+  ]
+
+export const list_dependencies_2 =
+  [
+    {
+      "id": "1",
+      "value":"OFICINA DE PRESUPUESTO"
+    },
+    {
+      "id": "2",
+      "value":"OFICINA DE RACIONALIZACION"
+    },
+    {
+      "id": "3",
+      "value":"OFICINA DE PLANES Y PROGRAMAS"
+    },
+    {
+      "id": "4",
+      "value":"OFICINA DE CENTRO DE PRODUCCION"
+    },
+    {
+      "id": "5",
+      "value":"OFICINA DE ESTADISTICA E INFORMATICA"
+    },
+    {
+      "id": "5",
+      "value":"FACULTAD DE PSICOLOGÍA"
+    },
+    {
+      "id": "6",
+      "value":"FACULTAD DE CIENCIAS ADMINISTRATIVAS"
+    },
+    {
+      "id": "7",
+      "value":"FACULTAD DE CIENCIAS CONTABLES"
+    },
+    {
+      "id": "8",
+      "value":"FACULTAD DE CIENCIAS FÍSICAS"
+    },
+    {
+      "id": "9",
+      "value":"FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA"
+    },
+  ]
+
+
+export const list_control_documents =
+  [
+    {
+      "id": "100",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "101",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "102",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "103",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "104",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "105",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "106",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "107",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    },
+    {
+      "id": "108",
+      "num_tram": "03321-DGA-2019",
+      "mov": "23",
+      "destino": "OFICINA DE ESTADISTICA E INFORMATICA",
+      "fech_envio": "02/07/2019 10:07:33",
+      "indicador": "ATENCION",
+      "observacion": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "doc_nombre": "SIN DOC.",
+      "estado": "EN PROCESO",
+      "check": false
+    }
+  ]
+

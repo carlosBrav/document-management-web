@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {list_busqueda_avanzada} from "../fakedata/ListDataDocuments";
+import {list_busqueda_avanzada, list_dependencies} from "../fakedata/ListDataDocuments";
 import CommonTableManage from "./commons/CommonTableManage";
 
 class Busqueda_avanzada extends Component{
@@ -38,13 +38,62 @@ class Busqueda_avanzada extends Component{
     ])
   }
 
+  getContainHeaderBusqAvanz=()=>{
+    return(
+      <div style={{display: 'flex', justifyContent: 'row', paddingLeft: 25, paddingTop: 20}}>
+        <form style={{width: '45%'}}>
+          <div className="form-row" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginRight: 0, marginLeft: 0}}>
+            <div className="form-group">
+              <label htmlFor="inputNumTram">Numero de tramite:</label>
+              <input type="text" className="form-control" id="inputNumTram"/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="inputAsunto">Asunto:</label>
+              <input type="text" className="form-control" id="inputAsunto"/>
+            </div>
+          </div>
+          <div className="form-row"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginRight: 0, marginLeft: 0}}>
+            <div className="form-group">
+              <label htmlFor="inputPassword4">Derivado a:</label>
+                <select id="inputState" className="form-control">
+                  <option selected value={'0'}>Seleccione</option>
+                  {
+                    list_dependencies && list_dependencies.length>0 ?
+                      list_dependencies.map((dependencie)=>{
+                        return <option value={dependencie.id}>{dependencie.value}</option>
+                      }) : null
+                  }
+
+                </select>
+            </div>
+            <div className="form-group" style={{width: 210,paddingTop: 35}}>
+              <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}}>
+                Buscar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    )
+  }
+
+
+
+  getContainFooterBusqAvanz=()=>{
+    return [
+      {text: 'Detalle',  onClick: ()=> {}},
+      {text: 'Imprimir', onClick: ()=> {}}
+    ]
+  }
+
   render(){
     return(
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'BUSQUEDA AVANZADA'}
         listData={list_busqueda_avanzada}
-        containFooter={this.getButtonsFooterGenerados()}
+        containFooter={this.getContainFooterBusqAvanz()}
+        containHeader={this.getContainHeaderBusqAvanz()}
       />
     )
   }

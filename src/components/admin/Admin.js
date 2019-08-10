@@ -8,6 +8,9 @@ import DocRespuesta from './DocRespuesta';
 import DocCirculares from "./DocCirculares";
 import DocProveidos from "./DocProveidos";
 import DocGenerados from "./DocGenerados";
+import Busqueda_avanzada from "../../components/Busqueda_avanzada";
+import ControlDocumentos from "./ControlDocumentos";
+import MenuComponent from "../utils/test";
 
 class Admin extends Component{
 
@@ -19,11 +22,6 @@ class Admin extends Component{
   goToDocConfirmados=()=>{
     const {history} = this.props
     history.push('/admin/document_confirmados')
-  };
-
-  goToTest=()=>{
-    const {history} = this.props
-    history.push('/admin/test')
   };
 
   goToDocumentRespuesta=()=>{
@@ -46,6 +44,21 @@ class Admin extends Component{
     history.push('/admin/document_generado')
   };
 
+  goToBusquedaAvanzada=()=>{
+    const {history} = this.props
+    history.push('/admin/busqueda_avanzada')
+  };
+
+  goToControlDocumentos=()=>{
+    const {history} = this.props
+    history.push('/admin/control_documentos')
+  }
+
+  goToTest=()=>{
+    const {history} = this.props
+    history.push('/admin/test')
+  }
+
 
   render(){
     return(
@@ -53,7 +66,9 @@ class Admin extends Component{
         <div className='container-menu-admin'>
           <CommonMenu goToDocRecibidos={this.goToDocRecibidos} goToDocConfirmados={this.goToDocConfirmados}
                       goToDocumentRespuesta={this.goToDocumentRespuesta} goToDocumentCirculares={this.goToDocumentCirculares}
-                      goToDocumentProveidos={this.goToDocumentProveidos} goToDocumentGenerados={this.goToDocumentGenerados}/>
+                      goToDocumentProveidos={this.goToDocumentProveidos} goToDocumentGenerados={this.goToDocumentGenerados}
+                      goToBusquedaAvanzada={this.goToBusquedaAvanzada} goToControlDocumentos={this.goToControlDocumentos}
+                      goToTest={this.goToTest}/>
         </div>
         <div className='admin-content'>
           <Route>
@@ -65,8 +80,9 @@ class Admin extends Component{
               <Route exact path='/admin/document_circular' component={DocCirculares}/>
               <Route exact path='/admin/document_proveido' component={DocProveidos}/>
               <Route exact path='/admin/document_generado' component={DocGenerados}/>
-              <Route exact path='/admin/busqueda_avanzada' component={DocRespuesta}/>
-              <Route exact path='/admin/mantenimiento' component={DocRespuesta}/>
+              <Route exact path='/admin/busqueda_avanzada' component={Busqueda_avanzada}/>
+              <Route exact path='/admin/control_documentos' component={ControlDocumentos}/>
+              <Route exact path='/admin/test' component={MenuComponent}/>
             </Switch>
           </Route>
         </div>

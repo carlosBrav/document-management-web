@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CommonTableManage from "../commons/CommonTableManage";
-import {lista_proveidos_1, lista_proveidos_2} from "../../fakedata/ListDocRecibidos";
+import {lista_proveidos_1, lista_proveidos_2} from "../../fakedata/ListDataDocuments";
 import CommonTab from "../commons/CommonTab";
 import {ICON_TYPE} from "../commons/CommonIcon";
 
@@ -93,14 +93,14 @@ class DocProveidos extends Component{
     ])
   }
 
-  getButtonsFooterProveidos_1=()=>{
+  getContainFooterProveidos_1=()=>{
     return [
       {text: 'Proveidos Int.',  onClick: ()=> {}},
       {text: 'Proveidos Ext.', onClick: ()=> {}}
     ]
   }
 
-  getButtonsFooterProveidos_2=()=>{
+  getContainFooterProveidos_2=()=>{
     return [
       {text: 'Eliminar',  onClick: ()=> {}},
       {text: 'Imprimir', onClick: ()=> {}}
@@ -112,14 +112,14 @@ class DocProveidos extends Component{
       tableStructure={this.getTableStructure_proveidos_1}
       title={'DOCUMENTOS INTERNOS'}
       listData={lista_proveidos_1}
-      buttonsFooter={this.getButtonsFooterProveidos_1()}
+      containFooter={this.getContainFooterProveidos_1()}
     />;
 
     const tableProveidos = <CommonTableManage
       tableStructure={this.getTableStructure_proveidos_2}
       title={'PROVEIDOS'}
       listData={lista_proveidos_2}
-      buttonsFooter={this.getButtonsFooterProveidos_2()}
+      containFooter={this.getContainFooterProveidos_2()}
     />;
 
     const tabs =

@@ -45,7 +45,7 @@ class CommonTableManage extends Component{
   }
 
   render(){
-    const {title, buttonsFooter, buttonsHeader} = this.props
+    const {title, containFooter, containHeader} = this.props
     const {totalPages, currentPage, documentsTableStructure, documentsDataList} = this.state;
     return(
       <div className='container-documents'>
@@ -55,7 +55,7 @@ class CommonTableManage extends Component{
           </div>
           <div className='container-content'>
             {
-              (buttonsHeader) ? buttonsHeader : null
+              (containHeader) ? containHeader : null
             }
             <div className='content-pagination'>
               <CommonPagination totalPages={totalPages}
@@ -78,10 +78,10 @@ class CommonTableManage extends Component{
                                 onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
             </div>
             {
-              buttonsFooter && buttonsFooter.length>0 ?
+              containFooter && containFooter.length>0 ?
                 <div className='container-buttons-footer'>
                   {
-                    buttonsFooter.map((button, index)=>{
+                    containFooter.map((button, index)=>{
                       return <button key={'button'+index} className='btn btn-dark' style={button.style} onClick={()=>button.onClick()}>
                         {button.text}
                       </button>

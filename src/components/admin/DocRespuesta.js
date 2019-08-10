@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CommonTab from '../commons/CommonTab';
 import CommonTableManage from '../commons/CommonTableManage';
-import {listData_1, listData_2} from "../../fakedata/ListDocRecibidos";
+import {listData_1, listData_2} from "../../fakedata/ListDataDocuments";
 
 
 
@@ -57,13 +57,13 @@ class DocRespuesta extends Component{
     ])
   }
 
-  getButtonsFooterDocInt=()=>{
+  getContainFooterDocInt=()=>{
     return [
       {text: 'Oficios', onClick: ()=> {}}
     ]
   }
 
-  getButtonsFooterOficios=()=>{
+  getContainFooterOficios=()=>{
     return [
       {text: 'Crear',  onClick: ()=> {}},
       {text: 'Eliminar', onClick: ()=> {}}
@@ -76,14 +76,14 @@ class DocRespuesta extends Component{
       tableStructure={this.getTableStructure}
       title={'DOCUMENTOS INTERNOS'}
       listData={listData_1}
-      buttonsFooter={this.getButtonsFooterDocInt()}
+      containFooter={this.getContainFooterDocInt()}
     />;
 
     const tableOficios = <CommonTableManage
       tableStructure={this.getTableStructure}
       title={'OFICIOS'}
       listData={listData_2}
-      buttonsFooter={this.getButtonsFooterOficios()}
+      containFooter={this.getContainFooterOficios()}
     />;
 
     const tabs =

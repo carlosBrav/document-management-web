@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ICON_TYPE} from "../commons/CommonIcon";
 import CommonTableManage from "../commons/CommonTableManage";
-import {lista_generados} from "../../fakedata/ListDocRecibidos";
+import {lista_generados} from "../../fakedata/ListDataDocuments";
 
 class DocGenerados extends Component{
 
@@ -69,7 +69,7 @@ class DocGenerados extends Component{
     ])
   }
 
-  getButtonsFooterGenerados=()=>{
+  getContainFooterGenerados=()=>{
     return [
       {text: 'Crear',  onClick: ()=> {}},
       {text: 'Eliminar', onClick: ()=> {}}
@@ -82,7 +82,7 @@ class DocGenerados extends Component{
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS GENERADOS INTERNOS'}
         listData={lista_generados}
-        buttonsFooter={this.getButtonsFooterGenerados()}
+        containFooter={this.getContainFooterGenerados()}
       />
     )
   }

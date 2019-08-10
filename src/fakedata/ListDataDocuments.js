@@ -1254,3 +1254,96 @@ export const lista_generados = [
     "check": false
   }
 ]
+
+export const list_busqueda_avanzada =
+  [
+    {
+      "id": "89",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "90",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "91",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },{
+    "id": "92",
+    "documento": "03321-DGA-2019",
+    "fech_tram": "02/07/2019 10:07:33",
+    "fech_ingreso": "02/07/2019 10:07:33",
+    "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+    "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+    "check": false
+  },
+    {
+      "id": "93",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "94",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "95",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "96",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "97",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    },
+    {
+      "id": "98",
+      "documento": "03321-DGA-2019",
+      "fech_tram": "02/07/2019 10:07:33",
+      "fech_ingreso": "02/07/2019 10:07:33",
+      "asunto": "PRESENTACION Y SUSTENTACION DE PROYECTO EN SAN MARCOS ",
+      "derivado_a": "OFICINA GENERAL DE PLANIFICACION",
+      "check": false
+    }
+  ]

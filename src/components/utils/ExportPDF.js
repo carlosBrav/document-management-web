@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import {listData_1} from '../../fakedata/ListDocRecibidos';
+import {listData_1} from '../../fakedata/ListDataDocuments';
 import omit from 'lodash/omit';
 
 function appendZero(n){

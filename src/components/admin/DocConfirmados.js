@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
-import {listData_1} from "../../fakedata/ListDocRecibidos";
+import {listData_1} from "../../fakedata/ListDataDocuments";
 
 class DocConfirmados extends Component{
 
@@ -62,13 +62,13 @@ class DocConfirmados extends Component{
     ])
   }
 
-  getButtonsFooter=()=>{
+  getContainFooter=()=>{
     return [
       {text: 'Eliminar', onClick: ()=> {}}
       ]
   }
 
-  getButtonsHeader=()=>{
+  getContainHeader=()=>{
     return(
       <div className='buttons-header'>
         <form>
@@ -103,8 +103,8 @@ class DocConfirmados extends Component{
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS CONFIRMADOS'}
         listData={listData_1}
-        buttonsFooter={this.getButtonsFooter()}
-        buttonsHeader={this.getButtonsHeader()}
+        containFooter={this.getContainFooter()}
+        containHeader={this.getContainHeader()}
       />
     )
   }

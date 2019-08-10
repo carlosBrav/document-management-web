@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
-import {lista_circulares} from "../../fakedata/ListDocRecibidos";
+import {lista_circulares} from "../../fakedata/ListDataDocuments";
 import {ICON_TYPE} from "../commons/CommonIcon";
 
 class DocCirculares extends Component{
@@ -67,7 +67,7 @@ class DocCirculares extends Component{
     ])
   }
 
-  getButtonsFooterCirculares=()=>{
+  getContainFooterCirculares=()=>{
     return [
       {text: 'Crear',  onClick: ()=> {}},
       {text: 'Eliminar', onClick: ()=> {}},
@@ -81,7 +81,7 @@ class DocCirculares extends Component{
         tableStructure={this.getTableStructure}
         title={'OFICIOS CIRCULARES - OGPL'}
         listData={lista_circulares}
-        buttonsFooter={this.getButtonsFooterCirculares()}
+        containFooter={this.getContainFooterCirculares()}
         onView={(data)=> console.log('SELECTED TO VIEW ', data)}
         onEdit={(data) => console.log('SELECTED TO EDIT ', data)}
       />

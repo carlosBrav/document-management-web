@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
-import {listData_1} from "../../fakedata/ListDocRecibidos";
+import {listData_1} from "../../fakedata/ListDataDocuments";
 import {exportPDF} from "../utils/ExportPDF";
 
 class DocRecibidos extends Component{
@@ -59,7 +59,7 @@ class DocRecibidos extends Component{
     exportPDF()
   }
 
-  getButtonsFooter=()=>{
+  getContainFooter=()=>{
     return [
       {text: 'Seguimiento', onClick: ()=> {}},
       {text: 'Imprimir', onClick: ()=> this.onExportDocuments()}]
@@ -72,7 +72,7 @@ class DocRecibidos extends Component{
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS RECIBIDOS'}
         listData={listData_1}
-        buttonsFooter={this.getButtonsFooter()}
+        containFooter={this.getContainFooter()}
       />
     )
   }

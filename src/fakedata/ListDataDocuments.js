@@ -1376,43 +1376,53 @@ export const list_dependencies_2 =
   [
     {
       "id": "1",
-      "value":"OFICINA DE PRESUPUESTO"
+      "value":"OFICINA DE PRESUPUESTO",
+      "check": false
     },
     {
       "id": "2",
-      "value":"OFICINA DE RACIONALIZACION"
+      "value":"OFICINA DE RACIONALIZACION",
+      "check": false
     },
     {
       "id": "3",
-      "value":"OFICINA DE PLANES Y PROGRAMAS"
+      "value":"OFICINA DE PLANES Y PROGRAMAS",
+      "check": false
     },
     {
       "id": "4",
-      "value":"OFICINA DE CENTRO DE PRODUCCION"
+      "value":"OFICINA DE CENTRO DE PRODUCCION",
+      "check": false
     },
     {
       "id": "5",
-      "value":"OFICINA DE ESTADISTICA E INFORMATICA"
+      "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+      "check": false
     },
     {
       "id": "5",
-      "value":"FACULTAD DE PSICOLOGÍA"
+      "value":"FACULTAD DE PSICOLOGÍA",
+      "check": false
     },
     {
       "id": "6",
-      "value":"FACULTAD DE CIENCIAS ADMINISTRATIVAS"
+      "value":"FACULTAD DE CIENCIAS ADMINISTRATIVAS",
+      "check": false
     },
     {
       "id": "7",
-      "value":"FACULTAD DE CIENCIAS CONTABLES"
+      "value":"FACULTAD DE CIENCIAS CONTABLES",
+      "check": false
     },
     {
       "id": "8",
-      "value":"FACULTAD DE CIENCIAS FÍSICAS"
+      "value":"FACULTAD DE CIENCIAS FÍSICAS",
+      "check": false
     },
     {
       "id": "9",
-      "value":"FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA"
+      "value":"FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA",
+      "check": false
     },
   ]
 

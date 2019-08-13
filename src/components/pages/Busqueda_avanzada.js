@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {list_busqueda_avanzada, list_dependencies} from "../fakedata/ListDataDocuments";
-import CommonTableManage from "./commons/CommonTableManage";
+import {list_busqueda_avanzada, list_dependencies} from "../../fakedata/ListDataDocuments";
+import CommonTableManage from "../commons/CommonTableManage";
 
 class Busqueda_avanzada extends Component{
 

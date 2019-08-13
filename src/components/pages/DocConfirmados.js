@@ -5,11 +5,19 @@ import {listData_1} from "../../fakedata/ListDataDocuments";
 class DocConfirmados extends Component{
 
   state = {
-    search: ''
+    search: '',
+    listDataSelected: [],
+    showDeleteModal: false
   }
 
   onChangeValue = (e) =>{
     this.setState({search : e.target.value})
+  }
+
+  getFooterTableStructure = () => {
+    return([
+      {text: 'Eliminar', action: (listFiltered)=> this.onToggleDeleteDocuments(listFiltered)}
+    ])
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -62,10 +70,15 @@ class DocConfirmados extends Component{
     ])
   }
 
-  getContainFooter=()=>{
-    return [
-      {text: 'Eliminar', onClick: ()=> {}}
-      ]
+  onToggleDeleteDocuments = (listDataFiltered=[]) => {
+    console.log('listDataFiltered ',listDataFiltered)
+    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  }
+
+  onDeleteDocuments = () => {
+    const {listDataSelected} = this.state
+    console.log('DOCUMENTOS A ELIMINAR ', listDataSelected)
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
   getContainHeader=()=>{
@@ -98,13 +111,26 @@ class DocConfirmados extends Component{
   }
 
   render(){
+
+    const {showDeleteModal,listDataSelected} = this.state
+
+    const modalProps = {
+      showModal: showDeleteModal,
+      title: 'Eliminar Documentos',
+      message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+      yesText: (listDataSelected.length>0)?null:'Ok',
+      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+    }
+
     return(
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS CONFIRMADOS'}
         listData={listData_1}
-        containFooter={this.getContainFooter()}
         containHeader={this.getContainHeader()}
+        modalProps={modalProps}
+        getFooterTableStructure={this.getFooterTableStructure}
       />
     )
   }

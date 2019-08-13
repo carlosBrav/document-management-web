@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import findIndex from "lodash/findIndex";
 import CommonPagination from '../commons/CommonPagination';
 import CommonTable from '../commons/CommonTable';
+import CommonModal from '../commons/CommonModal';
+import filter from 'lodash/filter';
 
 class CommonTableManage extends Component{
 
@@ -44,11 +46,18 @@ class CommonTableManage extends Component{
     this.setState({documentsTableStructure: tableStructure(this.onToggleAddDocSelect), documentsDataList: listData})
   }
 
+  onGetCheckRows = () => {
+    const {documentsDataList} = this.state
+    return filter(documentsDataList, (data)=> data.check)
+  }
+
   render(){
-    const {title, containFooter, containHeader} = this.props
+    const {title, containHeader, modalProps, getFooterTableStructure} = this.props
     const {totalPages, currentPage, documentsTableStructure, documentsDataList} = this.state;
+    const contentFooterTable = (getFooterTableStructure) ? getFooterTableStructure() : []
     return(
       <div className='container-documents'>
+        <CommonModal {...modalProps}/>
         <div className='container-header'>
           <div className='header-title'>
             <h3>{title}</h3>
@@ -78,12 +87,12 @@ class CommonTableManage extends Component{
                                 onChangeCurrentPageAdd={this.onChangeCurrentPageAdd}/>
             </div>
             {
-              containFooter && containFooter.length>0 ?
+              contentFooterTable && contentFooterTable.length>0 ?
                 <div className='container-buttons-footer'>
                   {
-                    containFooter.map((button, index)=>{
-                      return <button key={'button'+index} className='btn btn-dark' style={button.style} onClick={()=>button.onClick()}>
-                        {button.text}
+                    contentFooterTable.map((content, index)=>{
+                      return <button key={'button'+index} className='btn btn-dark' style={content.style} onClick={()=>content.action(this.onGetCheckRows())}>
+                        {content.text}
                       </button>
                     })
                   }

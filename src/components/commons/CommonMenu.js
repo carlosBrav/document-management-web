@@ -3,10 +3,11 @@ import React, {Component} from 'react';
 class CommonMenu extends Component{
 
   render(){
-    const {goToDocRecibidos, goToDocConfirmados, goToDocumentRespuesta, goToDocumentCirculares, goToDocumentProveidos, goToDocumentGenerados} = this.props
+    const {goToDocRecibidos, goToDocConfirmados, goToDocumentRespuesta, goToDocumentCirculares, goToDocumentProveidos, goToDocumentGenerados,
+      goToBusquedaAvanzada, goToControlDocumentos, goToTest, goToAdmin} = this.props
     return(
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="navbar-brand hover-pointer">Oficina General de Planificacion</div>
+        <div className="navbar-brand hover-pointer" onClick={()=> goToAdmin()}>Oficina General de Planificacion</div>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -37,11 +38,14 @@ class CommonMenu extends Component{
                     <div className="dropdown-item hover-pointer" onClick={()=> goToDocumentGenerados()}>Doc. Generados (otros)</div>
                   </ul>
                 </li>
-                <a className="dropdown-item" href="#">Control Documentos</a>
+                <div className="dropdown-item hover-pointer" onClick={()=> goToControlDocumentos()}>Control Documentos</div>
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Búsqueda avanzada</a>
+              <div className="nav-link hover-pointer" onClick={()=> goToBusquedaAvanzada()}>Búsqueda avanzada</div>
+            </li>
+            <li className="nav-item">
+              <div className="nav-link hover-pointer" onClick={()=> goToTest()}>test</div>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">Mantenimiento</a>

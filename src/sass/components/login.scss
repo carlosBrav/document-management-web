@@ -3,8 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  height: 65%;
+  width: 350px;
+  height: 490px;
   background-color: rgba(212, 212, 212, 0.68);
   border-radius: 8px;
   padding: 5px;
@@ -43,6 +43,13 @@
         .login-form-icon-shield{
           width: 9rem;
           height: 9rem;
+        }
+
+        .image-escudo-san-marcos{
+          width: 120px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
       }
     }

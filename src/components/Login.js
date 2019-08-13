@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CommonIcon, {ICON_TYPE} from './commons/CommonIcon'
+import escudo_unmsm from '../assets/images/escudo_san_marcos.png';
 
 class Login extends Component {
 
@@ -14,7 +15,7 @@ class Login extends Component {
               <p>Oficina General de Planificacion</p>
             </div>
             <div className='login-form-container-icon'>
-              <CommonIcon className='login-form-icon-shield' type={ICON_TYPE.SHIELD_UNMSM} />
+              <img src={escudo_unmsm} alt={'escudo_san_marcos'} className='image-escudo-san-marcos'/>
             </div>
           </div>
 

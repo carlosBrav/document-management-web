@@ -4,10 +4,10 @@ class CommonMenu extends Component{
 
   render(){
     const {goToDocRecibidos, goToDocConfirmados, goToDocumentRespuesta, goToDocumentCirculares, goToDocumentProveidos, goToDocumentGenerados,
-      goToBusquedaAvanzada, goToControlDocumentos, goToTest} = this.props
+      goToBusquedaAvanzada, goToControlDocumentos, goToTest, goToAdmin} = this.props
     return(
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="navbar-brand hover-pointer">Oficina General de Planificacion</div>
+        <div className="navbar-brand hover-pointer" onClick={()=> goToAdmin()}>Oficina General de Planificacion</div>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>

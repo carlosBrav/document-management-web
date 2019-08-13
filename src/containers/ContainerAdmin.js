@@ -30,7 +30,8 @@ class ContainerAdmin extends Component{
                       goToDocumentGenerados={()=> this.goToPage('/admin/document_generado')}
                       goToBusquedaAvanzada={()=> this.goToPage('/admin/busqueda_avanzada')}
                       goToControlDocumentos={()=> this.goToPage('/admin/control_documentos')}
-                      goToTest={()=> this.goToPage('/admin/test')}/>
+                      goToTest={()=> this.goToPage('/admin/test')}
+                      goToAdmin={()=> this.goToPage('/admin')}/>
         </div>
         <div className='admin-content'>
           <Route>

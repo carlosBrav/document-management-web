@@ -59,11 +59,12 @@ class DocRecibidos extends Component{
     exportPDF()
   }
 
-  getContainFooter=()=>{
-    return [
-      {text: 'Seguimiento', onClick: ()=> {}},
-      {text: 'Imprimir', onClick: ()=> this.onExportDocuments()}]
-    }
+  getFooterTableStructure = () => {
+    return([
+      {text: 'Seguimiento', action: ()=>{}},
+      {text: 'Imprimir', action: ()=> this.onExportDocuments()}
+    ])
+  }
 
   render(){
 
@@ -72,7 +73,7 @@ class DocRecibidos extends Component{
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS RECIBIDOS'}
         listData={listData_1}
-        containFooter={this.getContainFooter()}
+        getFooterTableStructure={this.getFooterTableStructure}
       />
     )
   }

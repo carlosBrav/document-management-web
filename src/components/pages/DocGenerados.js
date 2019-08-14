@@ -2,8 +2,15 @@ import React, {Component} from 'react';
 import {ICON_TYPE} from "../commons/CommonIcon";
 import CommonTableManage from "../commons/CommonTableManage";
 import {lista_generados} from "../../fakedata/ListDataDocuments";
+import {exportPDF} from "../utils/ExportPDF";
 
 class DocGenerados extends Component{
+
+  state = {
+    search: '',
+    listDataSelected: [],
+    showDeleteModal: false
+  }
 
   toggleViewDocumentGenerado=(data)=>{
     console.log('DOCUMENT GENERADO VIEW ', data)
@@ -69,20 +76,41 @@ class DocGenerados extends Component{
     ])
   }
 
-  getContainFooterGenerados=()=>{
+  onToggleDeleteDocuments = (listDataFiltered=[]) => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  }
+
+  onDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  getFooterTableStructureGenerados=()=>{
     return [
-      {text: 'Crear',  onClick: ()=> {}},
-      {text: 'Eliminar', onClick: ()=> {}}
+      {text: 'Crear',  action: ()=> {}},
+      {text: 'Eliminar', action: (listDataFiltered)=> this.onToggleDeleteDocuments(listDataFiltered)}
     ]
   }
 
   render(){
+
+    const {showDeleteModal,listDataSelected} = this.state
+
+    const modalProps = {
+      showModal: showDeleteModal,
+      title: 'Eliminar Documentos Generados',
+      message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+      yesText: (listDataSelected.length>0)?'Sí':'Ok',
+      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+    }
+
     return(
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS GENERADOS INTERNOS'}
         listData={lista_generados}
-        containFooter={this.getContainFooterGenerados()}
+        modalProps={modalProps}
+        getFooterTableStructure={this.getFooterTableStructureGenerados}
       />
     )
   }

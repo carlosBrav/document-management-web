@@ -71,13 +71,10 @@ class DocConfirmados extends Component{
   }
 
   onToggleDeleteDocuments = (listDataFiltered=[]) => {
-    console.log('listDataFiltered ',listDataFiltered)
     this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
   }
 
   onDeleteDocuments = () => {
-    const {listDataSelected} = this.state
-    console.log('DOCUMENTOS A ELIMINAR ', listDataSelected)
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 

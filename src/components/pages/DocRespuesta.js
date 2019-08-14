@@ -7,6 +7,12 @@ import {listData_1, listData_2} from "../../fakedata/ListDataDocuments";
 
 class DocRespuesta extends Component{
 
+  state = {
+    search: '',
+    listDataSelected: [],
+    showDeleteModal: false
+  }
+
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
@@ -57,33 +63,53 @@ class DocRespuesta extends Component{
     ])
   }
 
-  getContainFooterDocInt=()=>{
-    return [
-      {text: 'Oficios', onClick: ()=> {}}
-    ]
+  onToggleDeleteDocuments = (listDataFiltered=[]) => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
   }
 
-  getContainFooterOficios=()=>{
-    return [
-      {text: 'Crear',  onClick: ()=> {}},
-      {text: 'Eliminar', onClick: ()=> {}}
-    ]
+  onDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  getFooterTableStructureOficios = () => {
+    return([
+      {text: 'Crear', action: ()=>{}},
+      {text: 'Eliminar', action: (listFiltered)=> this.onToggleDeleteDocuments(listFiltered)}
+    ])
+  }
+
+  getFooterTableStructureDocInt = () => {
+    return([
+      {text: 'Oficios', action: ()=> {}}
+    ])
   }
 
   render(){
+
+    const {showDeleteModal,listDataSelected} = this.state
+
+    const modalProps = {
+      showModal: showDeleteModal,
+      title: 'Eliminar Documentos',
+      message: (listDataSelected.length>0)?`¿Desea eliminar ${listDataSelected.length} documento(s) ?`:`Debe seleccionar al menos un documento`,
+      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+      yesText: (listDataSelected.length>0)?'Sí':'Ok',
+      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+    }
 
     const tableDocumentInt = <CommonTableManage
       tableStructure={this.getTableStructure}
       title={'DOCUMENTOS INTERNOS'}
       listData={listData_1}
-      containFooter={this.getContainFooterDocInt()}
+      getFooterTableStructure={this.getFooterTableStructureDocInt}
     />;
 
     const tableOficios = <CommonTableManage
       tableStructure={this.getTableStructure}
       title={'OFICIOS'}
       listData={listData_2}
-      containFooter={this.getContainFooterOficios()}
+      modalProps={modalProps}
+      getFooterTableStructure={this.getFooterTableStructureOficios}
     />;
 
     const tabs =

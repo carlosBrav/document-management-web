@@ -3,9 +3,16 @@ import CommonTableManage from "../commons/CommonTableManage";
 import {lista_proveidos_1, lista_proveidos_2} from "../../fakedata/ListDataDocuments";
 import CommonTab from "../commons/CommonTab";
 import {ICON_TYPE} from "../commons/CommonIcon";
+import {exportPDF} from "../utils/ExportPDF";
 
 
 class DocProveidos extends Component{
+
+  state = {
+    search: '',
+    listDataSelected: [],
+    showDeleteModal: false
+  }
 
   toggleEditDocument=(data)=>{
     console.log('DOCUMENT EDIT PROVEIDO ', data)
@@ -93,33 +100,58 @@ class DocProveidos extends Component{
     ])
   }
 
-  getContainFooterProveidos_1=()=>{
+  onExportDocuments=()=>{
+    exportPDF()
+  }
+
+  onToggleDeleteDocuments = (listDataFiltered=[]) => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  }
+
+  onDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  getFooterTableStructureProveidos_1=()=>{
     return [
-      {text: 'Proveidos Int.',  onClick: ()=> {}},
-      {text: 'Proveidos Ext.', onClick: ()=> {}}
+      {text: 'Proveidos Int.',  action: ()=> {}},
+      {text: 'Proveidos Ext.', action: ()=> {}}
     ]
   }
 
-  getContainFooterProveidos_2=()=>{
+  getFooterTableStructureProveidos_2=()=>{
     return [
-      {text: 'Eliminar',  onClick: ()=> {}},
-      {text: 'Imprimir', onClick: ()=> {}}
+      {text: 'Eliminar',  action: (listDataFiltered)=> this.onToggleDeleteDocuments(listDataFiltered)},
+      {text: 'Imprimir', action: ()=> this.onExportDocuments()}
     ]
   }
 
   render(){
+
+    const {showDeleteModal,listDataSelected} = this.state
+
+    const modalProps = {
+      showModal: showDeleteModal,
+      title: 'Eliminar Documentos Proveidos',
+      message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+      yesText: (listDataSelected.length>0)?'Sí':'Ok',
+      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+    }
+
     const tableDocumentInt = <CommonTableManage
       tableStructure={this.getTableStructure_proveidos_1}
       title={'DOCUMENTOS INTERNOS'}
       listData={lista_proveidos_1}
-      containFooter={this.getContainFooterProveidos_1()}
+      getFooterTableStructure={this.getFooterTableStructureProveidos_1}
     />;
 
     const tableProveidos = <CommonTableManage
       tableStructure={this.getTableStructure_proveidos_2}
       title={'PROVEIDOS'}
       listData={lista_proveidos_2}
-      containFooter={this.getContainFooterProveidos_2()}
+      modalProps={modalProps}
+      getFooterTableStructure={this.getFooterTableStructureProveidos_2}
     />;
 
     const tabs =

@@ -78,11 +78,10 @@ class Busqueda_avanzada extends Component{
   }
 
 
-
-  getContainFooterBusqAvanz=()=>{
+  getFooterTableStructureBusqAvanz=()=>{
     return [
-      {text: 'Detalle',  onClick: ()=> {}},
-      {text: 'Imprimir', onClick: ()=> {}}
+      {text: 'Detalle', action: ()=> {}},
+      {text: 'Imprimir', action: ()=> this.onExportDocuments()}
     ]
   }
 
@@ -92,7 +91,7 @@ class Busqueda_avanzada extends Component{
         tableStructure={this.getTableStructure}
         title={'BUSQUEDA AVANZADA'}
         listData={list_busqueda_avanzada}
-        containFooter={this.getContainFooterBusqAvanz()}
+        getFooterTableStructure={this.getFooterTableStructureBusqAvanz}
         containHeader={this.getContainHeaderBusqAvanz()}
       />
     )

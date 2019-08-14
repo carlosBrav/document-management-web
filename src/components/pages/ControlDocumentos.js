@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {list_control_documents} from '../../fakedata/ListDataDocuments';
 import CommonTableManage from '../commons/CommonTableManage';
+import {exportPDF} from "../utils/ExportPDF";
 
 class ControlDocumentos extends Component{
 
@@ -52,9 +53,13 @@ class ControlDocumentos extends Component{
     ])
   }
 
-  getContainFooter=()=>{
+  onExportDocuments=()=>{
+    exportPDF()
+  }
+
+  getFooterTableStructure=()=>{
     return [
-      {text: 'Imprimir', onClick: ()=> {}}
+      {text: 'Imprimir', action: ()=> this.onExportDocuments()}
     ]
   }
 
@@ -64,7 +69,7 @@ class ControlDocumentos extends Component{
         tableStructure={this.getTableStructure}
         title={'CONTROL DE DOCUMENTOS INTERNOS'}
         listData={list_control_documents}
-        containFooter={this.getContainFooter()}
+        getFooterTableStructure={this.getFooterTableStructure}
       />
     )
   }

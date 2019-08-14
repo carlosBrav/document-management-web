@@ -2,8 +2,15 @@ import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {lista_circulares} from "../../fakedata/ListDataDocuments";
 import {ICON_TYPE} from "../commons/CommonIcon";
+import {exportPDF} from "../utils/ExportPDF";
 
 class DocCirculares extends Component{
+
+  state = {
+    search: '',
+    listDataSelected: [],
+    showDeleteModal: false
+  }
 
   toggleViewDocument=(data)=>{
     console.log('DOCUMENT SELECTED ',data)
@@ -67,23 +74,48 @@ class DocCirculares extends Component{
     ])
   }
 
-  getContainFooterCirculares=()=>{
+  onExportDocuments=()=>{
+    exportPDF()
+  }
+
+  onToggleDeleteDocuments = (listDataFiltered=[]) => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  }
+
+  onDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  getFooterTableStructure=()=>{
     return [
-      {text: 'Crear',  onClick: ()=> {}},
-      {text: 'Eliminar', onClick: ()=> {}},
-      {text: 'Imprimir',  onClick: ()=> {}}
+      {text: 'Crear',  action: ()=> {}},
+      {text: 'Eliminar', action: (listDataFiltered)=> this.onToggleDeleteDocuments(listDataFiltered)},
+      {text: 'Imprimir',  action: ()=> this.onExportDocuments()}
     ]
   }
 
   render(){
+
+    const {showDeleteModal,listDataSelected} = this.state
+
+    const modalProps = {
+      showModal: showDeleteModal,
+      title: 'Eliminar Documentos Circulares',
+      message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+      yesText: (listDataSelected.length>0)?'Sí':'Ok',
+      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+    }
+
     return(
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'OFICIOS CIRCULARES - OGPL'}
         listData={lista_circulares}
-        containFooter={this.getContainFooterCirculares()}
         onView={(data)=> console.log('SELECTED TO VIEW ', data)}
         onEdit={(data) => console.log('SELECTED TO EDIT ', data)}
+        modalProps={modalProps}
+        getFooterTableStructure={this.getFooterTableStructure}
       />
     )
   }

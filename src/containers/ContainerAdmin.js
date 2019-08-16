@@ -10,6 +10,7 @@ import DocGenerados from "../components/pages/DocGenerados";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import ControlDocumentos from "../components/pages/ControlDocumentos";
 import CommonPickList from "../components/commons/CommonPickList";
+import Test from '../components/utils/test';
 
 class ContainerAdmin extends Component{
 
@@ -44,7 +45,7 @@ class ContainerAdmin extends Component{
               <Route exact path='/admin/document_generado' component={DocGenerados}/>
               <Route exact path='/admin/busqueda_avanzada' component={Busqueda_avanzada}/>
               <Route exact path='/admin/control_documentos' component={ControlDocumentos}/>
-              <Route exact path='/admin/test' component={CommonPickList}/>
+              <Route exact path='/admin/test' component={Test}/>
             </Switch>
           </Route>
         </div>

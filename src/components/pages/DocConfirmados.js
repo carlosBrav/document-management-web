@@ -116,7 +116,7 @@ class DocConfirmados extends Component{
       title: 'Eliminar Documentos',
       message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
       yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
-      yesText: (listDataSelected.length>0)?null:'Ok',
+      yesText: (listDataSelected.length>0)?'Si':'Ok',
       noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
     }
 

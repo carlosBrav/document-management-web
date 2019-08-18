@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import findIndex from "lodash/findIndex";
 import CommonPagination from '../commons/CommonPagination';
 import CommonTable from '../commons/CommonTable';
-import CommonModal from '../commons/CommonModal';
 import filter from 'lodash/filter';
+import map from 'lodash/map';
 
 class CommonTableManage extends Component{
 
@@ -15,10 +15,12 @@ class CommonTableManage extends Component{
   }
 
   onToggleAddDocSelect=(id)=>{
+    const {onSetSelected} = this.props
     let {documentsDataList} = this.state;
     const index = findIndex(documentsDataList, {id: id});
     documentsDataList[index].check = !documentsDataList[index].check;
     this.setState({documentsDataList})
+    onSetSelected(filter(this.state.documentsDataList, (data)=> data.check))
   }
 
   onChangeCurrentPageAdd = () =>{
@@ -46,18 +48,12 @@ class CommonTableManage extends Component{
     this.setState({documentsTableStructure: tableStructure(this.onToggleAddDocSelect), documentsDataList: listData})
   }
 
-  onGetCheckRows = () => {
-    const {documentsDataList} = this.state
-    return filter(documentsDataList, (data)=> data.check)
-  }
-
   render(){
-    const {title, containHeader, modalProps, getFooterTableStructure} = this.props
+    const {title, containHeader, getFooterTableStructure} = this.props
     const {totalPages, currentPage, documentsTableStructure, documentsDataList} = this.state;
     const contentFooterTable = (getFooterTableStructure) ? getFooterTableStructure() : []
     return(
       <div className='container-documents'>
-        <CommonModal {...modalProps}/>
         <div className='container-header'>
           <div className='header-title'>
             <h3>{title}</h3>
@@ -91,7 +87,7 @@ class CommonTableManage extends Component{
                 <div className='container-buttons-footer'>
                   {
                     contentFooterTable.map((content, index)=>{
-                      return <button key={'button'+index} className='btn btn-dark' style={content.style} onClick={()=>content.action(this.onGetCheckRows())}>
+                      return <button key={'button'+index} className='btn btn-dark' style={content.style} onClick={content.action}>
                         {content.text}
                       </button>
                     })

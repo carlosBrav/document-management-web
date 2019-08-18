@@ -26,7 +26,7 @@ class CommonModal extends Component {
   }
 }
 CommonModal.propTypes = {
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
   yesFunction: PropTypes.func.isRequired,
   noFunction: PropTypes.func,
   showModal: PropTypes.bool.isRequired,

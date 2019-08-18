@@ -1,17 +1,41 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import CommonTab from '../commons/CommonTab';
 import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1, listData_2} from "../../fakedata/ListDataDocuments";
-
-
+import FormRender from "../../forms/FormRender";
+import {formOficiosToExp, formOficios} from '../../forms/templates/TemplateCreateOficios';
+import map from "lodash/map";
+import CommonModal from '../commons/CommonModal';
 
 class DocRespuesta extends Component{
 
   state = {
     search: '',
-    listDataSelected: [],
-    showDeleteModal: false
+    listDataSelectedToDelete: [],
+    listDataSelectedDocInt: [],
+    showDeleteModal: false,
+    showCreateModal: false,
+    showCreateSecondModal: false,
+    valueMapCreateOficio: {},
+    valueMapCreateOnlyOficio: {}
   }
+
+  onChangeValueOficio=(prop, value)=>{
+    console.log('PROP ', prop, ' VALUE ', value)
+    this.setState({valueMapCreateOficio: {...this.state.valueMapCreateOficio, [prop]: value}})
+  }
+
+  onChangeValueOnlyOficio=(prop, value)=>{
+    this.setState({valueMapCreateOnlyOficio: {...this.state.valueMapCreateOnlyOficio, [prop]: value}})
+  }
+
+  onSetSelectedToDeleteOficio=(listDataSelected)=>{
+    this.setState({listDataSelected})
+  }
+
+  onSetSelectToCreateOficio=(listDataSelectedDocInt)=>{
+  this.setState({listDataSelectedDocInt})
+}
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
@@ -63,8 +87,16 @@ class DocRespuesta extends Component{
     ])
   }
 
-  onToggleDeleteDocuments = (listDataFiltered=[]) => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  onToggleDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  onToggleCreateOficio = () => {
+    this.setState({showCreateModal: !this.state.showCreateModal})
+  }
+
+  onToggleCreateOnlyOficio = () => {
+    this.setState({showCreateSecondModal: !this.state.showCreateSecondModal})
   }
 
   onDeleteDocuments = () => {
@@ -73,52 +105,111 @@ class DocRespuesta extends Component{
 
   getFooterTableStructureOficios = () => {
     return([
-      {text: 'Crear', action: ()=>{}},
-      {text: 'Eliminar', action: (listFiltered)=> this.onToggleDeleteDocuments(listFiltered)}
+      {text: 'Crear', action: this.onToggleCreateOnlyOficio},
+      {text: 'Eliminar', action: this.onToggleDeleteDocuments}
     ])
   }
 
   getFooterTableStructureDocInt = () => {
     return([
-      {text: 'Oficios', action: ()=> {}}
+      {text: 'Oficios', action: this.onToggleCreateOficio}
     ])
+  }
+
+  onCreateOficio=()=>{
+    const {valueMapCreateOficio} = this.state
+    console.log('VALUE MAP TO CREATE OFICIO ', valueMapCreateOficio)
+    this.onToggleCreateOficio()
+  }
+
+  onCreateOnlyOficio=()=>{
+    const {valueMapCreateOnlyOficio} = this.state
+    console.log('VALUE MAP TO CREATE ONLY OFICIO ', valueMapCreateOnlyOficio)
+    this.onToggleCreateOnlyOficio()
   }
 
   render(){
 
-    const {showDeleteModal,listDataSelected} = this.state
+    const {showDeleteModal,
+      listDataSelectedToDelete,
+      showCreateModal,
+      listDataSelectedDocInt,
+      showCreateSecondModal,
+      valueMapCreateOficio,
+      valueMapCreateOnlyOficio} = this.state
 
-    const modalProps = {
-      showModal: showDeleteModal,
-      title: 'Eliminar Documentos',
-      message: (listDataSelected.length>0)?`¿Desea eliminar ${listDataSelected.length} documento(s) ?`:`Debe seleccionar al menos un documento`,
-      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
-      yesText: (listDataSelected.length>0)?'Sí':'Ok',
-      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+    const modalProps = [
+      {
+        showModal: showCreateSecondModal,
+        title: 'Crear Oficio',
+        yesFunction: this.onCreateOnlyOficio,
+        yesText: 'Crear Oficio',
+        noFunction: this.onToggleCreateOnlyOficio,
+        noText: 'Cancelar',
+        content: <FormRender formTemplate={formOficios}
+                             onChange={this.onChangeValueOnlyOficio}
+                             valueMap={valueMapCreateOnlyOficio}/>
+      },
+      {
+        showModal: showCreateModal,
+        title: 'Crear Oficio',
+        message: (listDataSelectedDocInt.length === 1)? null: 'Debe seleccionar 1 documento',
+        yesFunction: (listDataSelectedDocInt.length === 1) ? this.onCreateOficio:this.onToggleCreateOficio,
+        yesText: (listDataSelectedDocInt.length === 1) ? 'Crear Oficio':'Ok',
+        noFunction: (listDataSelectedDocInt.length === 1) ? this.onToggleCreateOficio:null,
+        noText: (listDataSelectedDocInt.length === 1) ? 'Cancelar':null,
+        content: <FormRender formTemplate={formOficiosToExp}
+                             onChange={this.onChangeValueOficio}
+                             valueMap={valueMapCreateOficio}/>
+      },
+      {
+        showModal: showDeleteModal,
+        title: 'Eliminar Documentos',
+        message: (listDataSelectedToDelete.length>0)?`¿Desea eliminar ${listDataSelectedToDelete.length} documento(s) ?`:`Debe seleccionar al menos un documento`,
+        yesFunction: (listDataSelectedToDelete.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+        yesText: (listDataSelectedToDelete.length>0)?'Sí':'Ok',
+        noFunction: (listDataSelectedToDelete.length>0)?this.onToggleDeleteDocuments:null
+      }
+    ]
+
+    const tableDocumentInt = () =>{
+      return (<CommonTableManage
+        tableStructure={this.getTableStructure}
+        title={'DOCUMENTOS INTERNOS'}
+        listData={listData_1}
+        getFooterTableStructure={this.getFooterTableStructureDocInt}
+        onSetSelected={this.onSetSelectToCreateOficio}
+      />)
     }
 
-    const tableDocumentInt = <CommonTableManage
-      tableStructure={this.getTableStructure}
-      title={'DOCUMENTOS INTERNOS'}
-      listData={listData_1}
-      getFooterTableStructure={this.getFooterTableStructureDocInt}
-    />;
-
-    const tableOficios = <CommonTableManage
-      tableStructure={this.getTableStructure}
-      title={'OFICIOS'}
-      listData={listData_2}
-      modalProps={modalProps}
-      getFooterTableStructure={this.getFooterTableStructureOficios}
-    />;
+    const tableOficios =()=> {
+      return (
+        <CommonTableManage
+          tableStructure={this.getTableStructure}
+          title={'OFICIOS'}
+          listData={listData_2}
+          getFooterTableStructure={this.getFooterTableStructureOficios}
+          onSetSelected={this.onSetSelectedToDeleteOficio}
+        />
+      )
+    }
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuInt', component: tableDocumentInt},
-        {title: 'Oficios', id: 'oficios', component: tableOficios}
+      [ {title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt},
+        {title: 'Oficios', id: 'oficios', action: tableOficios}
       ];
 
+
     return(
-      <CommonTab tabTitles={tabs}/>
+      <Fragment>
+        {
+          modalProps && modalProps.length>0 ?
+            map(modalProps, (modal, index)=>{
+              return <CommonModal key={'modal'+index} {...modal}/>
+            }) : null
+        }
+        <CommonTab tabList={tabs}/>
+      </Fragment>
     )
   }
 }

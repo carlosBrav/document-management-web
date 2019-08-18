@@ -5,10 +5,10 @@ import CommonElement from '../components/commons/CommonElement';
 class FormRender extends Component{
 
   render(){
-    const {formTemplate} = this.props
+    const {formTemplate, onChange, valueMap} = this.props
 
     const rows = map(formTemplate, (section)=>{
-      return (<CommonElement {...section}/>)
+      return (<CommonElement valueMap={valueMap} onChange={onChange} {...section}/>)
     })
     return(
       <form>

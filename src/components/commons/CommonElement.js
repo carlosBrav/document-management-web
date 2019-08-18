@@ -3,29 +3,31 @@ import {TYPE_INPUT} from '../../constants/Constants';
 import CommonTextInput from "./CommonTextInput";
 import CommonTextArea from "./CommonTextArea";
 import CommonSelectInput from "./CommonSelectInput";
+import get from 'lodash/get';
 
-
-const inputTextElement=(props)=>(
+const InputTextElement=(props)=>(
   <CommonTextInput idSection={props.id}
                    label={props.label}
                    onChange={props.onChange}
                    classContainer={props.classContainer}
                    classInput={props.classInput}
                    isRequired={props.required}
-                   isReadOnly={props.readOnly}/>
+                   isReadOnly={props.readOnly}
+                   value={get(props.valueMap,props.id,'')}/>
 )
 
-const inputTextAreaElements=(props)=>(
+const InputTextAreaElements=(props)=>(
   <CommonTextArea idSection={props.id}
                   label={props.label}
                   onChange={props.onChange}
                   classContainer={props.classContainer}
                   classInput={props.classInput}
                   isRequired={props.required}
-                  isReadOnly={props.readOnly}/>
+                  isReadOnly={props.readOnly}
+                  value={get(props.valueMap,props.id,'')}/>
 )
 
-const inputSelect=(props)=>(
+const InputSelect=(props)=>(
   <CommonSelectInput idSection={props.id}
                      label={props.label}
                      onChange={props.onChange}
@@ -33,7 +35,8 @@ const inputSelect=(props)=>(
                      classInput={props.classInput}
                      isRequired={props.required}
                      isReadOnly={props.readOnly}
-                     listItems={props.listItems}/>
+                     listItems={props.listItems}
+                     value={get(props.valueMap,props.id,'')}/>
 )
 
 
@@ -43,11 +46,11 @@ class CommonElement extends Component{
 
     switch(type){
       case TYPE_INPUT.INPUT_TEXT:
-        return inputTextElement(...this.props);
+        return <InputTextElement {...this.props} />;
       case TYPE_INPUT.INPUT_TEXT_AREA:
-        return inputTextAreaElements(...this.props);
+        return <InputTextAreaElements {...this.props} />;
       case TYPE_INPUT.INPUT_SELECT:
-        return inputSelect(...this.props);
+        return <InputSelect  {...this.props} />;
       default:
         return null
     }

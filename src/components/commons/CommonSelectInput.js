@@ -5,9 +5,10 @@ class CommonSelectInput extends Component{
   render(){
     const {idSection, listItems, label, onChange, classContainer, classInput, isRequired} = this.props
     return(
-      <div className={`form-group ${(classContainer) ? classContainer : ''}`}>
-        <label htmlFor={idSection}>{label}</label>
-        <select id={idSection+'select'} className={`form-control ${classInput}`} onChange={onChange} required={isRequired}>
+      <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
+        <label className='label-form' htmlFor={idSection}>{label}</label>
+        <select id={idSection+'select'} className={`form-control ${classInput}`}
+                onChange={(e)=> onChange(idSection, e.target.value)} required={isRequired}>
           <option selected value={'0'}>Seleccione</option>
           {
             listItems && listItems.length>0 ?

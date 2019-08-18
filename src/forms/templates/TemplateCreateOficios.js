@@ -3,10 +3,64 @@ import {list_dependencies,list_dependencies_2} from '../../fakedata/ListDataDocu
 
 export const formOficios = [
   {
+    "id": "documentId",
+    "label": "Documento:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "asuntoId",
+    "label": "Asunto:",
+    "type": TYPE_INPUT.INPUT_TEXT_AREA,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "fechaId",
+    "label": "Fecha:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": false
+  },
+  {
+    "id": "origenId",
+    "label": "Origen:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+  {
+    "id": "areaResponsableId",
+    "label": "Área responsable:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true,
+    "listItems":list_dependencies
+  },
+  {
+    "id": "tipoDestinoId",
+    "label": "Tipo de Destino:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true,
+    "listItems":list_dependencies
+  },
+  {
+    "id": "destinoId",
+    "label": "Destino:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true,
+    "listItems":list_dependencies_2
+  }
+]
+
+export const formOficiosToExp = [
+  {
     "id": "oficioId",
     "label": "Expediente:",
     "type": TYPE_INPUT.INPUT_TEXT,
-    "readOnly": true
+    "readOnly": false,
+    "required": true
   },
   {
     "id": "asuntoId",

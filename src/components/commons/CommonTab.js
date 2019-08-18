@@ -3,17 +3,17 @@ import React, {Component, Fragment} from 'react';
 class CommonTab extends Component{
 
   render(){
-    const {tabTitles} = this.props
+    const {tabList} = this.props
     return(
       <div style={{paddingLeft: 10, paddingRight: 10, paddingTop: 10}}>
         {
-          tabTitles && tabTitles.length>0 ?
+          tabList && tabList.length>0 ?
             <div>
               <nav style={{marginBottom: 5}}>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                   {
-                    tabTitles.map((tab, index)=>{
-                      return <a className={"nav-item nav-link "+(index === 0 ? 'active':'')}
+                    tabList.map((tab, index)=>{
+                      return <a key={'link'+index} className={"nav-item nav-link "+(index === 0 ? 'active':'')}
                                 id={`nav-${tab.id}-tab`}
                                 data-toggle="tab"
                                 href={`#nav-${tab.id}`}
@@ -26,12 +26,12 @@ class CommonTab extends Component{
               </nav>
               <div className="tab-content" id="nav-tabContent">
                 {
-                  tabTitles.map((tab, index)=>{
-                    return <div className={"tab-pane fade "+(index === 0 ? 'show active' : '') }
+                  tabList.map((tab, index)=>{
+                    return <div key={'tabContent'+index} className={"tab-pane fade "+(index === 0 ? 'show active' : '') }
                                 id={`nav-${tab.id}`}
                                 role="tabpanel"
                                 aria-labelledby={`nav-${tab.id}-tab`}>
-                      {tab.component}
+                      {tab.action()}
                     </div>
                   })
                 }

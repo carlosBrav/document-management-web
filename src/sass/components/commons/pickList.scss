@@ -1,70 +1,81 @@
 .pick-list-container{
-  margin-left: 20px;
   margin-top: 20px;
-  width: 40%;
+  width: 100%;
   height: 300px;
-  background-color: #F5F5DC;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-left: 5px;
   padding-right: 5px;
   padding-top: 5px;
 
-  .pick-data-container{
-    background-color: #FFFFFF;
-    height: 90%;
-    width: 300px;
-    border-radius: 10px;
-    overflow: auto;
-    padding-top: 10px;
+  .select-type-destination{
+    width: 180px;
+    display: flex;
+    align-items: center;
+  }
 
-    .data-container-style{
-      font-size: 13px;
-      padding-left: 8px;
-      height: 34px;
-      display: flex;
-      align-items: center;
+  .container-pick-list{
+    display: flex;
+    flex-direction: row;
 
-      &.selected{
-        background-color: #1246FF;
-        color: #FFFFFF;
-      }
+    .pick-data-container{
+      background-color: #FFFFFF;
+      height: 90%;
+      width: 265px;
+      border-radius: 10px;
+      overflow: auto;
+      padding-top: 10px;
 
-      .data-style{
+      .data-container-style{
+        font-size: 11px;
+        padding-left: 8px;
+        height: 28px;
         display: flex;
         align-items: center;
-        margin-bottom: 0px;
-        width: 100%;
-        cursor: pointer;
 
-        input{
-          margin-right: 2px;
+        &.selected{
+          background-color: #1246FF;
+          color: #FFFFFF;
+        }
+
+        .data-style{
+          display: flex;
+          align-items: center;
+          margin-bottom: 0px;
+          width: 100%;
+          cursor: pointer;
+
+          input{
+            margin-right: 2px;
+          }
         }
       }
     }
-  }
 
-  .buttons-container{
-    background-color: #FFFFFF;
-    height: 90%;
-    width: 70px;
-    border-radius: 10px;
+    .buttons-container{
+      background-color: #FFFFFF;
+      height: 90%;
+      width: 40px;
+      border-radius: 10px;
 
-    .buttons-sub-container{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-      height: 65%;
-      width: 100%;
-      margin-top: 45px;
+      .buttons-sub-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 65%;
+        width: 100%;
+        margin-top: 45px;
 
-      .button-style{
-        height: 35px;
-        width: 50px;
-        color: #FFFFFF;
-        padding-top: 2px;
+        .button-style{
+          height: 30px;
+          width: 30px;
+          color: #FFFFFF;
+          font-size: 11px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
   }

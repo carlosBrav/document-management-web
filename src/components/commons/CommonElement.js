@@ -4,6 +4,7 @@ import CommonTextInput from "./CommonTextInput";
 import CommonTextArea from "./CommonTextArea";
 import CommonSelectInput from "./CommonSelectInput";
 import get from 'lodash/get';
+import CommonPickList from "./CommonPickList";
 
 const InputTextElement=(props)=>(
   <CommonTextInput idSection={props.id}
@@ -51,6 +52,8 @@ class CommonElement extends Component{
         return <InputTextAreaElements {...this.props} />;
       case TYPE_INPUT.INPUT_SELECT:
         return <InputSelect  {...this.props} />;
+      case TYPE_INPUT.INPUT_CIRCULAR:
+        return <CommonPickList {...this.props}/>
       default:
         return null
     }

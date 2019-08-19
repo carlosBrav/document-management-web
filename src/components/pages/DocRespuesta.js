@@ -21,7 +21,6 @@ class DocRespuesta extends Component{
   }
 
   onChangeValueOficio=(prop, value)=>{
-    console.log('PROP ', prop, ' VALUE ', value)
     this.setState({valueMapCreateOficio: {...this.state.valueMapCreateOficio, [prop]: value}})
   }
 
@@ -29,8 +28,8 @@ class DocRespuesta extends Component{
     this.setState({valueMapCreateOnlyOficio: {...this.state.valueMapCreateOnlyOficio, [prop]: value}})
   }
 
-  onSetSelectedToDeleteOficio=(listDataSelected)=>{
-    this.setState({listDataSelected})
+  onSetSelectedToDeleteOficio=(listDataSelectedToDelete)=>{
+    this.setState({listDataSelectedToDelete})
   }
 
   onSetSelectToCreateOficio=(listDataSelectedDocInt)=>{

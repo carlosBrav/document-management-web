@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import PropTypes from 'prop-types'
+import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
 
 class CommonModal extends Component {
 
   render(){
 
-    const {message, content, yesFunction, noFunction, showModal, title, toggleClose = true, yesText = 'Sí', noText = 'No'} = this.props
+    const {message, typeContent, content, yesFunction, noFunction, showModal, title, toggleClose = true, yesText = 'Sí', noText = 'No'} = this.props
     return(
-      <Modal style={{fontSize: 14}} isOpen={showModal}>
+      <Modal style={(typeContent === TYPE_CONTENT_MODAL.TYPE_CIRCULAR)?{fontSize: 12, maxWidth: 1000, width: 800} :{fontSize: 12}} isOpen={showModal}>
         <ModalHeader data-test={'com-modal-title'} toggle={(noFunction) ? noFunction : null }>{title}</ModalHeader>
         <ModalBody>
           {
@@ -34,6 +35,7 @@ CommonModal.propTypes = {
   toggleClose: PropTypes.func,
   yesText: PropTypes.string,
   noText: PropTypes.string,
-  content: PropTypes.object
+  content: PropTypes.object,
+  typeContent: PropTypes.string
 };
 export default CommonModal

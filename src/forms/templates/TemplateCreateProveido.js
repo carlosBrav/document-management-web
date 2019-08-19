@@ -1,0 +1,99 @@
+import {TYPE_INPUT} from "../../constants/Constants";
+
+export const formProveidosInternos = [
+  {
+    "id": "documentId",
+    "label": "Documento:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+  {
+    "id": "asuntoId",
+    "label": "Asunto:",
+    "type": TYPE_INPUT.INPUT_TEXT_AREA,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "origenId",
+    "label": "Origen:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+  {
+    "id": "destinoId",
+    "label": "Destino:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+  {
+    "id": "fechaEmisionId",
+    "label": "Fecha de emisión:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+]
+
+export const formProveidosExternos = [
+  {
+    "id": "documentTipoId",
+    "label": "Documento:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "nroDocumentoId",
+    "label": "Nro. documento:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "asuntoId",
+    "label": "Asunto:",
+    "type": TYPE_INPUT.INPUT_TEXT_AREA,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "tipoOrigenId",
+    "label": "Tipo de origen:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "depOrigenId",
+    "label": "Dep. origen:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "tipoDestinoId",
+    "label": "Tipo de destino:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true
+  },
+  {
+    "id": "depDestinoId",
+    "label": "Dep. destino:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required":true
+  },
+  {
+    "id": "fechaId",
+    "label": "Fecha:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+  {
+    "id": "usuarioId",
+    "label": "Usuario:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+]

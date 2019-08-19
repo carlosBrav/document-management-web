@@ -7,5 +7,10 @@ export const BUTTON_TYPE = {
 export const TYPE_INPUT = {
   INPUT_TEXT: 'text',
   INPUT_SELECT: 'select',
-  INPUT_TEXT_AREA: 'textArea'
+  INPUT_TEXT_AREA: 'textArea',
+  INPUT_CIRCULAR: 'circular'
+}
+
+export const TYPE_CONTENT_MODAL = {
+  TYPE_CIRCULAR: 'circular'
 }

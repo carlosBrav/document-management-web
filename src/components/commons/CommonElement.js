@@ -14,7 +14,8 @@ const InputTextElement=(props)=>(
                    classInput={props.classInput}
                    isRequired={props.required}
                    isReadOnly={props.readOnly}
-                   value={get(props.valueMap,props.id,'')}/>
+                   value={get(props.valueMap,props.id,'')}
+                   isFormCircular={props.isFormCircular}/>
 )
 
 const InputTextAreaElements=(props)=>(
@@ -25,7 +26,8 @@ const InputTextAreaElements=(props)=>(
                   classInput={props.classInput}
                   isRequired={props.required}
                   isReadOnly={props.readOnly}
-                  value={get(props.valueMap,props.id,'')}/>
+                  value={get(props.valueMap,props.id,'')}
+                  isFormCircular={props.isFormCircular}/>
 )
 
 const InputSelect=(props)=>(
@@ -37,7 +39,8 @@ const InputSelect=(props)=>(
                      isRequired={props.required}
                      isReadOnly={props.readOnly}
                      listItems={props.listItems}
-                     value={get(props.valueMap,props.id,'')}/>
+                     value={get(props.valueMap,props.id,'')}
+                     isFormCircular={props.isFormCircular}/>
 )
 
 

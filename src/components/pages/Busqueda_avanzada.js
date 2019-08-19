@@ -4,6 +4,10 @@ import CommonTableManage from "../commons/CommonTableManage";
 
 class Busqueda_avanzada extends Component{
 
+  state={
+    valueMap:{}
+  }
+
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
@@ -38,6 +42,15 @@ class Busqueda_avanzada extends Component{
     ])
   }
 
+  onChangeValueMap=(prop,value)=>{
+    this.setState({valueMap: {...this.state.valueMap, [prop]: value}})
+  }
+
+  onSearch=()=>{
+    const {valueMap}= this.state
+    console.log('VALUE MAP ', valueMap)
+  }
+
   getContainHeaderBusqAvanz=()=>{
     return(
       <div style={{display: 'flex', justifyContent: 'row', paddingLeft: 25, paddingTop: 20}}>
@@ -45,18 +58,18 @@ class Busqueda_avanzada extends Component{
           <div className="form-row" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginRight: 0, marginLeft: 0}}>
             <div className="form-group">
               <label htmlFor="inputNumTram">Numero de tramite:</label>
-              <input type="text" className="form-control" id="inputNumTram"/>
+              <input type="text" className="form-control" id="inputNumTram" onChange={(e)=> this.onChangeValueMap('inputNumTram',e.target.value)}/>
             </div>
             <div className="form-group">
               <label htmlFor="inputAsunto">Asunto:</label>
-              <input type="text" className="form-control" id="inputAsunto"/>
+              <input type="text" className="form-control" id="inputAsunto" onChange={(e)=> this.onChangeValueMap('inputAsunto',e.target.value)}/>
             </div>
           </div>
           <div className="form-row"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginRight: 0, marginLeft: 0}}>
             <div className="form-group">
               <label htmlFor="inputPassword4">Derivado a:</label>
-                <select id="inputState" className="form-control">
-                  <option selected value={'0'}>Seleccione</option>
+                <select id="inputState" className="form-control" onChange={(e)=> this.onChangeValueMap('inputState',e.target.value)}>
+                  <option selected value={'0'} >Seleccione</option>
                   {
                     list_dependencies && list_dependencies.length>0 ?
                       list_dependencies.map((dependencie)=>{
@@ -67,7 +80,7 @@ class Busqueda_avanzada extends Component{
                 </select>
             </div>
             <div className="form-group" style={{width: 210,paddingTop: 35}}>
-              <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}}>
+              <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}} onClick={()=> this.onSearch()}>
                 Buscar
               </button>
             </div>

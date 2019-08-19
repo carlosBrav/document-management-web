@@ -144,7 +144,8 @@ class DocCirculares extends Component{
         noText: 'Cancelar',
         content: <FormRender formTemplate={formOficiosCirculares}
                              onChange={this.onChangeValueCircular}
-                             valueMap={valueMapCreateCircular}/>,
+                             valueMap={valueMapCreateCircular}
+                             isFormCircular={true}/>,
         typeContent: TYPE_CONTENT_MODAL.TYPE_CIRCULAR
       }
     ]

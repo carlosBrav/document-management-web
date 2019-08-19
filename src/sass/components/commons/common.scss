@@ -18,3 +18,13 @@
     cursor: pointer;
   }
 }
+
+.modal-content-custom{
+  border-radius: 0.4rem;
+  font-size: 12px;
+
+  &.type-circular{
+    max-width: 1000px;
+    width: 800px;
+  }
+}

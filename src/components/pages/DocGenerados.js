@@ -1,15 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {ICON_TYPE} from "../commons/CommonIcon";
 import CommonTableManage from "../commons/CommonTableManage";
 import {lista_generados} from "../../fakedata/ListDataDocuments";
 import {exportPDF} from "../utils/ExportPDF";
+import map from "lodash/map";
+import CommonModal from '../commons/CommonModal';
+import {formDocumGenerado} from "../../forms/templates/TemplateDocumentGen";
+import FormRender from "../../forms/FormRender";
 
 class DocGenerados extends Component{
 
   state = {
     search: '',
-    listDataSelected: [],
-    showDeleteModal: false
+    listDataToDeleteSelected: [],
+    showDeleteModal: false,
+    showCreateModal: false,
+    valueMapCreateDocument: {}
   }
 
   toggleViewDocumentGenerado=(data)=>{
@@ -18,6 +24,14 @@ class DocGenerados extends Component{
 
   toggleEditDocumentGenerado=(data)=>{
     console.log('DOCUMENT GENERADO EDIT ', data)
+  }
+
+  onSetListDataToDelete=(listDataToDeleteSelected)=>{
+    this.setState({listDataToDeleteSelected})
+  }
+
+  onChangeValueCreateDocument=(prop, value)=>{
+    this.setState({valueMapCreateDocument: {...this.state.valueMapCreateDocument, [prop]: value}})
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -76,42 +90,72 @@ class DocGenerados extends Component{
     ])
   }
 
-  onToggleDeleteDocuments = (listDataFiltered=[]) => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  onToggleDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  onToggleCreateDocumentGen=()=>{
+    this.setState({showCreateModal: !this.state.showCreateModal})
   }
 
   onDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
+  onCreateDocument=()=>{
+    const {valueMapCreateDocument} = this.state
+    console.log('VALUE MAP CREATE ', valueMapCreateDocument)
+    this.onToggleCreateDocumentGen()
+  }
+
   getFooterTableStructureGenerados=()=>{
     return [
-      {text: 'Crear',  action: ()=> {}},
-      {text: 'Eliminar', action: (listDataFiltered)=> this.onToggleDeleteDocuments(listDataFiltered)}
+      {text: 'Crear',  action: this.onToggleCreateDocumentGen},
+      {text: 'Eliminar', action: this.onToggleDeleteDocuments}
     ]
   }
 
   render(){
 
-    const {showDeleteModal,listDataSelected} = this.state
+    const {showDeleteModal, showCreateModal,listDataToDeleteSelected,valueMapCreateDocument} = this.state
 
-    const modalProps = {
+    const modalProps = [{
       showModal: showDeleteModal,
       title: 'Eliminar Documentos Generados',
-      message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
-      yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
-      yesText: (listDataSelected.length>0)?'Sí':'Ok',
-      noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
-    }
+      message: (listDataToDeleteSelected.length>0)?`¿Desea imprimir estos ${listDataToDeleteSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      yesFunction: (listDataToDeleteSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
+      yesText: (listDataToDeleteSelected.length>0)?'Sí':'Ok',
+      noFunction: (listDataToDeleteSelected.length>0)?this.onToggleDeleteDocuments:null
+    },
+    {
+      showModal: showCreateModal,
+      title: 'Crear documento',
+      yesFunction: this.onCreateDocument,
+      yesText: 'Crear documento',
+      noText: 'Cancelar',
+      noFunction: this.onToggleCreateDocumentGen,
+      content: <FormRender formTemplate={formDocumGenerado}
+                           onChange={this.onChangeValueCreateDocument}
+                           valueMap={valueMapCreateDocument}/>
+    }]
 
     return(
+      <Fragment>
+        {
+          modalProps && modalProps.length>0 ?
+            map(modalProps, (modal, index)=>{
+              return <CommonModal key={'modal'+index} {...modal}/>
+            }) : null
+        }
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS GENERADOS INTERNOS'}
         listData={lista_generados}
         modalProps={modalProps}
         getFooterTableStructure={this.getFooterTableStructureGenerados}
+        onSetSelected={this.onSetListDataToDelete}
       />
+      </Fragment>
     )
   }
 }

@@ -3,10 +3,11 @@ import React, {Component} from 'react';
 class CommonSelectInput extends Component{
 
   render(){
-    const {idSection, listItems, label, onChange, classContainer, classInput, isRequired} = this.props
+    const {idSection, isFormCircular, listItems, label, onChange, classContainer, classInput, isRequired} = this.props
+    console.log('IS FORM CICULAR ', isFormCircular)
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
-        <label className='label-form' htmlFor={idSection}>{label}</label>
+        <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
         <select id={idSection+'select'} className={`form-control ${classInput}`}
                 onChange={(e)=> onChange(idSection, e.target.value)} required={isRequired}>
           <option selected value={'0'}>Seleccione</option>

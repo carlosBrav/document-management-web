@@ -45,9 +45,6 @@ class CommonMenu extends Component{
               <div className="nav-link hover-pointer" onClick={()=> goToBusquedaAvanzada()}>Búsqueda avanzada</div>
             </li>
             <li className="nav-item">
-              <div className="nav-link hover-pointer" onClick={()=> goToTest()}>test</div>
-            </li>
-            <li className="nav-item">
               <a className="nav-link" href="#">Mantenimiento</a>
             </li>
           </ul>

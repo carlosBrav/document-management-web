@@ -16,7 +16,7 @@ const InputTextElement=(props)=>(
                    isReadOnly={props.readOnly}
                    value={get(props.valueMap,props.id,'')}
                    isFormCircular={props.isFormCircular}/>
-)
+);
 
 const InputTextAreaElements=(props)=>(
   <CommonTextArea idSection={props.id}
@@ -41,8 +41,7 @@ const InputSelect=(props)=>(
                      listItems={props.listItems}
                      value={get(props.valueMap,props.id,'')}
                      isFormCircular={props.isFormCircular}/>
-)
-
+);
 
 class CommonElement extends Component{
 
@@ -56,11 +55,11 @@ class CommonElement extends Component{
       case TYPE_INPUT.INPUT_SELECT:
         return <InputSelect  {...this.props} />;
       case TYPE_INPUT.INPUT_CIRCULAR:
-        return <CommonPickList {...this.props}/>
+        return <CommonPickList {...this.props}/>;
       default:
         return null
     }
-  }
+  };
 
   render(){
     const {type} = this.props

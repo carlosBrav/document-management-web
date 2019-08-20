@@ -5,7 +5,9 @@ import {ICON_TYPE} from "../commons/CommonIcon";
 import {exportPDF} from "../utils/ExportPDF";
 import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
-import {formOficiosCirculares} from "../../forms/templates/TemplateOficiosCIrculares";
+import CommonListGroup from '../commons/CommonListGroup';
+import {formOficiosCirculares} from "../../forms/templates/TemplateOficiosCirculares";
+import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import FormRender from "../../forms/FormRender";
 import {TYPE_CONTENT_MODAL} from '../../constants/Constants'
 
@@ -16,23 +18,11 @@ class DocCirculares extends Component{
     listDataSelected: [],
     showDeleteModal: false,
     showCreateCircularModal: false,
-    valueMapCreateCircular: {}
-  }
-
-  onChangeValueCircular=(prop, value)=>{
-    this.setState({valueMapCreateCircular: {...this.state.valueMapCreateCircular, [prop]: value}})
-  }
-
-  toggleViewDocument=(data)=>{
-    console.log('DOCUMENT SELECTED ',data)
-  }
-
-  toggleEditDocument=(data)=>{
-    console.log('DOCUMENT EDIT ', data)
-  }
-
-  onSetSelectOficiosCirculares=(listDataSelected)=>{
-    this.setState({listDataSelected})
+    valueMapCreateCircular: {},
+    valueMapEditCircular:{},
+    showViewCircularModal: false,
+    circularSelected:{},
+    showEditCircularModal: false
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -78,15 +68,37 @@ class DocCirculares extends Component{
         actions: [
           {
            actionType: ICON_TYPE.SEARCH,
-           action: data => this.toggleViewDocument(data)
+           action: data => this.onToggleViewDocument(data)
           },
           {
             actionType: ICON_TYPE.EDIT,
-            action: data => this.toggleEditDocument(data)
+            action: data => this.onToggleEditDocument(data)
           }
         ]
       }
     ])
+  }
+
+  onChangeValueCircular=(prop, value)=>{
+    this.setState({valueMapCreateCircular: {...this.state.valueMapCreateCircular, [prop]: value}})
+  }
+
+  onChangeValueEditCircular=(prop, value)=>{
+    this.setState({valueMapEditCircular: {...this.state.valueMapEditCircular, [prop]: value}})
+  }
+
+  onToggleViewDocument=(data={})=>{
+    console.log('DOCUMENT SELECTED ',data)
+    this.setState({showViewCircularModal: !this.state.showViewCircularModal, circularSelected: {...data}})
+  }
+
+  onToggleEditDocument=(data={})=>{
+    console.log('DOCUMENT EDIT ', data)
+    this.setState({showEditCircularModal: !this.state.showEditCircularModal, valueMapEditCircular: {...data}})
+  }
+
+  onSetSelectOficiosCirculares=(listDataSelected)=>{
+    this.setState({listDataSelected})
   }
 
   onExportDocuments=()=>{
@@ -119,12 +131,22 @@ class DocCirculares extends Component{
     this.onToggleCreateCircular()
   }
 
+  onEditCircular=()=>{
+    const {valueMapEditCircular} = this.state
+    console.log('circular editado ', valueMapEditCircular)
+    this.onToggleEditDocument()
+  }
+
   render(){
 
     const {showDeleteModal,
       listDataSelected,
       showCreateCircularModal,
-      valueMapCreateCircular} = this.state
+      valueMapCreateCircular,
+      circularSelected,
+      showEditCircularModal,
+      showViewCircularModal,
+      valueMapEditCircular} = this.state
 
     const modalProps = [
       {
@@ -147,8 +169,28 @@ class DocCirculares extends Component{
                              valueMap={valueMapCreateCircular}
                              isFormCircular={true}/>,
         typeContent: TYPE_CONTENT_MODAL.TYPE_CIRCULAR
+      },
+      {
+        showModal: showViewCircularModal,
+        title: 'Circular 025466-OGPL-2019',
+        yesFunction: this.onToggleViewDocument,
+        yesText: 'Aceptar',
+        content: <CommonListGroup idSection='list-group'
+                                  numDocument={circularSelected.correlativo}
+                                  listDestinations={circularSelected.destinations}/>
+      },
+      {
+        showModal: showEditCircularModal,
+        title: 'Editar circular 025466-OGPL-2019',
+        yesFunction: this.onEditCircular,
+        yesText: 'Editar',
+        noFunction: this.onToggleEditDocument,
+        noText: 'Cancelar',
+        content: <FormRender formTemplate={formEditOficioCircular}
+                             onChange={this.onChangeValueEditCircular}
+                             valueMap={valueMapEditCircular}/>
       }
-    ]
+    ];
 
 
     return(

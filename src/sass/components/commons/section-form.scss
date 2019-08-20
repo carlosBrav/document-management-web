@@ -10,4 +10,16 @@
   &.circular{
     width: 250px;
   }
+
+  &.edit-circular-list{
+    width: 85px;
+  }
+  &.edit-circular-label{
+    width: 105px;
+  }
+}
+
+.custom-list-group{
+  max-height: 250px;
+  overflow-y: scroll;
 }

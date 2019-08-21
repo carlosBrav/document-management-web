@@ -70,12 +70,16 @@ class DocConfirmados extends Component{
     ])
   }
 
-  onToggleDeleteDocuments = (listDataFiltered=[]) => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal, listDataSelected: listDataFiltered})
+  onToggleDeleteDocuments = () => {
+    this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
   onDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
+  }
+
+  onSetSelectDocuments=(listDataSelected)=>{
+    this.setState({listDataSelected})
   }
 
   getContainHeader=()=>{
@@ -128,6 +132,7 @@ class DocConfirmados extends Component{
         containHeader={this.getContainHeader()}
         modalProps={modalProps}
         getFooterTableStructure={this.getFooterTableStructure}
+        onSetSelected={this.onSetSelectDocuments}
       />
     )
   }

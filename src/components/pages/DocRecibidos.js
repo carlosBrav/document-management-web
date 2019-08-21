@@ -5,6 +5,14 @@ import {exportPDF} from "../utils/ExportPDF";
 
 class DocRecibidos extends Component{
 
+  state = {
+    listDataSelected: [],
+  }
+
+  onSetSelectDocuments=(listDataSelected)=>{
+    this.setState({listDataSelected})
+  }
+
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
@@ -62,7 +70,7 @@ class DocRecibidos extends Component{
   getFooterTableStructure = () => {
     return([
       {text: 'Seguimiento', action: ()=>{}},
-      {text: 'Imprimir', action: ()=> this.onExportDocuments()}
+      {text: 'Imprimir', action: this.onExportDocuments}
     ])
   }
 
@@ -74,6 +82,7 @@ class DocRecibidos extends Component{
         title={'DOCUMENTOS RECIBIDOS'}
         listData={listData_1}
         getFooterTableStructure={this.getFooterTableStructure}
+        onSetSelected={this.onSetSelectDocuments}
       />
     )
   }

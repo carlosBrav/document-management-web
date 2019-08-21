@@ -935,6 +935,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -945,6 +946,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -955,6 +957,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -965,6 +968,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -975,6 +979,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -985,6 +990,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -995,6 +1001,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -1005,6 +1012,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -1015,6 +1023,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   },
@@ -1025,6 +1034,7 @@ export const lista_proveidos_2 = [
     "fech_registro": "02/07/2019 10:07:33",
     "asunto": "PROYECTO DE NUEVO REGLAMENTO EN LA UNIVERSIDAD",
     "origen": "OGPL-OFICINA DE RACIONALIZACION",
+    "destino": "OGPL-OFICINA DE PLANIFICACION",
     "usuario": "CHUCHON OCHOA, ANA MARIA",
     "check": false
   }]

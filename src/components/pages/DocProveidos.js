@@ -6,6 +6,7 @@ import {ICON_TYPE} from "../commons/CommonIcon";
 import {exportPDF} from "../utils/ExportPDF";
 import FormRender from "../../forms/FormRender";
 import {formProveidosInternos, formProveidosExternos} from "../../forms/templates/TemplateCreateProveido";
+import {formEditProveido} from "../../forms/templates/TemplateEditProveido";
 import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
 
@@ -19,27 +20,9 @@ class DocProveidos extends Component{
     showProveidoInternoModal: false,
     showProveidoExternoModal: false,
     valueMapProveidoInterno: {},
-    valueMapProveidoExterno: {}
-  }
-
-  toggleEditDocument=(data)=>{
-    console.log('DOCUMENT EDIT PROVEIDO ', data)
-  }
-
-  onSetListDataToDeleteSelected=(listDataToDeleteSelected)=>{
-    this.setState({listDataToDeleteSelected})
-  }
-
-  onSetListDataProvIntSelected=(listDataProvIntSelected)=>{
-    this.setState({listDataProvIntSelected})
-  }
-
-  onChangeValueProvInt=(prop, value)=>{
-    this.setState({valueMapProveidoInterno: {...this.state.valueMapProveidoInterno, [prop]: value}})
-  }
-
-  onChangeValueProvExt=(prop,value)=>{
-    this.setState({valueMapProveidoExterno: {...this.state.valueMapProveidoExterno, [prop]: value}})
+    valueMapProveidoExterno: {},
+    showEditProveidoModal: false,
+    valueMapEditProveido: {}
   }
 
   getTableStructure_proveidos_1 = (onToggleAddDocSelect) => {
@@ -108,6 +91,10 @@ class DocProveidos extends Component{
         filterHeader: true
       },
       {
+        columnHeader: 'Destino',
+        rowProp: 'destino',
+      },
+      {
         columnHeader: 'Usuario',
         rowProp: 'usuario'
       },
@@ -117,11 +104,27 @@ class DocProveidos extends Component{
         actions: [
           {
             actionType: ICON_TYPE.EDIT,
-            action: data => this.toggleEditDocument(data)
+            action: data => this.onToggleEditProveido(data)
           }
         ]
       }
     ])
+  }
+
+  onSetListDataToDeleteSelected=(listDataToDeleteSelected)=>{
+    this.setState({listDataToDeleteSelected})
+  }
+
+  onSetListDataProvIntSelected=(listDataProvIntSelected)=>{
+    this.setState({listDataProvIntSelected})
+  }
+
+  onChangeValueProvInt=(prop, value)=>{
+    this.setState({valueMapProveidoInterno: {...this.state.valueMapProveidoInterno, [prop]: value}})
+  }
+
+  onChangeValueProvExt=(prop,value)=>{
+    this.setState({valueMapProveidoExterno: {...this.state.valueMapProveidoExterno, [prop]: value}})
   }
 
   onExportDocuments=()=>{
@@ -152,6 +155,21 @@ class DocProveidos extends Component{
     this.setState({showProveidoInternoModal: !this.state.showProveidoInternoModal})
   }
 
+  onToggleEditProveido=(data={})=>{
+    console.log('DOCUMENT EDIT PROVEIDO ', data)
+    this.setState({showEditProveidoModal: !this.state.showEditProveidoModal, valueMapEditProveido: data})
+  }
+
+  onEditProveido=()=>{
+    const {valueMapEditProveido} = this.state
+    console.log('VALUE MAP EDIT PROVEIDO ', valueMapEditProveido)
+    this.onToggleEditProveido()
+  }
+
+  onChangeValueEditProveido=(prop, value)=>{
+    this.setState({valueMapEditProveido: {...this.state.valueMapEditProveido, [prop]: value}})
+  }
+
   onToggleCreateProveidoExterno=()=>{
     this.setState({showProveidoExternoModal: !this.state.showProveidoExternoModal})
   }
@@ -178,7 +196,9 @@ class DocProveidos extends Component{
       showProveidoExternoModal,
       listDataProvIntSelected,
       valueMapProveidoInterno,
-      valueMapProveidoExterno} = this.state
+      valueMapProveidoExterno,
+      showEditProveidoModal,
+      valueMapEditProveido} = this.state
 
     const modalProps = [
       {
@@ -203,7 +223,7 @@ class DocProveidos extends Component{
       },
       {
         showModal: showProveidoExternoModal,
-        title: 'Proveido Interno N° 00481-OGPL-2019',
+        title: 'Proveido Externo N° 00481-OGPL-2019',
         yesFunction: this.onCreateProveidoExterno,
         yesText: 'Crear proveido',
         noFunction: this.onToggleCreateProveidoExterno,
@@ -211,6 +231,17 @@ class DocProveidos extends Component{
         content: <FormRender formTemplate={formProveidosExternos}
                              onChange={this.onChangeValueProvExt}
                              valueMap={valueMapProveidoExterno}/>
+      },
+      {
+        showModal: showEditProveidoModal,
+        title: 'Proveido N° 00488-OGPL-2019',
+        yesFunction: this.onEditProveido,
+        yesText: 'Editar proveido',
+        noFunction: this.onToggleEditProveido,
+        noText: 'Cancelar',
+        content: <FormRender formTemplate={formEditProveido}
+                             onChange={this.onChangeValueEditProveido}
+                             valueMap={valueMapEditProveido}/>
       }]
 
     const tableDocumentInt =()=>{

@@ -9,7 +9,6 @@ import DocProveidos from "../components/pages/DocProveidos";
 import DocGenerados from "../components/pages/DocGenerados";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import ControlDocumentos from "../components/pages/ControlDocumentos";
-import CommonPickList from "../components/commons/CommonPickList";
 import Test from '../components/utils/test';
 
 class ContainerAdmin extends Component{
@@ -20,19 +19,73 @@ class ContainerAdmin extends Component{
   };
 
   render(){
+
+    const columns =
+      {
+        head: {
+          title: 'Oficina General de Planificacion',
+          url: '/admin'
+        },
+        firstColumn: {
+          title: 'SECG',
+          subMenus: [
+            {
+              title: 'Documentos recibidos',
+              url: '/admin/document_recibidos'
+            },
+            {
+              title: 'Documentos Confirmados',
+              url: '/admin/document_confirmados'
+            }
+          ]
+        },
+        secondColumn: {
+          title: 'Sistema interno',
+          subMenus: [
+            {
+              title: 'Gestión documentos',
+              subMenus: [
+                {
+                  title: 'Doc. Respuesta',
+                  url: '/admin/document_respuesta'
+                },
+                {
+                  title: 'Doc. Circulares',
+                  url: '/admin/document_circular'
+                },
+                {
+                  title: 'Doc. Proveídos',
+                  url: '/admin/document_proveido'
+                },
+                {
+                  title: 'Doc. Generados(otros)',
+                  url: '/admin/document_generado'
+                }
+              ]
+            },
+            {
+              title: 'Control documentos',
+              url: '/admin/control_documentos'
+            }
+          ]
+        }
+        ,
+        thirdColumn: {
+            title: 'Búsqueda avanzada',
+            url: '/admin/busqueda_avanzada'
+          }
+        ,
+        fourthColumn: {
+            title: 'Mantenimiento'
+          }
+
+      };
+
+
     return(
       <div className='container-admin'>
         <div className='container-menu-admin'>
-          <CommonMenu goToDocRecibidos={()=> this.goToPage('/admin/document_recibidos')}
-                      goToDocConfirmados={()=> this.goToPage('/admin/document_confirmados')}
-                      goToDocumentRespuesta={()=> this.goToPage('/admin/document_respuesta')}
-                      goToDocumentCirculares={()=> this.goToPage('/admin/document_circular')}
-                      goToDocumentProveidos={()=> this.goToPage('/admin/document_proveido')}
-                      goToDocumentGenerados={()=> this.goToPage('/admin/document_generado')}
-                      goToBusquedaAvanzada={()=> this.goToPage('/admin/busqueda_avanzada')}
-                      goToControlDocumentos={()=> this.goToPage('/admin/control_documentos')}
-                      goToTest={()=> this.goToPage('/admin/test')}
-                      goToAdmin={()=> this.goToPage('/admin')}/>
+          <CommonMenu menus={columns} goToPage={this.goToPage}/>
         </div>
         <div className='admin-content'>
           <Route>

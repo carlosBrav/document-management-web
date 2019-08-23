@@ -205,8 +205,6 @@ class DocCirculares extends Component{
           tableStructure={this.getTableStructure}
           title={'OFICIOS CIRCULARES - OGPL'}
           listData={lista_circulares}
-          onView={(data)=> console.log('SELECTED TO VIEW ', data)}
-          onEdit={(data) => console.log('SELECTED TO EDIT ', data)}
           getFooterTableStructure={this.getFooterTableStructure}
           onSetSelected={this.onSetSelectOficiosCirculares}
         />

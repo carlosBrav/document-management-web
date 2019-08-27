@@ -28,3 +28,18 @@
     width: 800px;
   }
 }
+
+.common-modal-header{
+  background-color: #000000;
+  color: #FFFFFF;
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
+
+  h5{
+    font-size: 16px;
+  }
+}
+
+.form-control{
+  font-size: 13px;
+}

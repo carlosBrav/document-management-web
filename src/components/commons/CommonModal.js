@@ -10,16 +10,16 @@ class CommonModal extends Component {
     const {message, typeContent, content, yesFunction, noFunction, showModal, title, toggleClose = true, yesText = 'Sí', noText = 'No'} = this.props
     return(
       <Modal style={(typeContent === TYPE_CONTENT_MODAL.TYPE_CIRCULAR)?{fontSize: 12, maxWidth: 1000, width: 800} :{fontSize: 12}} isOpen={showModal}>
-        <ModalHeader style={{backgroundColor: '#000000', color: '#FFFFFF', borderTopLeftRadius: '0.2rem', borderTopRightRadius: '0.2rem'}} data-test={'com-modal-title'}>{title}</ModalHeader>
+        <ModalHeader  className='common-modal-header' data-test={'com-modal-title'}>{title}</ModalHeader>
         <ModalBody>
           {
             (message) ? message : content
           }
         </ModalBody>
         <ModalFooter>
-          <Button data-test={'com-modal-yes'} color="primary" onClick={yesFunction}>{yesText}</Button>
+          <Button data-test={'com-modal-yes'} color="primary" style={{fontSize: 13}} onClick={yesFunction}>{yesText}</Button>
           {
-            (toggleClose && noFunction) ? <Button data-test={'com-modal-no'} color="secondary" onClick={noFunction}>{noText}</Button> : null
+            (toggleClose && noFunction) ? <Button data-test={'com-modal-no'} color="secondary" onClick={noFunction}  style={{fontSize: 13}}>{noText}</Button> : null
           }
         </ModalFooter>
       </Modal>

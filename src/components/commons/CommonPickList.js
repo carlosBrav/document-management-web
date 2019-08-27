@@ -91,7 +91,7 @@ class CommonPickList extends React.Component {
     return(
       <div className='pick-list-container'>
         <div className='select-type-destination'>
-          <select id={'selectId'} className={`form-control`}
+          <select id={'selectId'} className={`form-control`} style={{fontSize: 13}}
                   onChange={(e)=> onChange(idTypeDestinations, e.target.value)} required>
             <option selected value={'0'}>Seleccione destino</option>
             {

@@ -7,7 +7,7 @@ class CommonSelectInput extends Component{
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
-        <select id={idSection+'select'} className={`form-control ${classInput}`}
+        <select id={idSection+'select'} className={`form-control ${classInput}`} style={{fontSize: 13}}
                 onChange={(e)=> onChange(idSection, e.target.value)} required={isRequired} defaultValue={value}>
           <option selected value={''}>Seleccione</option>
           {

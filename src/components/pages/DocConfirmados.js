@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1} from "../../fakedata/ListDataDocuments";
+import map from "lodash/map";
+import CommonModal from "../commons/CommonModal";
 
 class DocConfirmados extends Component{
 
@@ -115,25 +117,34 @@ class DocConfirmados extends Component{
 
     const {showDeleteModal,listDataSelected} = this.state
 
-    const modalProps = {
+    const modalProps = [{
       showModal: showDeleteModal,
       title: 'Eliminar Documentos',
-      message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      message: (listDataSelected.length>0)?`¿Desea eliminar este(os) ${listDataSelected.length} documento(s) ?`:`Debe seleccionar al menos un documento`,
       yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
       yesText: (listDataSelected.length>0)?'Si':'Ok',
       noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
-    }
+    }];
 
     return(
-      <CommonTableManage
-        tableStructure={this.getTableStructure}
-        title={'DOCUMENTOS CONFIRMADOS'}
-        listData={listData_1}
-        containHeader={this.getContainHeader()}
-        modalProps={modalProps}
-        getFooterTableStructure={this.getFooterTableStructure}
-        onSetSelected={this.onSetSelectDocuments}
-      />
+      <Fragment>
+        {
+          modalProps && modalProps.length>0 ?
+            map(modalProps, (modal, index)=>{
+              return <CommonModal key={'modal'+index} {...modal}/>
+            }) : null
+        }
+        <CommonTableManage
+          tableStructure={this.getTableStructure}
+          title={'DOCUMENTOS CONFIRMADOS'}
+          listData={listData_1}
+          containHeader={this.getContainHeader()}
+          modalProps={modalProps}
+          getFooterTableStructure={this.getFooterTableStructure}
+          onSetSelected={this.onSetSelectDocuments}
+        />
+      </Fragment>
+
     )
   }
 }

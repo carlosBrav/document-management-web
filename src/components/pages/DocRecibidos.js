@@ -2,21 +2,25 @@ import React, {Component} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1} from "../../fakedata/ListDataDocuments";
 import {exportPDF} from "../utils/ExportPDF";
+import {BUTTON_TYPE} from '../../constants/Constants';
 
 class DocRecibidos extends Component{
 
   state = {
     listDataSelected: [],
+
   }
 
   onSetSelectDocuments=(listDataSelected)=>{
     this.setState({listDataSelected})
   }
 
-  getTableStructure = (onToggleAddDocSelect) => {
+  getTableStructure = (onChangeCheck,onToggleAddDocSelect) => {
     return ([
       {
         columnHeader: '',
+        elementHeader: BUTTON_TYPE.CHECKBOX,
+        actionHeader: onChangeCheck,
         actions: [{
           actionType: 'button',
           action: (index) => onToggleAddDocSelect(index)
@@ -29,14 +33,15 @@ class DocRecibidos extends Component{
         filterHeader: true
       },
       {
-        columnHeader: 'Mov.',
+        columnHeader: 'Movimiento',
         rowProp: 'movimiento'
       },
       {
         columnHeader: 'Destino',
         rowProp: 'destino',
         classSearchRow: 'container-search-field long-size',
-        filterHeader: true
+        filterHeader: true,
+        rowStyle: 'custom-td'
       },
       {
         columnHeader: 'F. Envio',
@@ -55,10 +60,6 @@ class DocRecibidos extends Component{
       {
         columnHeader: 'Doc. Nombre',
         rowProp: 'docum_nomb'
-      },
-      {
-        columnHeader: 'Estado',
-        rowProp: 'estado'
       }
     ])
   }
@@ -83,6 +84,8 @@ class DocRecibidos extends Component{
         listData={listData_1}
         getFooterTableStructure={this.getFooterTableStructure}
         onSetSelected={this.onSetSelectDocuments}
+        onAdd={this.onChangeInitialIndex}
+        onSubtract={this.onChangeInitialIndex}
       />
     )
   }

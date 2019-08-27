@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import keys from 'lodash/keys';
+import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
 import CommonIcon from '../commons/CommonIcon';
+import CommonButton from "./CommonButton";
+import {BUTTON_TYPE} from "../../constants/Constants";
 
 const getButton = (actions, rowData) => {
   return actions.map((action, iterator) =>
@@ -55,32 +58,6 @@ class CommonTable extends Component {
     }
   }
 
-  changeSearchColumn = (key, value) => {
-    let {searchList} = this.state;
-    searchList[key] = value;
-    this.setState({searchList});
-    this.filterData()
-  }
-
-  filterData = () => {
-    const {searchList} = this.state;
-    const {data} = this.props;
-    const keysList = keys(searchList);
-    let keysEmpty = true
-    let filterData = data
-    keysList.map((key)=>{
-      if(searchList[key].length>0) {
-        filterData = filter(filterData, filter => {
-          return filter[key].toLowerCase().includes(searchList[key].toLowerCase())
-        });
-        keysEmpty=false
-      }
-    });
-    if(keysEmpty) {
-      this.setState({filteredList: data})
-    } else  this.setState({filteredList: filterData})
-  }
-
   componentDidMount() {
     const {filteredList} = this.state;
     const {data} = this.props;
@@ -89,8 +66,14 @@ class CommonTable extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(this.props.data, this.state.filteredList)) {
+      this.setState({filteredList: this.props.data})
+    }
+  }
+
   render() {
-    const {tableStructure, onClick} = this.props;
+    const {tableStructure, onClick,onChange} = this.props;
     const {filteredList} = this.state;
     return (
       <table>
@@ -102,9 +85,13 @@ class CommonTable extends Component {
                 {(value.filterHeader) ?
                   <span className={value.classSearchRow}>
                     {value.columnHeader}
-                    {getInputFilter(value.rowProp, this.changeSearchColumn)}
+                    {getInputFilter(value.rowProp, onChange)}
                     </span>
-                  : value.columnHeader
+                  : (value.elementHeader)?
+                    <span>
+                      <CommonButton onClick={value.actionHeader} type={BUTTON_TYPE.CHECKBOX}/>
+                    </span>
+                    :value.columnHeader
                 }
               </th>
             )
@@ -128,7 +115,8 @@ CommonTable.propTypes = {
       filterHeader: PropTypes.bool
     })),
   data: PropTypes.arrayOf(PropTypes.object),
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  onChange: PropTypes.func
 }
 
 export default CommonTable

@@ -21,7 +21,6 @@ class CommonButton extends Component{
 
   render(){
     const {type} = this.props
-    console.log('TYPE ', type)
     return(
       <span>
       {this.getButton(type)}

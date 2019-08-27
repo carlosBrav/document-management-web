@@ -15,3 +15,8 @@ export const TYPE_INPUT = {
 export const TYPE_CONTENT_MODAL = {
   TYPE_CIRCULAR: 'circular'
 }
+
+export const TYPE_ACTION ={
+  ADD: 'add',
+  SUBTRACT: 'subtract'
+}

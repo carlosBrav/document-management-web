@@ -1,7 +1,8 @@
 .container-pagination{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 100px;
 
   .btn-basic{
     width: 30px;
@@ -24,7 +25,12 @@
         border-right: 1px #EEE2E0 solid;
         border-left: 1px transparent solid;
       }
-
+    }
+    &.btn-pagination:hover{
+      border: 1px solid #EEE2E0;
+      background-color: #000000;
+      color: #ffff;
+      border-right: 1px transparent solid;
     }
   }
 }

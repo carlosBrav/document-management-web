@@ -2,13 +2,17 @@
 .section-form{
   display: flex;
   flex-direction: row;
+
+  input,textarea,select{
+    font-size: 13px;
+  }
 }
 
 .label-form{
   width: 135px;
 
   &.circular{
-    width: 250px;
+    width: 190px;
   }
 
   &.edit-circular-list{

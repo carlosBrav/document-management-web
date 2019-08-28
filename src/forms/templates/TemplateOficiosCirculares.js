@@ -1,5 +1,5 @@
 import {TYPE_INPUT} from "../../constants/Constants";
-import {list_dependencies,list_dependencies_2} from '../../fakedata/ListDataDocuments';
+import {list_dependencies,list_type_destinations} from '../../fakedata/ListDataDocuments';
 
 export const formOficiosCirculares = [
   {
@@ -19,8 +19,7 @@ export const formOficiosCirculares = [
     "type": TYPE_INPUT.INPUT_CIRCULAR,
     "idTypeDestinations":"typeDestinationsId",
     "idDestinations": "destinationsId",
-    "typeDestinations": list_dependencies_2,
-    "destinations": list_dependencies
+    "typeDestinations": list_type_destinations
   },
   {
     "id": "asuntoId",

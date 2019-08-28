@@ -1,5 +1,4 @@
 import React from 'react';
-import {list_dependencies_2, list_dependencies} from '../../fakedata/ListDataDocuments';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
 
@@ -17,8 +16,8 @@ class CommonPickList extends React.Component {
   }
 
   componentDidMount(){
-    const {typeDestinations, destinations} = this.props
-    this.setState({listData : typeDestinations, listDestinations: destinations })
+    const {typeDestinations} = this.props
+    this.setState({listDestinations : typeDestinations})
   }
 
   onChangeDestinations=()=>{
@@ -85,19 +84,24 @@ class CommonPickList extends React.Component {
     this.setState({listData, listDataSelected})
   }
 
+  onChangeTypeDestination=(value)=>{
+    const {listDestinations} = this.state
+    const destinations = [...listDestinations[value].destinations]
+    this.setState({listData: (destinations && destinations.length>0) ? destinations: []})
+  }
+
   render(){
     const {listData, listDataSelected, listDestinations} = this.state
-    const {onChange, idTypeDestinations} = this.props
     return(
       <div className='pick-list-container'>
         <div className='select-type-destination'>
-          <select id={'selectId'} className={`form-control`} style={{fontSize: 13}}
-                  onChange={(e)=> onChange(idTypeDestinations, e.target.value)} required>
+          <select id={'selectId'} className='form-control' style={{fontSize: 13, width: '80%'}}
+                  onChange={(e)=> this.onChangeTypeDestination(e.target.value)} required>
             <option selected value={'0'}>Seleccione destino</option>
             {
               listDestinations && listDestinations.length>0 ?
                 listDestinations.map((item, index)=>{
-                  return <option key={'option'+index} value={item.id}>{item.value}</option>
+                  return <option key={'option'+index} value={index}>{item.value}</option>
                 }) : null
             }
 

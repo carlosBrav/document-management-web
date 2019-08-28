@@ -9,8 +9,8 @@ class CommonTextInput extends Component{
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
         <input type="text"
                className={`form-control ${(classInput)?classInput:''}`}
-               style={{fontSize: 13}}
                id={idSection}
+               style={(isFormCircular)? {width: '40%'}: {}}
                onChange={(e)=>onChange(idSection, e.target.value)}
                required={isRequired}
                readOnly={isReadOnly}

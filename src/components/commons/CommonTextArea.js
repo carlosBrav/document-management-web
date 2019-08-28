@@ -9,7 +9,7 @@ class CommonTextArea extends Component{
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
         <textarea rows="3"
                   className={`form-control ${(classInput)?classInput:''}`}
-                  style={{fontSize: 13}}
+                  style={(isFormCircular)? {width: '40%'}: {}}
                   id={idSection}
                   onChange={(e)=>onChange(idSection, e.target.value)}
                   required={isRequired}

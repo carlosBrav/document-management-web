@@ -1321,6 +1321,102 @@ export const list_dependencies =
     }
   ]
 
+export const list_type_destinations = [
+  {
+    "id": "1",
+    "value": "tipo de destino 1",
+    "destinations": [
+      {
+        "id": "1",
+        "value":"OFICINA DE PRESUPUESTO",
+        "check": false
+      },
+      {
+        "id": "2",
+        "value":"OFICINA DE RACIONALIZACION",
+        "check": false
+      },
+      {
+        "id": "3",
+        "value":"OFICINA DE PLANES Y PROGRAMAS",
+        "check": false
+      },
+      {
+        "id": "4",
+        "value":"OFICINA DE CENTRO DE PRODUCCION",
+        "check": false
+      },
+      {
+        "id": "5",
+        "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+        "check": false
+      },
+      {
+        "id": "6",
+        "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+        "check": false
+      },
+      {
+        "id": "7",
+        "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+        "check": false
+      },
+      {
+        "id": "8",
+        "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+        "check": false
+      },
+      {
+        "id": "9",
+        "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+        "check": false
+      },
+      {
+        "id": "10",
+        "value":"OFICINA DE ESTADISTICA E INFORMATICA",
+        "check": false
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "value": "tipo de destino 2",
+    "destinations": [
+      {
+        "id": "1",
+        "value":"OFICINA DE PRESUPUESTO",
+        "check": false
+      },
+      {
+        "id": "2",
+        "value":"OFICINA DE RACIONALIZACION",
+        "check": false
+      },
+      {
+        "id": "3",
+        "value":"OFICINA DE PLANES Y PROGRAMAS",
+        "check": false
+      },
+    ]
+  },
+  {
+    "id": "3",
+    "value": "tipo de destino 3",
+    "destinations": [
+      {
+        "id": "1",
+        "value":"OFICINA DE CENTRO DE PRODUCCION",
+        "check": false
+      },
+      {
+        "id": "2",
+        "value":"OFICINA DE PRESUPUESTO",
+        "check": false
+      }
+    ]
+  }
+]
+
 export const list_dependencies_2 =
   [
     {

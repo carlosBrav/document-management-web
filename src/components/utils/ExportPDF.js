@@ -10,15 +10,48 @@ function appendZero(n){
   return n
 }
 
+(function(API){
+  API.myText = function(txt, options, x, y) {
+    options = options ||{};
+    /* Use the options align property to specify desired text alignment
+     * Param x will be ignored if desired text alignment is 'center'.
+     * Usage of options can easily extend the function to apply different text
+     * styles and sizes
+    */
+    if( options.align == "center" ){
+      //Get current font size
+      var fontSize = this.internal.getFontSize();
+
+      //Get page width
+      var pageWidth = this.internal.pageSize.width;
+
+      //Get the actual text's width
+      /* You multiply the unit width of your string by your font size and divide
+       * by the internal scale factor. The division is necessary
+       * for the case where you use units other than 'pt' in the constructor
+       * of jsPDF.
+      */
+      let txtWidth = this.getStringUnitWidth(txt)*fontSize/this.internal.scaleFactor;
+
+      //Calculate text's x coordinate
+      x = ( pageWidth - txtWidth )/2;
+    }
+
+    //Draw text at x,y
+    this.text(txt,x,y);
+  }
+})(jsPDF.API);
+
 
 export function exportPDF() {
-  let doc = new jsPDF('p', 'px');
+  let doc = new jsPDF('p', 'px','a4');
   let title = 'UNMSM - SISTEMA DE TRAMITE DOCUMENTARIO OGPL';
   let user = 'Usuario: CHUCHON OCHOA, ANA';//llega por parametro
   let typeDocument = 'REPORTE DE DOCUMENTOS DERIVADOS A OFICINAS INTERNAS';//tipo de documento, viene de constants
+  let subtitle = 'OFICINA INTERNA: OGPL - OFICINA DE RACIONALIZACION';
 
   doc.setProperties({
-    title: 'ANOTHER TITLE'
+    title: 'Documentos Confirmados'
   });
 
   doc.setFont('Courier', 'bold');
@@ -41,7 +74,11 @@ export function exportPDF() {
 
   doc.setFont('Courier', 'bold');
   doc.setFontSize(12);
-  doc.text(typeDocument, 80, 70);
+  doc.myText(typeDocument,{align: "center"}, 0, 70);
+
+  doc.setFont('Courier', 'bold');
+  doc.setFontSize(12);
+  doc.myText(subtitle,{align: "center"}, 0, 90)
 
   let tableDocuments = listData_1.map((data) => {
     return omit(data, ['id', 'movimiento', 'destino', 'indic', 'estado', 'check'])
@@ -60,12 +97,12 @@ export function exportPDF() {
 
     columns: headers,
     body: tableDocuments,
-    bodyStyles: {minCellWidth: 100, fontSize: 8, rowHeight: '25', fontWeight: 'bold'},
+    bodyStyles: {minCellWidth: 100, fontSize: 8, minCellHeight: '25', fontWeight: 'bold'},
     columnStyles: {
-      'num_tram': {halign: 'center', valign: 'middle', columnWidth: 65},
-      'fech_envio': {halign: 'center', columnWidth: 40},
-      'docum_nomb': {halign: 'center', valign: 'middle', columnWidth: 50},
-      'observacion': {halign: 'left', columnWidth: 120},
+      'num_tram': {halign: 'center', valign: 'middle', cellWidth: 65},
+      'fech_envio': {halign: 'center', cellWidth: 40},
+      'docum_nomb': {halign: 'center', valign: 'middle', cellWidth: 50},
+      'observacion': {halign: 'left', cellWidth: 120},
     },
     headStyles: {halign: 'center', fillColor: '#222', fontSize: 8, textColor: '#FFF'},
     margin: {top: 100, right: 50, bottom: 0, left: 20},

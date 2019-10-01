@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
 import CommonIcon, {ICON_TYPE} from './commons/CommonIcon'
 import escudo_unmsm from '../assets/images/escudo_san_marcos.png';
+import { connect } from 'react-redux';
+import {login} from '../actions/actions';
 
 class Login extends Component {
+
+  state = {
+    user: '',
+    password: ''
+  }
+
+  onChange=(value, prop) => {
+    this.setState({[prop]: value})
+  }
+
+  onLogin=()=>{
+    const {user, password} = this.state
+    const {login} = this.props
+    console.log('USER ', user, ' PASSWORD ', password)
+    login(user, password).then(response => {
+      console.log('RESPONSE ', response)
+    })
+  }
 
   render(){
 
@@ -24,23 +44,38 @@ class Login extends Component {
               <label>Usuario</label>
               <div className='form-label-content'>
                 <CommonIcon type={ICON_TYPE.LOGO_USER}/>
-                <input className='input-text' type='text' placeholder={'Usuario'} />
+                <input className='input-text' type='text' placeholder={'Usuario'}
+                onChange={(e) => this.onChange(e.target.value, 'user')}/>
               </div>
             </div>
             <div className='container-form-label'>
               <label>Contraseña</label>
               <div className='form-label-content'>
                 <CommonIcon type={ICON_TYPE.PADLOCK}/>
-                <input className='input-text' type='password' placeholder={'Contraseña'} />
+                <input className='input-text' type='password' placeholder={'Contraseña'}
+                       onChange={(e) => this.onChange(e.target.value, 'password')}/>
               </div>
             </div>
           </div>
           <div className='login-form-button-submit'>
-            <button className='btn btn-dark button-submit' onClick={onLogin}>Ingresar</button>
+            <button className='btn btn-dark button-submit' onClick={this.onLogin}>Ingresar</button>
           </div>
       </div>
     )
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  const { loggedIn, loggedInUser, errors } = state.authentication;
+  return {
+    loggedIn,
+    loggedInUser,
+    errors
+  };
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (user, password) => dispatch(login(user,password))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

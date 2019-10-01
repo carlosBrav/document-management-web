@@ -1,6 +1,6 @@
 
 import Services from "../services/Services";
-import * as Constants   from './constants'
+import * as Constants   from './Constants'
 import {saveObj, proceedLogout, getDecodedToken, getCurrentUser} from "../utils/Utils";
 
 

@@ -26,7 +26,7 @@ export function authentication(state = initialState, action) {
       };
     case Constants.LOGIN_FAILURE:
       const {errors, responseMessage} = action;
-      const _errors = errors && errors.length > 0 ? map(errors, (error, i) => ( error.message || error)) : [responseMessage];
+      const _errors = errors && errors.length > 0 ? map(errors, (error) => ( error.message || error)) : [responseMessage];
       return {
         ...state,
         isLoading:false,

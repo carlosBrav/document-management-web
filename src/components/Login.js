@@ -3,6 +3,8 @@ import CommonIcon, {ICON_TYPE} from './commons/CommonIcon'
 import escudo_unmsm from '../assets/images/escudo_san_marcos.png';
 import { connect } from 'react-redux';
 import {login} from '../actions/actions';
+import Message, {MESSAGE_TYPE} from "./commons/CommonMessage";
+import isEmpty from "lodash/isEmpty";
 
 class Login extends Component {
 
@@ -26,7 +28,7 @@ class Login extends Component {
 
   render(){
 
-    const {onLogin} = this.props
+    const {errors} = this.props
 
     return(
       <div className='login-form'>
@@ -40,6 +42,11 @@ class Login extends Component {
           </div>
 
           <div className='login-form-labels'>
+            {
+              !isEmpty(errors) ? <div style={{width: "65%", height: "auto" }}>
+                <Message type={MESSAGE_TYPE.DANGER} text={errors}/>
+              </div> : null
+            }
             <div className='container-form-label'>
               <label>Usuario</label>
               <div className='form-label-content'>

@@ -1,14 +1,22 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1} from "../../fakedata/ListDataDocuments";
 import {exportPDF} from "../utils/ExportPDF";
 import {BUTTON_TYPE} from '../../constants/Constants';
+import {getView2Data} from "../../actions/actions"
+import { connect } from 'react-redux';
+import map from "lodash/map";
+import {initialData} from "../../reducers/initialData";
 
 class DocRecibidos extends Component{
 
   state = {
-    listDataSelected: [],
+    listDataSelected: []
+  };
 
+  async componentDidMount(){
+    const {getView2Data} = this.props
+    getView2Data()
   }
 
   onSetSelectDocuments=(listDataSelected)=>{
@@ -28,38 +36,38 @@ class DocRecibidos extends Component{
       },
       {
         columnHeader: 'Num. Tram.',
-        rowProp: 'num_tram',
+        rowProp: 'tramNum',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
       {
         columnHeader: 'Movimiento',
-        rowProp: 'movimiento'
+        rowProp: 'moviNum'
       },
       {
         columnHeader: 'Destino',
-        rowProp: 'destino',
+        rowProp: 'moviDestino',
         classSearchRow: 'container-search-field long-size',
         filterHeader: true,
         rowStyle: 'custom-td'
       },
       {
         columnHeader: 'F. Envio',
-        rowProp: 'fech_envio',
+        rowProp: 'moviFecEnv',
         classSearchRow: 'container-search-field medium-size',
         filterHeader: true
       },
       {
         columnHeader: 'Indicador',
-        rowProp: 'indic'
+        rowProp: 'indiNombre'
       },
       {
         columnHeader: 'Observación',
-        rowProp: 'observacion'
+        rowProp: 'moviObs'
       },
       {
         columnHeader: 'Doc. Nombre',
-        rowProp: 'docum_nomb'
+        rowProp: 'document'
       }
     ])
   }
@@ -77,18 +85,46 @@ class DocRecibidos extends Component{
 
   render(){
 
+    const {data} = this.props
     return(
-      <CommonTableManage
-        tableStructure={this.getTableStructure}
-        title={'DOCUMENTOS RECIBIDOS'}
-        listData={listData_1}
-        getFooterTableStructure={this.getFooterTableStructure}
-        onSetSelected={this.onSetSelectDocuments}
-        onAdd={this.onChangeInitialIndex}
-        onSubtract={this.onChangeInitialIndex}
-      />
+      <Fragment>
+        {
+          data && data.length > 0 ?
+            <CommonTableManage
+              tableStructure={this.getTableStructure}
+              title={'DOCUMENTOS RECIBIDOS'}
+              listData={data}
+              getFooterTableStructure={this.getFooterTableStructure}
+              onSetSelected={this.onSetSelectDocuments}
+              onAdd={this.onChangeInitialIndex}
+              onSubtract={this.onChangeInitialIndex}
+            /> :
+            null
+        }
+      </Fragment>
     )
   }
 }
 
-export default DocRecibidos
+const mapDispatchToProps = (dispatch) => ({
+  getView2Data: ()=>dispatch(getView2Data())
+});
+
+function mapStateToProps(state){
+
+  const listDocuments = (listData) => {
+    return map(listData, (data,index) => ({
+      ...data,
+      document: `${data.docuNombre} ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
+      check: false,
+      id: index
+    }))
+  }
+
+  return {
+    data: listDocuments(state.dataView.data),
+    dependencies: state.initialData.dependencies
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocRecibidos)

@@ -5,7 +5,6 @@ class CommonMenu extends Component {
   render() {
     const {goToPage, menus} = this.props;
     const {head, firstColumn, secondColumn, thirdColumn, fourthColumn, fifthColumn} = menus;
-    console.log("FIFTH COLUMN ", fifthColumn)
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

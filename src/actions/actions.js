@@ -48,3 +48,28 @@ export function logout() {
 
   function callLogout() { return { type: Constants.LOGOUT_SUCCESS } }
 }
+
+export function getView2Data(){
+  return async dispatch => {
+    dispatch(request())
+    const {responseCode, responseMessage, data} = await Services.getView2Data()
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_VIEW2_DATA_REQUEST } }
+  function success(data) { return { type: Constants.GET_VIEW2_DATA_SUCCESS, data  } }
+  function failure(responseMessage) { return { type: Constants.GET_VIEW2_DATA_FAILURE, responseMessage } }
+}
+
+export function loadInitialData(){
+  return async dispatch => {
+    const {data} = await Services.getInitialData()
+    dispatch(success(data))
+  };
+
+  function success(data) { return { type: Constants.GET_INITIAL_DATA, data}}
+}

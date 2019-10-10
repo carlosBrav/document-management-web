@@ -49,7 +49,7 @@ export default class ApiIntegration {
     return fetch(this.getServer(url), requestOptions).then(ApiIntegration.handleResponse);
   }
 
-  static doGet(url, body, jsonFormat = false) {
+  static doGet(url, jsonFormat = false) {
 
     const requestOptions = {
       method: 'GET',

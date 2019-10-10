@@ -1,8 +1,9 @@
 import * as jwt_decode from "jwt-decode";
 import findIndex from "lodash/findIndex";
 import {CONSTANTS} from "./Constants";
+import isEqual from "lodash/isEqual";
 
-function delete_cookie (name) {
+export function delete_cookie (name) {
   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
@@ -55,9 +56,9 @@ export function removeUser(key = 'CURRENT_USER'){
 }
 
 export function getPath(role){
+  const roles = ["admin", "user"]
+  const idx = findIndex(roles, (item) => isEqual(item,role))
 
-  const roles = ['admin', 'user']
-  const idx = findIndex(roles, (item) => item.toLowerCase() === role.toLowerCase())
   if(idx !== -1){
     return roles[idx]
   }

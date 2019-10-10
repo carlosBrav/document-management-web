@@ -10,6 +10,7 @@ import DocGenerados from "../components/pages/DocGenerados";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import ControlDocumentos from "../components/pages/ControlDocumentos";
 import Test from '../components/utils/test';
+import {getParseObj, removeUser, delete_cookie} from "../utils/Utils";
 
 class ContainerAdmin extends Component{
 
@@ -18,8 +19,17 @@ class ContainerAdmin extends Component{
     history.push(pageDirection)
   };
 
+  onLogOut= () => {
+    const {history} = this.props
+    delete_cookie('1P_JAR');
+    removeUser();
+    history.push(`/`);
+  }
+
   render(){
 
+    const currentUser = getParseObj('CURRENT_USER');
+    console.log("Current user ", currentUser)
     const columns =
       {
         head: {
@@ -77,8 +87,15 @@ class ContainerAdmin extends Component{
         ,
         fourthColumn: {
             title: 'Mantenimiento'
-          }
-
+        },
+        fifthColumn: {
+          title: currentUser.nombre,
+          subMenus: [
+            {title: "Cerrar sesión",
+            action: this.onLogOut
+            }
+          ]
+        }
       };
 
 

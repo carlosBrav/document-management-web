@@ -14,7 +14,7 @@ export function isLogged() {
 
 export function login(username, password) {
   return dispatch => {
-    dispatch(request({ username }));
+    dispatch(request());
 
     return Services.login(username, password)
       .then(

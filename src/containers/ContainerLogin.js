@@ -4,9 +4,9 @@ import rectorado_unmsm from '../../src/assets/images/rectorado_unmsm.jpg';
 
 class ContainerLogin extends Component {
 
-  onLogin=()=>{
+  onLogin=(path)=>{
     const {history} = this.props;
-    history.push('/admin')
+    history.push(path)
   }
 
   render(){

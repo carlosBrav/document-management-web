@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {login} from '../actions/actions';
 import Message, {MESSAGE_TYPE} from "./commons/CommonMessage";
 import isEmpty from "lodash/isEmpty";
+import {getPath} from "../utils/Utils";
 
 class Login extends Component {
 
@@ -19,12 +20,14 @@ class Login extends Component {
 
   onLogin=()=>{
     const {user, password} = this.state
-    const {login} = this.props
-    console.log('USER ', user, ' PASSWORD ', password)
+    const {login, onLogin} = this.props
     login(user, password).then(response => {
-      console.log('RESPONSE ', response)
+      const {responseCode} = response
+      if(responseCode === 0){
+        onLogin(`/${getPath(response.data.rolName)}`)
+      }
     })
-  }
+  };
 
   render(){
 

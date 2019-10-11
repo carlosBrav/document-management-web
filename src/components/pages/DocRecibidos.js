@@ -3,15 +3,19 @@ import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1} from "../../fakedata/ListDataDocuments";
 import {exportPDF} from "../utils/ExportPDF";
 import {BUTTON_TYPE} from '../../constants/Constants';
-import {getView2Data} from "../../actions/actions"
+import {getView2Data, insertMovements} from "../../actions/actions"
 import { connect } from 'react-redux';
 import map from "lodash/map";
+import {getParseObj} from "../../utils/Utils";
 import {initialData} from "../../reducers/initialData";
+import CommonModal from "../commons/CommonModal";
+import {formOficios} from "../../forms/templates/TemplateCreateOficios";
 
 class DocRecibidos extends Component{
 
   state = {
-    listDataSelected: []
+    listDataSelected: [],
+    isModalOpen: false
   };
 
   async componentDidMount(){
@@ -72,20 +76,48 @@ class DocRecibidos extends Component{
     ])
   }
 
-  onExportDocuments=()=>{
-    exportPDF()
-  }
+  onConfirmDocuments= async ()=>{
+    const {listDataSelected} = this.state
+    const {insertMovements} = this.props
+    const currentUser = getParseObj('CURRENT_USER')
+    await insertMovements(listDataSelected, currentUser.id)
+    this.toggleModal()
+  };
+
+  onAcceptConfirmation= async ()=>{
+    const {listDataSelected} = this.state
+    const {getView2Data} = this.props
+    await getView2Data()
+    this.setState({listDataSelected: []})
+    this.toggleModal()
+
+    //exportPDF()
+  };
 
   getFooterTableStructure = () => {
     return([
       {text: 'Seguimiento', action: ()=>{}},
-      {text: 'Imprimir', action: this.onExportDocuments}
+      {text: 'Imprimir', action: this.onConfirmDocuments}
     ])
-  }
+  };
+
+  toggleModal = ()=>{
+    this.setState({isModalOpen : !this.state.isModalOpen})
+  };
 
   render(){
 
-    const {data} = this.props
+    const {data, errors, message} = this.props
+    const {isModalOpen} = this.state
+    const modalProps =
+      {
+        showModal: isModalOpen,
+        title: (errors && errors.length>0) ? 'Error al confirmar' : 'Confirmados correctamente',
+        yesFunction: this.onAcceptConfirmation,
+        yesText: 'Aceptar',
+        content: <div><h5>{message}</h5></div>
+      };
+
     return(
       <Fragment>
         {
@@ -101,13 +133,15 @@ class DocRecibidos extends Component{
             /> :
             null
         }
+        <CommonModal key={'modalView'} {...modalProps}/>
       </Fragment>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getView2Data: ()=>dispatch(getView2Data())
+  getView2Data: ()=>dispatch(getView2Data()),
+  insertMovements: (movements, userId) => dispatch(insertMovements(movements, userId))
 });
 
 function mapStateToProps(state){
@@ -119,11 +153,12 @@ function mapStateToProps(state){
       check: false,
       id: index
     }))
-  }
-
+  };
   return {
     data: listDocuments(state.dataView.data),
-    dependencies: state.initialData.dependencies
+    dependencies: state.initialData.dependencies,
+    errors: state.movements.errors,
+    message: state.movements.data
   }
 }
 

@@ -53,7 +53,6 @@ class CommonTable extends Component {
   constructor() {
     super();
     this.state = {
-      searchList: [],
       filteredList: []
     }
   }

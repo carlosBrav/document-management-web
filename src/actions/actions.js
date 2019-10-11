@@ -73,3 +73,19 @@ export function loadInitialData(){
 
   function success(data) { return { type: Constants.GET_INITIAL_DATA, data}}
 }
+
+export function insertMovements(movements, userId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data} = await Services.insertMovements(movements,userId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(data))
+    }
+  };
+
+  function request() { return { type: Constants.INSERT_MOVEMENTS_REQUEST}}
+  function success(data) { return { type: Constants.INSERT_MOVEMENTS_SUCCESS, data}}
+  function failure(error) { return { type: Constants.INSERT_MOVEMENTS_FAILURE, error}}
+}

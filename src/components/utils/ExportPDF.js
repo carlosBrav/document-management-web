@@ -43,7 +43,7 @@ function appendZero(n){
 })(jsPDF.API);
 
 
-export function exportPDF() {
+export function exportPDF(documents, userName, officeDestiny) {
   let doc = new jsPDF('p', 'px','a4');
   let title = 'UNMSM - SISTEMA DE TRAMITE DOCUMENTARIO OGPL';
   let user = 'Usuario: CHUCHON OCHOA, ANA';//llega por parametro

@@ -5,6 +5,8 @@ import CommonTable from '../commons/CommonTable';
 import filter from 'lodash/filter';
 import {TYPE_ACTION} from "../../constants/Constants";
 import keys from "lodash/keys";
+import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 
 class CommonTableManage extends Component{
 
@@ -64,6 +66,15 @@ class CommonTableManage extends Component{
   componentDidMount(){
     const {tableStructure, listData} = this.props
     this.setState({documentsTableStructure: tableStructure(this.renderRowsChecked,this.onToggleAddDocSelect), documentsDataList: listData})
+  }
+
+  componentDidUpdate(prevProps){
+    const keysList = keys(this.state.searchList);
+    if(isEmpty(keysList)){
+      if(!isEqual(this.state.documentsDataList.length, prevProps.listData.length)){
+        this.setState({documentsDataList: prevProps.listData})
+      }
+    }
   }
 
   onChangeInitialIndex=(typeAction)=>{

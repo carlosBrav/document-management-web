@@ -6,7 +6,10 @@ const endPoints = {
   AUTHENTICATION_LOGIN: '/api/login',
   VIEW_2: '/api/view2',
   INITIAL_DATA: '/api/initialState',
-  MOVEMENTS: '/api/movements'
+  MOVEMENTS: '/api/movements',
+  MOVEMENTS_BY_TRAM_NUM: '/api/movements/numTram',
+  MOVEMENTS_BY_OFFICE: '/api/movements/office',
+  MOVEMENTS_BY_DATE: '/api/movements/currentDate'
 };
 
 function getUrlPath(...data){
@@ -41,4 +44,22 @@ export default class Service {
     return ApiIntegration.doPost(url,postBody,true)
   }
 
+  static getMovements(numTram, officeId){
+    let url = "";
+    if(numTram && numTram.trim().length>0){
+      url = getUrlPath(endPoints.MOVEMENTS_BY_TRAM_NUM, numTram)
+    }else{
+      if(officeId && officeId.trim().length>0){
+        url = getUrlPath(endPoints.MOVEMENTS_BY_OFFICE, officeId)
+      }else{
+        url = getUrlPath(endPoints.MOVEMENTS_BY_DATE)
+      }
+    }
+    return ApiIntegration.doGet(url)
+  }
+
+  static deleteMovement(id){
+    const url = getUrlPath(endPoints.MOVEMENTS, id)
+    return ApiIntegration.doDelete(url,true)
+  }
 }

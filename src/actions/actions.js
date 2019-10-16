@@ -89,3 +89,40 @@ export function insertMovements(movements, userId){
   function success(data) { return { type: Constants.INSERT_MOVEMENTS_SUCCESS, data}}
   function failure(error) { return { type: Constants.INSERT_MOVEMENTS_FAILURE, error}}
 }
+
+export function getMovements(numTram, officeId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, responseMessage, data} = await Services.getMovements(numTram, officeId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_MOVEMENTS_REQUEST}}
+  function success(data) { return { type: Constants.GET_MOVEMENTS_SUCCESS, data}}
+  function failure(error) { return { type: Constants.GET_MOVEMENTS_FAILURE, error}}
+}
+
+export function cleanMovementsList(){
+  return { type: Constants.CLEAN_MOVEMENTS_LIST}
+}
+
+export function deleteMovement(id){
+
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, responseMessage, data} = await Services.deleteMovement(id)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.DELETE_MOVEMENT_REQUEST}}
+  function success(data) { return { type: Constants.DELETE_MOVEMENT_SUCCESS, data}}
+  function failure(error) { return { type: Constants.DELETE_MOVEMENT_FAILURE, error}}
+}

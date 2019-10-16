@@ -29,7 +29,6 @@ class ContainerAdmin extends Component{
   render(){
 
     const currentUser = getParseObj('CURRENT_USER');
-    console.log("Current user ", currentUser)
     const columns =
       {
         head: {

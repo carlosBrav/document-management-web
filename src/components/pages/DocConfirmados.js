@@ -3,6 +3,8 @@ import CommonTableManage from '../commons/CommonTableManage';
 import {listData_1} from "../../fakedata/ListDataDocuments";
 import map from "lodash/map";
 import CommonModal from "../commons/CommonModal";
+import { connect } from 'react-redux';
+import {getMovements, cleanMovementsList, deleteMovement} from "../../actions/actions"
 
 class DocConfirmados extends Component{
 
@@ -12,8 +14,24 @@ class DocConfirmados extends Component{
     showDeleteModal: false
   }
 
+  componentDidMount(){
+    const {cleanMovementsList} = this.props
+    cleanMovementsList()
+  }
+
   onChangeValue = (e) =>{
     this.setState({search : e.target.value})
+  };
+
+  onSearchByTramNum=()=>{
+    const {search} = this.state
+    const {getMovements} = this.props
+    getMovements(search, '')
+  };
+
+  onSearchByCurrentDate=()=>{
+    const {getMovements} = this.props
+    getMovements()
   }
 
   getFooterTableStructure = () => {
@@ -33,7 +51,7 @@ class DocConfirmados extends Component{
       },
       {
         columnHeader: 'Num. Tram.',
-        rowProp: 'num_tram',
+        rowProp: 'numTram',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
@@ -43,19 +61,19 @@ class DocConfirmados extends Component{
       },
       {
         columnHeader: 'Destino',
-        rowProp: 'destino',
+        rowProp: 'destinoNombre',
         classSearchRow: 'container-search-field long-size',
         filterHeader: true
       },
       {
         columnHeader: 'F. Envio',
-        rowProp: 'fech_envio',
+        rowProp: 'fechaEnvio',
         classSearchRow: 'container-search-field medium-size',
         filterHeader: true
       },
       {
         columnHeader: 'Indicador',
-        rowProp: 'indic'
+        rowProp: 'indiNombre'
       },
       {
         columnHeader: 'Observación',
@@ -63,11 +81,11 @@ class DocConfirmados extends Component{
       },
       {
         columnHeader: 'Doc. Nombre',
-        rowProp: 'docum_nomb'
+        rowProp: 'document'
       },
       {
         columnHeader: 'Estado',
-        rowProp: 'estado'
+        rowProp: 'estadoDocumento'
       }
     ])
   }
@@ -98,13 +116,13 @@ class DocConfirmados extends Component{
               className="form-control"
               style={{width: '30%', marginLeft: 10, marginRight: 10}}
             />
-            <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222'}}>
+            <button onClick={this.onSearchByTramNum} type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222'}}>
               Buscar
             </button>
           </div>
           <div className="form-group" style={{display: 'flex', flexDirection: 'row', width: '40%', alignItems: 'center'}}>
             <label>Documento de hoy: </label>
-            <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}}>
+            <button onClick={this.onSearchByCurrentDate} type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}}>
               Buscar
             </button>
           </div>
@@ -116,7 +134,7 @@ class DocConfirmados extends Component{
   render(){
 
     const {showDeleteModal,listDataSelected} = this.state
-
+    const {data} = this.props
     const modalProps = [{
       showModal: showDeleteModal,
       title: 'Eliminar Documentos',
@@ -137,7 +155,7 @@ class DocConfirmados extends Component{
         <CommonTableManage
           tableStructure={this.getTableStructure}
           title={'DOCUMENTOS CONFIRMADOS'}
-          listData={listData_1}
+          listData={data}
           containHeader={this.getContainHeader()}
           modalProps={modalProps}
           getFooterTableStructure={this.getFooterTableStructure}
@@ -149,4 +167,27 @@ class DocConfirmados extends Component{
   }
 }
 
-export default DocConfirmados
+
+const mapDispatchToProps = (dispatch) => ({
+  getMovements: (numTram, officeId)=>dispatch(getMovements(numTram, officeId)),
+  cleanMovementsList: ()=> dispatch(cleanMovementsList()),
+  deleteMovement: (id)=> dispatch(deleteMovement(id))
+});
+
+function mapStateToProps(state){
+  const listDocuments = (listData) => {
+    return map(listData, (data,index) => ({
+      ...data,
+      document: `${data.docuNombre} ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
+      check: false,
+      id: index
+    }))
+  };
+  return {
+    data: listDocuments(state.movements.data),
+    dependencies: state.initialData.dependencies,
+    errors: state.movements.errors
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocConfirmados)

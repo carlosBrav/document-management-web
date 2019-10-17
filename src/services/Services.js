@@ -58,8 +58,11 @@ export default class Service {
     return ApiIntegration.doGet(url)
   }
 
-  static deleteMovement(id){
-    const url = getUrlPath(endPoints.MOVEMENTS, id)
-    return ApiIntegration.doDelete(url,true)
+  static deleteMovement(movementsIds){
+    const listIds = JSON.stringify({movementsIds})
+    console.log("LIST IDS ", listIds)
+    const url = getUrlPath(endPoints.MOVEMENTS)
+    console.log("URL ", url)
+    return ApiIntegration.doDelete(url, listIds, true)
   }
 }

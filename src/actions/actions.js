@@ -110,19 +110,20 @@ export function cleanMovementsList(){
   return { type: Constants.CLEAN_MOVEMENTS_LIST}
 }
 
-export function deleteMovement(id){
+export function deleteMovement(movementsIds, numTram, officeId){
 
   return async dispatch => {
     dispatch(request());
-    const {responseCode, responseMessage, data} = await Services.deleteMovement(id)
+    const {responseCode, responseMessage} = await Services.deleteMovement(movementsIds)
     if(responseCode === 0){
-      dispatch(success(data))
+      dispatch(success())
+      dispatch(getMovements(numTram, officeId))
     }else{
       dispatch(failure(responseMessage))
     }
   };
 
   function request() { return { type: Constants.DELETE_MOVEMENT_REQUEST}}
-  function success(data) { return { type: Constants.DELETE_MOVEMENT_SUCCESS, data}}
+  function success() { return { type: Constants.DELETE_MOVEMENT_SUCCESS}}
   function failure(error) { return { type: Constants.DELETE_MOVEMENT_FAILURE, error}}
 }

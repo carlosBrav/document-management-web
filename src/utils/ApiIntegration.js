@@ -70,11 +70,14 @@ export default class ApiIntegration {
     return fetch(url, requestOptions).then(ApiIntegration.handleResponse);
   }
 
-  static doDelete(url, jsonFormat = false) {
-    const requestOptions = {
+  static doDelete(url, body, jsonFormat = false) {
+
+    const defaultOptions = {
       method: 'DELETE',
       ...getHeaders(jsonFormat),
     };
+
+    const requestOptions = (body) ? {...defaultOptions, body: body} : {...defaultOptions};
 
     return fetch(url, requestOptions).then(ApiIntegration.handleResponse);
   }

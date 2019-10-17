@@ -3,7 +3,8 @@ import {
   INSERT_MOVEMENTS_REQUEST,
   INSERT_MOVEMENTS_SUCCESS,
   INSERT_MOVEMENTS_FAILURE,
-  GET_MOVEMENTS_REQUEST, GET_MOVEMENTS_SUCCESS, GET_MOVEMENTS_FAILURE, CLEAN_MOVEMENTS_LIST
+  GET_MOVEMENTS_REQUEST, GET_MOVEMENTS_SUCCESS, GET_MOVEMENTS_FAILURE, CLEAN_MOVEMENTS_LIST,
+  DELETE_MOVEMENT_REQUEST, DELETE_MOVEMENT_SUCCESS, DELETE_MOVEMENT_FAILURE
 } from "../actions/Constants";
 
 const initialState =  {errors: [], data: [], isLoading: false};
@@ -49,6 +50,16 @@ export function movements(state = initialState, action){
         isLoading: false,
         errors: [],
         data: []
+      };
+    case DELETE_MOVEMENT_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case DELETE_MOVEMENT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false
       }
     default: return state
   }

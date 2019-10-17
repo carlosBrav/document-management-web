@@ -1,10 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
-import {listData_1} from "../../fakedata/ListDataDocuments";
-import map from "lodash/map";
 import CommonModal from "../commons/CommonModal";
 import { connect } from 'react-redux';
 import {getMovements, cleanMovementsList, deleteMovement} from "../../actions/actions"
+import isEmpty from "lodash/isEmpty";
+import map from "lodash/map";
 
 class DocConfirmados extends Component{
 
@@ -25,8 +25,10 @@ class DocConfirmados extends Component{
 
   onSearchByTramNum=()=>{
     const {search} = this.state
-    const {getMovements} = this.props
-    getMovements(search, '')
+    if(!isEmpty(search)){
+      const {getMovements} = this.props
+      getMovements(search, '')
+    }
   };
 
   onSearchByCurrentDate=()=>{
@@ -82,10 +84,6 @@ class DocConfirmados extends Component{
       {
         columnHeader: 'Doc. Nombre',
         rowProp: 'document'
-      },
-      {
-        columnHeader: 'Estado',
-        rowProp: 'estadoDocumento'
       }
     ])
   }
@@ -95,6 +93,10 @@ class DocConfirmados extends Component{
   }
 
   onDeleteDocuments = () => {
+    const {listDataSelected} = this.state;
+    const {deleteMovement} = this.props;
+    const movementsIds = map(listDataSelected, data => data.id);
+    deleteMovement(movementsIds);
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
@@ -171,7 +173,7 @@ class DocConfirmados extends Component{
 const mapDispatchToProps = (dispatch) => ({
   getMovements: (numTram, officeId)=>dispatch(getMovements(numTram, officeId)),
   cleanMovementsList: ()=> dispatch(cleanMovementsList()),
-  deleteMovement: (id)=> dispatch(deleteMovement(id))
+  deleteMovement: (movementsIds)=> dispatch(deleteMovement(movementsIds))
 });
 
 function mapStateToProps(state){
@@ -179,8 +181,7 @@ function mapStateToProps(state){
     return map(listData, (data,index) => ({
       ...data,
       document: `${data.docuNombre} ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
-      check: false,
-      id: index
+      check: false
     }))
   };
   return {

@@ -1,13 +1,13 @@
 import {TYPE_INPUT} from "../../constants/Constants";
 import {list_dependencies,list_type_destinations} from '../../fakedata/ListDataDocuments';
 
-export const formOficiosCirculares = [
+const formOficiosCirculares = (typeDocuments)=> [
   {
     "id": "tipoDocumentId",
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "required": true,
-    "listItems":list_dependencies
+    "listItems":typeDocuments
   },
   {
     "id": "documentId",
@@ -53,3 +53,5 @@ export const formOficiosCirculares = [
     "readOnly": true
   }
 ];
+
+export default formOficiosCirculares

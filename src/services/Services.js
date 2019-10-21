@@ -9,7 +9,8 @@ const endPoints = {
   MOVEMENTS: '/api/movements',
   MOVEMENTS_BY_TRAM_NUM: '/api/movements/numTram',
   MOVEMENTS_BY_OFFICE: '/api/movements/office',
-  MOVEMENTS_BY_DATE: '/api/movements/currentDate'
+  MOVEMENTS_BY_DATE: '/api/movements/currentDate',
+  TYPE_DOCUMENTS: '/api/typeDocuments'
 };
 
 function getUrlPath(...data){
@@ -60,9 +61,12 @@ export default class Service {
 
   static deleteMovement(movementsIds){
     const listIds = JSON.stringify({movementsIds})
-    console.log("LIST IDS ", listIds)
     const url = getUrlPath(endPoints.MOVEMENTS)
-    console.log("URL ", url)
     return ApiIntegration.doDelete(url, listIds, true)
+  }
+
+  static getTypeDocuments(){
+    const url = getUrlPath(endPoints.TYPE_DOCUMENTS)
+    return ApiIntegration.doGet(url)
   }
 }

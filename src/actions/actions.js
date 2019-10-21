@@ -127,3 +127,19 @@ export function deleteMovement(movementsIds, numTram, officeId){
   function success() { return { type: Constants.DELETE_MOVEMENT_SUCCESS}}
   function failure(error) { return { type: Constants.DELETE_MOVEMENT_FAILURE, error}}
 }
+
+export function getTypeDocuments(){
+  return async dispatch => {
+    dispatch(request())
+    const {responseCode,responseMessage, data} = await Services.getTypeDocuments()
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_TYPE_DOCUMENTS_REQUEST}}
+  function success(data) { return { type: Constants.GET_TYPE_DOCUMENTS_SUCCESS, data}}
+  function failure(error) { return { type: Constants.GET_TYPE_DOCUMENTS_FAILURE, error}}
+}

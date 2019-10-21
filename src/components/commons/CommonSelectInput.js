@@ -4,6 +4,7 @@ class CommonSelectInput extends Component{
 
   render(){
     const {idSection, isFormCircular, listItems, label, onChange, classContainer, classInput, isRequired, value} = this.props
+    console.log('LIST ITEMS ', listItems)
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>

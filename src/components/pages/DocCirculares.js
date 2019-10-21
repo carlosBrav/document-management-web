@@ -4,12 +4,15 @@ import {lista_circulares} from "../../fakedata/ListDataDocuments";
 import {ICON_TYPE} from "../commons/CommonIcon";
 import {exportPDF} from "../utils/ExportPDF";
 import map from "lodash/map";
+import filter from "lodash/filter";
 import CommonModal from '../commons/CommonModal';
 import CommonListGroup from '../commons/CommonListGroup';
-import {formOficiosCirculares} from "../../forms/templates/TemplateOficiosCirculares";
+import formOficiosCirculares from "../../forms/templates/TemplateOficiosCirculares";
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import FormRender from "../../forms/FormRender";
-import {TYPE_CONTENT_MODAL} from '../../constants/Constants'
+import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
+import {getTypeDocuments} from "../../actions/actions";
+import { connect } from 'react-redux';
 
 class DocCirculares extends Component{
 
@@ -114,6 +117,8 @@ class DocCirculares extends Component{
   }
 
   onToggleCreateCircular=()=>{
+    const {getTypeDocuments} = this.props
+    getTypeDocuments()
     this.setState({showCreateCircularModal: !this.state.showCreateCircularModal})
   }
 
@@ -139,6 +144,8 @@ class DocCirculares extends Component{
 
   render(){
 
+    const {formOfficeCircular} = this.props
+
     const {showDeleteModal,
       listDataSelected,
       showCreateCircularModal,
@@ -148,6 +155,7 @@ class DocCirculares extends Component{
       showViewCircularModal,
       valueMapEditCircular} = this.state
 
+    console.log(valueMapCreateCircular)
     const modalProps = [
       {
         showModal: showDeleteModal,
@@ -164,7 +172,7 @@ class DocCirculares extends Component{
         yesText: 'Crear circular',
         noFunction: this.onToggleCreateCircular,
         noText: 'Cancelar',
-        content: <FormRender formTemplate={formOficiosCirculares}
+        content: <FormRender formTemplate={formOfficeCircular}
                              onChange={this.onChangeValueCircular}
                              valueMap={valueMapCreateCircular}
                              isFormCircular={true}/>,
@@ -212,4 +220,22 @@ class DocCirculares extends Component{
     )
   }
 }
-export default DocCirculares
+
+const mapDispatchToProps = (dispatch) => ({
+  getTypeDocuments: () => dispatch(getTypeDocuments())
+});
+
+function mapStateToProps(state){
+  const getTypeDocumentsCircular  = (listData) => {
+    return map(filter(listData, data => data.flag2 === 'NPC'), data => ({
+      ...data,
+      value: data.nombreTipo
+    }))
+  };
+  const listTypeDocuments = getTypeDocumentsCircular(state.typeDocuments.data)
+  return{
+    formOfficeCircular: formOficiosCirculares(listTypeDocuments)
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(DocCirculares)

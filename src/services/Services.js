@@ -10,7 +10,8 @@ const endPoints = {
   MOVEMENTS_BY_TRAM_NUM: '/api/movements/numTram',
   MOVEMENTS_BY_OFFICE: '/api/movements/office',
   MOVEMENTS_BY_DATE: '/api/movements/currentDate',
-  TYPE_DOCUMENTS: '/api/typeDocuments'
+  TYPE_DOCUMENTS: '/api/typeDocuments',
+  MAX_CORRELATIVE: '/api/correlativeMax'
 };
 
 function getUrlPath(...data){
@@ -68,5 +69,12 @@ export default class Service {
   static getTypeDocuments(){
     const url = getUrlPath(endPoints.TYPE_DOCUMENTS)
     return ApiIntegration.doGet(url)
+  }
+
+  static getCorrelativeMax(officeId, typeDocumentId, siglas){
+    const body = JSON.stringify({officeId,typeDocumentId,siglas})
+    console.log("BODY ", body)
+    const url = getUrlPath(endPoints.MAX_CORRELATIVE)
+    return ApiIntegration.doPost(url, body, true)
   }
 }

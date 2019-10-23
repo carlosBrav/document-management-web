@@ -5,10 +5,13 @@ import CommonElement from '../components/commons/CommonElement';
 class FormRender extends Component{
 
   render(){
-    const {formTemplate, onChange, isFormCircular, valueMap} = this.props
+    const {formTemplate, onChange, isFormCircular, valueMap, onChangeInputSelect} = this.props
 
     const rows = map(formTemplate, (section)=>{
-      return (<CommonElement isFormCircular={isFormCircular} valueMap={valueMap} onChange={onChange} {...section}/>)
+      return (<CommonElement onChangeInputSelect={onChangeInputSelect}
+                             isFormCircular={isFormCircular}
+                             valueMap={valueMap} onChange={onChange}
+                             {...section}/>)
     })
     return(
       <form>

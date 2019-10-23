@@ -1,6 +1,8 @@
 import React from 'react';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
+import some from "lodash/some";
+import { connect } from 'react-redux';
 
 const LIST_CASE = {
   LIST_LEFT: 'list_left',
@@ -85,10 +87,17 @@ class CommonPickList extends React.Component {
   }
 
   onChangeTypeDestination=(value)=>{
-    const {listDestinations} = this.state
-    const destinations = [...listDestinations[value].destinations]
-    this.setState({listData: (destinations && destinations.length>0) ? destinations: []})
-  }
+    const {dependencies} = this.props
+    const {listDataSelected} = this.state
+    const destinations = filter(dependencies, {tipo: value});
+    const newDestinations = (listDataSelected.length>0) ?
+      filter([...destinations], data => {
+      return some(listDataSelected, dataSelected => {
+        return dataSelected.id !== data.id
+      })
+    }) : [...destinations]
+    this.setState({listData: newDestinations})
+  };
 
   render(){
     const {listData, listDataSelected, listDestinations} = this.state
@@ -97,11 +106,11 @@ class CommonPickList extends React.Component {
         <div className='select-type-destination'>
           <select id={'selectId'} className='form-control' style={{fontSize: 13, width: '80%'}}
                   onChange={(e)=> this.onChangeTypeDestination(e.target.value)} required>
-            <option selected value={'0'}>Seleccione destino</option>
+            <option selected value={' '}>Seleccione destino</option>
             {
               listDestinations && listDestinations.length>0 ?
-                listDestinations.map((item, index)=>{
-                  return <option key={'option'+index} value={index}>{item.value}</option>
+                listDestinations.map((item)=>{
+                  return <option key={'option'+item.id} value={item.id}>{item.value}</option>
                 }) : null
             }
 
@@ -155,4 +164,16 @@ class CommonPickList extends React.Component {
   }
 }
 
-export default CommonPickList
+function mapStateToProps(state){
+  const updateDependencies =(listData)=>{
+    return map(listData, data =>({
+      ...data,
+        value: data.nombre
+    }))
+  }
+  return{
+    dependencies: updateDependencies(state.initialData.dependencies)
+  }
+}
+
+export default connect(mapStateToProps, null)(CommonPickList)

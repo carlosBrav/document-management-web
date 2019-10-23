@@ -143,3 +143,16 @@ export function getTypeDocuments(){
   function success(data) { return { type: Constants.GET_TYPE_DOCUMENTS_SUCCESS, data}}
   function failure(error) { return { type: Constants.GET_TYPE_DOCUMENTS_FAILURE, error}}
 }
+
+export function getCorrelativeMax(officeId, typeDocumentId, siglas){
+  return async dispatch => {
+    dispatch(request())
+    const {responseCode, data} = await Services.getCorrelativeMax(officeId, typeDocumentId, siglas)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }
+  }
+  function request() { return { type: Constants.GET_CORRELATIVE_MAX_REQUEST}}
+  function success(data) { return { type: Constants.GET_CORRELATIVE_MAX_SUCCESS, data}}
+}
+

@@ -11,8 +11,10 @@ import formOficiosCirculares from "../../forms/templates/TemplateOficiosCircular
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import FormRender from "../../forms/FormRender";
 import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
-import {getTypeDocuments} from "../../actions/actions";
+import {getTypeDocuments, getCorrelativeMax} from "../../actions/actions";
 import { connect } from 'react-redux';
+import {getParseObj} from "../../utils/Utils";
+import find from "lodash/find";
 
 class DocCirculares extends Component{
 
@@ -142,6 +144,16 @@ class DocCirculares extends Component{
     this.onToggleEditDocument()
   }
 
+  onGetMaxCorrelative=(typeDocumentId)=>{
+    const currentUser = getParseObj('CURRENT_USER');
+    const {getCorrelativeMax, listTypeDocuments} = this.props
+    getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(()=>{
+      const {documentNumber,documentSiglas,documentYear} = this.props
+      const {nombreTipo} = find(listTypeDocuments, {'id': typeDocumentId})
+      this.onChangeValueCircular("documentId",nombreTipo+" N° "+documentNumber+"-"+documentSiglas+"-"+documentYear)
+    })
+  };
+
   render(){
 
     const {formOfficeCircular} = this.props
@@ -155,7 +167,7 @@ class DocCirculares extends Component{
       showViewCircularModal,
       valueMapEditCircular} = this.state
 
-    console.log(valueMapCreateCircular)
+
     const modalProps = [
       {
         showModal: showDeleteModal,
@@ -175,6 +187,7 @@ class DocCirculares extends Component{
         content: <FormRender formTemplate={formOfficeCircular}
                              onChange={this.onChangeValueCircular}
                              valueMap={valueMapCreateCircular}
+                             onChangeInputSelect={(typeDocumentId) => this.onGetMaxCorrelative(typeDocumentId)}
                              isFormCircular={true}/>,
         typeContent: TYPE_CONTENT_MODAL.TYPE_CIRCULAR
       },
@@ -222,7 +235,8 @@ class DocCirculares extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getTypeDocuments: () => dispatch(getTypeDocuments())
+  getTypeDocuments: () => dispatch(getTypeDocuments()),
+  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas))
 });
 
 function mapStateToProps(state){
@@ -234,7 +248,11 @@ function mapStateToProps(state){
   };
   const listTypeDocuments = getTypeDocumentsCircular(state.typeDocuments.data)
   return{
-    formOfficeCircular: formOficiosCirculares(listTypeDocuments)
+    formOfficeCircular: formOficiosCirculares(listTypeDocuments),
+    listTypeDocuments,
+    documentNumber: state.correlative.documentNumber,
+    documentSiglas: state.correlative.documentSiglas,
+    documentYear: state.correlative.documentYear
   }
 }
 

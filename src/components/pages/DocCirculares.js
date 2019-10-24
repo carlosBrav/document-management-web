@@ -11,10 +11,13 @@ import formOficiosCirculares from "../../forms/templates/TemplateOficiosCircular
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import FormRender from "../../forms/FormRender";
 import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
-import {getTypeDocuments, getCorrelativeMax} from "../../actions/actions";
+import {getTypeDocuments, getCorrelativeMax, getUserBossOffice} from "../../actions/actions";
 import { connect } from 'react-redux';
 import {getParseObj} from "../../utils/Utils";
 import find from "lodash/find";
+import {getFormattedDate} from "../../utils/Constants";
+
+const currentUser = getParseObj('CURRENT_USER');
 
 class DocCirculares extends Component{
 
@@ -23,7 +26,7 @@ class DocCirculares extends Component{
     listDataSelected: [],
     showDeleteModal: false,
     showCreateCircularModal: false,
-    valueMapCreateCircular: {},
+    valueMapCircular: {},
     valueMapEditCircular:{},
     showViewCircularModal: false,
     circularSelected:{},
@@ -85,11 +88,7 @@ class DocCirculares extends Component{
   }
 
   onChangeValueCircular=(prop, value)=>{
-    this.setState({valueMapCreateCircular: {...this.state.valueMapCreateCircular, [prop]: value}})
-  }
-
-  onChangeValueEditCircular=(prop, value)=>{
-    this.setState({valueMapEditCircular: {...this.state.valueMapEditCircular, [prop]: value}})
+    this.setState({valueMapCircular: {...this.state.valueMapCircular, [prop]: value}})
   }
 
   onToggleViewDocument=(data={})=>{
@@ -119,9 +118,22 @@ class DocCirculares extends Component{
   }
 
   onToggleCreateCircular=()=>{
-    const {getTypeDocuments} = this.props
-    getTypeDocuments()
-    this.setState({showCreateCircularModal: !this.state.showCreateCircularModal})
+    this.setState({valueMapCircular: {}})
+    const {getTypeDocuments, getUserBossOffice} = this.props;
+    getUserBossOffice().then(()=>{
+      getTypeDocuments().then(()=>{
+        const {dependencyName, apellido, nombre} = currentUser;
+        const {bossOffice} = this.props
+        this.onChangeValueCircular('fecha_creacion', getFormattedDate());
+        this.onChangeValueCircular('areaResponsable', dependencyName);
+        this.onChangeValueCircular('responsable', apellido.toUpperCase()+", "+nombre.toUpperCase());
+        this.onChangeValueCircular('firma', bossOffice.apellido.toUpperCase()+", "+bossOffice.nombre.toUpperCase());
+        this.onChangeValueCircular('dependenciaId', currentUser.dependencyId);
+        this.onChangeValueCircular('userId', currentUser.id);
+        this.setState({showCreateCircularModal: !this.state.showCreateCircularModal})
+      })
+    });
+
   }
 
   getFooterTableStructure=()=>{
@@ -133,24 +145,26 @@ class DocCirculares extends Component{
   }
 
   onCreateCircular=()=>{
-    const {valueMapCreateCircular} = this.state
-    console.log('valueMapCreateCircular ', valueMapCreateCircular)
+    const {valueMapCircular} = this.state
+    console.log('valueMapCreateCircular ', valueMapCircular)
     this.onToggleCreateCircular()
   }
 
   onEditCircular=()=>{
-    const {valueMapEditCircular} = this.state
-    console.log('circular editado ', valueMapEditCircular)
+    const {valueMapCircular} = this.state
+    console.log('circular editado ', valueMapCircular)
     this.onToggleEditDocument()
   }
 
   onGetMaxCorrelative=(typeDocumentId)=>{
-    const currentUser = getParseObj('CURRENT_USER');
     const {getCorrelativeMax, listTypeDocuments} = this.props
     getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(()=>{
       const {documentNumber,documentSiglas,documentYear} = this.props
-      const {nombreTipo} = find(listTypeDocuments, {'id': typeDocumentId})
-      this.onChangeValueCircular("documentId",nombreTipo+" N° "+documentNumber+"-"+documentSiglas+"-"+documentYear)
+      const {nombreTipo} = find(listTypeDocuments, {'id': typeDocumentId});
+      this.onChangeValueCircular('numDocumento', documentNumber);
+      this.onChangeValueCircular('siglas', documentSiglas);
+      this.onChangeValueCircular('anio', documentYear);
+      this.onChangeValueCircular("document",nombreTipo+" N° "+documentNumber+"-"+documentSiglas+"-"+documentYear)
     })
   };
 
@@ -161,11 +175,10 @@ class DocCirculares extends Component{
     const {showDeleteModal,
       listDataSelected,
       showCreateCircularModal,
-      valueMapCreateCircular,
+      valueMapCircular,
       circularSelected,
       showEditCircularModal,
-      showViewCircularModal,
-      valueMapEditCircular} = this.state
+      showViewCircularModal} = this.state
 
 
     const modalProps = [
@@ -186,7 +199,7 @@ class DocCirculares extends Component{
         noText: 'Cancelar',
         content: <FormRender formTemplate={formOfficeCircular}
                              onChange={this.onChangeValueCircular}
-                             valueMap={valueMapCreateCircular}
+                             valueMap={valueMapCircular}
                              onChangeInputSelect={(typeDocumentId) => this.onGetMaxCorrelative(typeDocumentId)}
                              isFormCircular={true}/>,
         typeContent: TYPE_CONTENT_MODAL.TYPE_CIRCULAR
@@ -208,8 +221,8 @@ class DocCirculares extends Component{
         noFunction: this.onToggleEditDocument,
         noText: 'Cancelar',
         content: <FormRender formTemplate={formEditOficioCircular}
-                             onChange={this.onChangeValueEditCircular}
-                             valueMap={valueMapEditCircular}/>
+                             onChange={this.onChangeValueCircular}
+                             valueMap={valueMapCircular}/>
       }
     ];
 
@@ -236,7 +249,8 @@ class DocCirculares extends Component{
 
 const mapDispatchToProps = (dispatch) => ({
   getTypeDocuments: () => dispatch(getTypeDocuments()),
-  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas))
+  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
+  getUserBossOffice: () => dispatch(getUserBossOffice())
 });
 
 function mapStateToProps(state){
@@ -252,7 +266,8 @@ function mapStateToProps(state){
     listTypeDocuments,
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
-    documentYear: state.correlative.documentYear
+    documentYear: state.correlative.documentYear,
+    bossOffice: state.user.userBossOffice
   }
 }
 

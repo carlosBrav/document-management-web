@@ -11,14 +11,14 @@ const typeDestinations = [
 
 const formOficiosCirculares = (typeDocuments)=> [
   {
-    "id": "tipoDocumentId",
+    "id": "tipo_docu_id",
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "required": true,
     "listItems":typeDocuments
   },
   {
-    "id": "documentId",
+    "id": "document",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
@@ -30,32 +30,32 @@ const formOficiosCirculares = (typeDocuments)=> [
     "typeDestinations": typeDestinations
   },
   {
-    "id": "asuntoId",
+    "id": "asunto",
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,
     "required": true
   },
   {
-    "id": "fechaId",
+    "id": "fecha_creacion",
     "label": "Fecha:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "firmaId",
-    "label": "Origen:",
+    "id": "firma",
+    "label": "Firma:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "responsableId",
+    "id": "responsable",
     "label": "Responsable:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "areaResponsableId",
+    "id": "areaResponsable",
     "label": "Área responsable:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true

@@ -156,3 +156,15 @@ export function getCorrelativeMax(officeId, typeDocumentId, siglas){
   function success(data) { return { type: Constants.GET_CORRELATIVE_MAX_SUCCESS, data}}
 }
 
+export function getUserBossOffice(){
+  return async dispatch => {
+    dispatch(request())
+    const {responseCode, data} = await Services.getUserBossOffice()
+    if(responseCode === 0){
+      dispatch(success(data))
+    }
+  }
+  function request() { return { type: Constants.USER_BOSS_OFFICE_REQUEST}}
+  function success(data) { return { type: Constants.USER_BOSS_OFFICE_SUCCESS, data}}
+}
+

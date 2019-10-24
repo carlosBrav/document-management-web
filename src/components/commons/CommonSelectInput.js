@@ -2,16 +2,24 @@ import React, {Component} from 'react';
 
 class CommonSelectInput extends Component{
 
+  onChange=(idSection, e)=>{
+    const {onChange,onChangeInputSelect} = this.props
+    onChange(idSection, e.target.value)
+    if(onChangeInputSelect){
+      onChangeInputSelect(e.target.value)
+    }
+  };
+
   render(){
-    const {idSection, isFormCircular, listItems, label, onChange, classContainer, classInput, isRequired, value,onChangeInputSelect} = this.props
+    const {idSection, isFormCircular, listItems, label , classContainer, classInput, isRequired, value} = this.props
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
         <select id={idSection+'select'}
                 className={`form-control ${classInput}`}
                 style={(isFormCircular)? {width: '40%'}: {}}
-                onChange={(e)=> {onChange(idSection, e.target.value);onChangeInputSelect(e.target.value)}} required={isRequired} defaultValue={value}>
-          <option selected value={''}>Seleccione</option>
+                onChange={(e)=> this.onChange(idSection, e)} required={isRequired} defaultValue={value}>
+          <option selected value={'-1'}>Seleccione</option>
           {
             listItems && listItems.length>0 ?
               listItems.map((item, index)=>{

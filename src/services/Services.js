@@ -11,7 +11,8 @@ const endPoints = {
   MOVEMENTS_BY_OFFICE: '/api/movements/office',
   MOVEMENTS_BY_DATE: '/api/movements/currentDate',
   TYPE_DOCUMENTS: '/api/typeDocuments',
-  MAX_CORRELATIVE: '/api/correlativeMax'
+  MAX_CORRELATIVE: '/api/correlativeMax',
+  USER_BOSS_OFFICE: '/api/userBossOffice'
 };
 
 function getUrlPath(...data){
@@ -76,5 +77,10 @@ export default class Service {
     console.log("BODY ", body)
     const url = getUrlPath(endPoints.MAX_CORRELATIVE)
     return ApiIntegration.doPost(url, body, true)
+  }
+
+  static getUserBossOffice(){
+    const url = getUrlPath(endPoints.USER_BOSS_OFFICE)
+    return ApiIntegration.doGet(url)
   }
 }

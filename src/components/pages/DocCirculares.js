@@ -124,7 +124,7 @@ class DocCirculares extends Component{
       getTypeDocuments().then(()=>{
         const {dependencyName, apellido, nombre} = currentUser;
         const {bossOffice} = this.props
-        this.onChangeValueCircular('fecha_creacion', getFormattedDate());
+        this.onChangeValueCircular('fechaCreacion', getFormattedDate());
         this.onChangeValueCircular('areaResponsable', dependencyName);
         this.onChangeValueCircular('responsable', apellido.toUpperCase()+", "+nombre.toUpperCase());
         this.onChangeValueCircular('firma', bossOffice.apellido.toUpperCase()+", "+bossOffice.nombre.toUpperCase());

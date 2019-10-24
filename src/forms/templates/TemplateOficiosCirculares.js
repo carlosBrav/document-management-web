@@ -11,7 +11,7 @@ const typeDestinations = [
 
 const formOficiosCirculares = (typeDocuments)=> [
   {
-    "id": "tipo_docu_id",
+    "id": "tipoDocuId",
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "required": true,
@@ -37,7 +37,7 @@ const formOficiosCirculares = (typeDocuments)=> [
     "required": true
   },
   {
-    "id": "fecha_creacion",
+    "id": "fechaCreacion",
     "label": "Fecha:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true

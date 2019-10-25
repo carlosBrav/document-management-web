@@ -121,7 +121,7 @@ class CommonPickList extends React.Component {
             {
               listData && listData.length>0 ?
                 listData.map((dependency, index)=>{
-                  return <div className={'data-container-style '+(dependency.check ? 'selected':'')}>
+                  return <div key={'optionSelected'+index}  className={'data-container-style '+(dependency.check ? 'selected':'')}>
                     <div onClick={(e)=> {e.stopPropagation();this.onChangeToCheck(index, LIST_CASE.LIST_LEFT)}} className='data-style'>
                       <input type='checkbox' checked={dependency.check} onClick={(e)=>{e.stopPropagation();this.onChangeToCheck(index, LIST_CASE.LIST_LEFT)}}/>
                       {dependency.value}</div>

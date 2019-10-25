@@ -11,11 +11,12 @@ import formOficiosCirculares from "../../forms/templates/TemplateOficiosCircular
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import FormRender from "../../forms/FormRender";
 import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
-import {getTypeDocuments, getCorrelativeMax, getUserBossOffice} from "../../actions/actions";
+import {getTypeDocuments, getCorrelativeMax, getUserBossOffice, createCircularDocuments} from "../../actions/actions";
 import { connect } from 'react-redux';
 import {getParseObj} from "../../utils/Utils";
 import find from "lodash/find";
 import {getFormattedDate} from "../../utils/Constants";
+import parseInt from "lodash/parseInt";
 
 const currentUser = getParseObj('CURRENT_USER');
 
@@ -146,8 +147,13 @@ class DocCirculares extends Component{
 
   onCreateCircular=()=>{
     const {valueMapCircular} = this.state
-    console.log('valueMapCreateCircular ', valueMapCircular)
-    this.onToggleCreateCircular()
+    const {createCircularDocuments} = this.props
+    console.log('valueMapCreateCircular ', valueMapCircular, )
+    createCircularDocuments(valueMapCircular, valueMapCircular.destinationsId, currentUser.dependencyId, currentUser.id).then(()=>{
+      this.setState({valueMapCircular: {}})
+      this.onToggleCreateCircular()
+    });
+
   }
 
   onEditCircular=()=>{
@@ -161,7 +167,7 @@ class DocCirculares extends Component{
     getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(()=>{
       const {documentNumber,documentSiglas,documentYear} = this.props
       const {nombreTipo} = find(listTypeDocuments, {'id': typeDocumentId});
-      this.onChangeValueCircular('numDocumento', documentNumber);
+      this.onChangeValueCircular('numDocumento', parseInt(documentNumber));
       this.onChangeValueCircular('siglas', documentSiglas);
       this.onChangeValueCircular('anio', documentYear);
       this.onChangeValueCircular("document",nombreTipo+" N° "+documentNumber+"-"+documentSiglas+"-"+documentYear)
@@ -250,7 +256,9 @@ class DocCirculares extends Component{
 const mapDispatchToProps = (dispatch) => ({
   getTypeDocuments: () => dispatch(getTypeDocuments()),
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
-  getUserBossOffice: () => dispatch(getUserBossOffice())
+  getUserBossOffice: () => dispatch(getUserBossOffice()),
+  createCircularDocuments: (documentIntern, destinations, officeId, userId) =>
+    dispatch(createCircularDocuments(documentIntern, destinations, officeId, userId))
 });
 
 function mapStateToProps(state){

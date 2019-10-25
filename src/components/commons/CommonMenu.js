@@ -27,8 +27,8 @@ class CommonMenu extends Component {
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                     {
                       firstColumn.subMenus && firstColumn.subMenus.length > 0 ?
-                        firstColumn.subMenus.map((col) => {
-                          return <div className="dropdown-item hover-pointer"
+                        firstColumn.subMenus.map((col, index) => {
+                          return <div key={"col"+index} className="dropdown-item hover-pointer"
                                       onClick={() => goToPage(col.url)}>{col.title}</div>
                         })
                         : null
@@ -46,21 +46,21 @@ class CommonMenu extends Component {
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                     {
                       secondColumn.subMenus && secondColumn.subMenus.length > 0 ?
-                        secondColumn.subMenus.map((column) =>
+                        secondColumn.subMenus.map((column, index) =>
                           column.subMenus && column.subMenus.length > 0 ?
-                            <li className="dropdown-submenu">
+                            <li key={"columnLi"+index} className="dropdown-submenu">
                               <a className="dropdown-item dropdown-toggle" data-toggle="dropdown"
                                  href="#">{column.title}</a>
                               <ul className="dropdown-menu">
                                 {
-                                  column.subMenus.map((col) => {
-                                    return <div className="dropdown-item hover-pointer"
+                                  column.subMenus.map((col,index) => {
+                                    return <div key={"subCol"+index} className="dropdown-item hover-pointer"
                                                 onClick={() => goToPage(col.url)}>{col.title}</div>
                                   })
                                 }
                               </ul>
                             </li>
-                            : <div className="dropdown-item hover-pointer"
+                            : <div  key={"divColumn"+index} className="dropdown-item hover-pointer"
                                    onClick={() => goToPage(column.url)}>{column.title}</div>
                         )
                         : null
@@ -91,21 +91,21 @@ class CommonMenu extends Component {
                   <div className="dropdown-menu" style={{left: -57, minWidth: "9rem"}} aria-labelledby="navbarDropdown">
                     {
                       fifthColumn.subMenus && fifthColumn.subMenus.length > 0 ?
-                        fifthColumn.subMenus.map((column) =>
+                        fifthColumn.subMenus.map((column,index) =>
                           column.subMenus && column.subMenus.length > 0 ?
-                            <li className="dropdown-submenu">
+                            <li key={"subMenuLi"+index} className="dropdown-submenu">
                               <a className="dropdown-item dropdown-toggle" data-toggle="dropdown"
                                  href="#">{column.title}</a>
                               <ul className="dropdown-menu">
                                 {
-                                  column.subMenus.map((col) => {
-                                    return <div className="dropdown-item hover-pointer"
+                                  column.subMenus.map((col, index) => {
+                                    return <div key={"subMen"+index} className="dropdown-item hover-pointer"
                                                 onClick={() => goToPage(col.url)}>{col.title}</div>
                                   })
                                 }
                               </ul>
                             </li>
-                            : <div className="dropdown-item hover-pointer"
+                            : <div key={"subMenuDiv"+index} className="dropdown-item hover-pointer"
                                    onClick={column.action}>{column.title}</div>
                         )
                         : null

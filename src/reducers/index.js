@@ -6,6 +6,7 @@ import {movements} from "./movements";
 import {typeDocuments} from "./typeDocument";
 import {correlative} from "./correlative";
 import {user} from "./user";
+import {documentIntern} from "./documentIntern";
 
 const rootReducer = combineReducers({
   authentication,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   movements,
   typeDocuments,
   correlative,
-  user
-})
+  user,
+  documentIntern
+});
 
 export default rootReducer

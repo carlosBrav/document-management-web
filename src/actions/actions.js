@@ -168,3 +168,19 @@ export function getUserBossOffice(){
   function success(data) { return { type: Constants.USER_BOSS_OFFICE_SUCCESS, data}}
 }
 
+export function createCircularDocuments(documentIntern, destinations, officeId, userId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.createCircularDocuments(documentIntern, destinations, officeId, userId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.CREATE_CIRCULAR_DOCUMENTS_REQUEST}}
+  function success(message) { return { type: Constants.CREATE_CIRCULAR_DOCUMENTS_SUCCESS, message}}
+  function failure(errors) { return {type: Constants.CREATE_CIRCULAR_DOCUMENTS_FAILURE, errors}}
+}
+

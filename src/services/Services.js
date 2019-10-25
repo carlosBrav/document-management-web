@@ -12,7 +12,8 @@ const endPoints = {
   MOVEMENTS_BY_DATE: '/api/movements/currentDate',
   TYPE_DOCUMENTS: '/api/typeDocuments',
   MAX_CORRELATIVE: '/api/correlativeMax',
-  USER_BOSS_OFFICE: '/api/userBossOffice'
+  USER_BOSS_OFFICE: '/api/userBossOffice',
+  DOCUMENT_INTERN: '/api/documentIntern'
 };
 
 function getUrlPath(...data){
@@ -74,7 +75,6 @@ export default class Service {
 
   static getCorrelativeMax(officeId, typeDocumentId, siglas){
     const body = JSON.stringify({officeId,typeDocumentId,siglas})
-    console.log("BODY ", body)
     const url = getUrlPath(endPoints.MAX_CORRELATIVE)
     return ApiIntegration.doPost(url, body, true)
   }
@@ -82,5 +82,11 @@ export default class Service {
   static getUserBossOffice(){
     const url = getUrlPath(endPoints.USER_BOSS_OFFICE)
     return ApiIntegration.doGet(url)
+  }
+
+  static createCircularDocuments(documentIntern, destinations, officeId, userId){
+    const body = JSON.stringify({documentIntern,destinations})
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/office/'+officeId+"/user/"+userId)
+    return ApiIntegration.doPost(url, body, true)
   }
 }

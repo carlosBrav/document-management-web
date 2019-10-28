@@ -184,3 +184,19 @@ export function createCircularDocuments(documentIntern, destinations, officeId, 
   function failure(errors) { return {type: Constants.CREATE_CIRCULAR_DOCUMENTS_FAILURE, errors}}
 }
 
+export function getCircularDocuments(typeDocuments, userId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getInternDocuments(userId)
+    if(responseCode === 0){
+      dispatch(success(typeDocuments, data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_CIRCULAR_DOCUMENTS_REQUEST}}
+  function success(typeDocuments, data) { return { type: Constants.GET_CIRCULAR_DOCUMENTS_SUCCESS, typeDocuments, data}}
+  function failure(errors) { return { type: Constants.GET_CIRCULAR_DOCUMENTS_FAILURE, errors}}
+}
+

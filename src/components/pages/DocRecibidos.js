@@ -7,9 +7,7 @@ import {getView2Data, insertMovements} from "../../actions/actions"
 import { connect } from 'react-redux';
 import map from "lodash/map";
 import {getParseObj} from "../../utils/Utils";
-import {initialData} from "../../reducers/initialData";
 import CommonModal from "../commons/CommonModal";
-import {formOficios} from "../../forms/templates/TemplateCreateOficios";
 
 class DocRecibidos extends Component{
 

@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
-import {lista_circulares} from "../../fakedata/ListDataDocuments";
 import {ICON_TYPE} from "../commons/CommonIcon";
 import {exportPDF} from "../utils/ExportPDF";
 import map from "lodash/map";
@@ -11,8 +10,14 @@ import formOficiosCirculares from "../../forms/templates/TemplateOficiosCircular
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import FormRender from "../../forms/FormRender";
 import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
-import {getTypeDocuments, getCorrelativeMax, getUserBossOffice, createCircularDocuments} from "../../actions/actions";
-import { connect } from 'react-redux';
+import {
+  getTypeDocuments,
+  getCorrelativeMax,
+  getUserBossOffice,
+  createCircularDocuments,
+  getCircularDocuments
+} from "../../actions/actions";
+import {connect} from 'react-redux';
 import {getParseObj} from "../../utils/Utils";
 import find from "lodash/find";
 import {getFormattedDate} from "../../utils/Constants";
@@ -20,7 +25,7 @@ import parseInt from "lodash/parseInt";
 
 const currentUser = getParseObj('CURRENT_USER');
 
-class DocCirculares extends Component{
+class DocCirculares extends Component {
 
   state = {
     search: '',
@@ -28,10 +33,19 @@ class DocCirculares extends Component{
     showDeleteModal: false,
     showCreateCircularModal: false,
     valueMapCircular: {},
-    valueMapEditCircular:{},
+    valueMapEditCircular: {},
     showViewCircularModal: false,
-    circularSelected:{},
+    circularSelected: {},
     showEditCircularModal: false
+  }
+
+  async componentDidMount() {
+    const {getTypeDocuments, getCircularDocuments} = this.props
+    getTypeDocuments().then(()=>{
+      const {listTypeDocuments} = this.props
+      const typeDocuments = map(listTypeDocuments, document => document.id);
+      getCircularDocuments(typeDocuments, currentUser.id)
+    });
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -76,8 +90,8 @@ class DocCirculares extends Component{
         rowStyle: 'container-icons',
         actions: [
           {
-           actionType: ICON_TYPE.SEARCH,
-           action: data => this.onToggleViewDocument(data)
+            actionType: ICON_TYPE.SEARCH,
+            action: data => this.onToggleViewDocument(data)
           },
           {
             actionType: ICON_TYPE.EDIT,
@@ -88,25 +102,25 @@ class DocCirculares extends Component{
     ])
   }
 
-  onChangeValueCircular=(prop, value)=>{
+  onChangeValueCircular = (prop, value) => {
     this.setState({valueMapCircular: {...this.state.valueMapCircular, [prop]: value}})
   }
 
-  onToggleViewDocument=(data={})=>{
-    console.log('DOCUMENT SELECTED ',data)
+  onToggleViewDocument = (data = {}) => {
+    console.log('DOCUMENT SELECTED ', data)
     this.setState({showViewCircularModal: !this.state.showViewCircularModal, circularSelected: {...data}})
   }
 
-  onToggleEditDocument=(data={})=>{
+  onToggleEditDocument = (data = {}) => {
     console.log('DOCUMENT EDIT ', data)
     this.setState({showEditCircularModal: !this.state.showEditCircularModal, valueMapEditCircular: {...data}})
   }
 
-  onSetSelectOficiosCirculares=(listDataSelected)=>{
+  onSetSelectOficiosCirculares = (listDataSelected) => {
     this.setState({listDataSelected})
   }
 
-  onExportDocuments=()=>{
+  onExportDocuments = () => {
     exportPDF()
   }
 
@@ -118,17 +132,17 @@ class DocCirculares extends Component{
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
-  onToggleCreateCircular=()=>{
+  onToggleCreateCircular = () => {
     this.setState({valueMapCircular: {}})
     const {getTypeDocuments, getUserBossOffice} = this.props;
-    getUserBossOffice().then(()=>{
-      getTypeDocuments().then(()=>{
+    getUserBossOffice().then(() => {
+      getTypeDocuments().then(() => {
         const {dependencyName, apellido, nombre} = currentUser;
         const {bossOffice} = this.props
         this.onChangeValueCircular('fechaCreacion', getFormattedDate());
         this.onChangeValueCircular('areaResponsable', dependencyName);
-        this.onChangeValueCircular('responsable', apellido.toUpperCase()+", "+nombre.toUpperCase());
-        this.onChangeValueCircular('firma', bossOffice.apellido.toUpperCase()+", "+bossOffice.nombre.toUpperCase());
+        this.onChangeValueCircular('responsable', apellido.toUpperCase() + ", " + nombre.toUpperCase());
+        this.onChangeValueCircular('firma', bossOffice.apellido.toUpperCase() + ", " + bossOffice.nombre.toUpperCase());
         this.onChangeValueCircular('dependenciaId', currentUser.dependencyId);
         this.onChangeValueCircular('userId', currentUser.id);
         this.setState({showCreateCircularModal: !this.state.showCreateCircularModal})
@@ -137,64 +151,66 @@ class DocCirculares extends Component{
 
   }
 
-  getFooterTableStructure=()=>{
+  getFooterTableStructure = () => {
     return [
-      {text: 'Crear',  action: this.onToggleCreateCircular},
+      {text: 'Crear', action: this.onToggleCreateCircular},
       {text: 'Eliminar', action: this.onToggleDeleteDocuments},
-      {text: 'Imprimir',  action: this.onExportDocuments}
+      {text: 'Imprimir', action: this.onExportDocuments}
     ]
   }
 
-  onCreateCircular=()=>{
+  onCreateCircular = () => {
     const {valueMapCircular} = this.state
-    const {createCircularDocuments} = this.props
-    console.log('valueMapCreateCircular ', valueMapCircular, )
-    createCircularDocuments(valueMapCircular, valueMapCircular.destinationsId, currentUser.dependencyId, currentUser.id).then(()=>{
-      this.setState({valueMapCircular: {}})
+    const {createCircularDocuments, listTypeDocuments, getCircularDocuments} = this.props
+    createCircularDocuments(valueMapCircular, valueMapCircular.destinationsId, currentUser.dependencyId, currentUser.id).then(() => {
+      this.setState({valueMapCircular: {}});
+      const typeDocuments = map(listTypeDocuments, document => document.id);
+      getCircularDocuments(typeDocuments, currentUser.id)
       this.onToggleCreateCircular()
     });
+  };
 
-  }
-
-  onEditCircular=()=>{
+  onEditCircular = () => {
     const {valueMapCircular} = this.state
     console.log('circular editado ', valueMapCircular)
     this.onToggleEditDocument()
   }
 
-  onGetMaxCorrelative=(typeDocumentId)=>{
+  onGetMaxCorrelative = (typeDocumentId) => {
     const {getCorrelativeMax, listTypeDocuments} = this.props
-    getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(()=>{
-      const {documentNumber,documentSiglas,documentYear} = this.props
+    getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(() => {
+      const {documentNumber, documentSiglas, documentYear} = this.props
       const {nombreTipo} = find(listTypeDocuments, {'id': typeDocumentId});
       this.onChangeValueCircular('numDocumento', parseInt(documentNumber));
       this.onChangeValueCircular('siglas', documentSiglas);
       this.onChangeValueCircular('anio', documentYear);
-      this.onChangeValueCircular("document",nombreTipo+" N° "+documentNumber+"-"+documentSiglas+"-"+documentYear)
+      this.onChangeValueCircular("document", nombreTipo + " N° " + documentNumber + "-" + documentSiglas + "-" + documentYear)
     })
   };
 
-  render(){
+  render() {
 
-    const {formOfficeCircular} = this.props
-
-    const {showDeleteModal,
+    const {formOfficeCircular, documentsIntern} = this.props
+    console.log("DOCUMENTS INTERN ", documentsIntern)
+    const {
+      showDeleteModal,
       listDataSelected,
       showCreateCircularModal,
       valueMapCircular,
       circularSelected,
       showEditCircularModal,
-      showViewCircularModal} = this.state
+      showViewCircularModal
+    } = this.state
 
 
     const modalProps = [
       {
         showModal: showDeleteModal,
         title: 'Eliminar documentos circulares',
-        message: (listDataSelected.length>0)?`¿Desea imprimir estos ${listDataSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
-        yesFunction: (listDataSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
-        yesText: (listDataSelected.length>0)?'Sí':'Ok',
-        noFunction: (listDataSelected.length>0)?this.onToggleDeleteDocuments:null
+        message: (listDataSelected.length > 0) ? `¿Desea imprimir estos ${listDataSelected.length} documentos ?` : `Debe seleccionar al menos un documento`,
+        yesFunction: (listDataSelected.length > 0) ? this.onDeleteDocuments : this.onToggleDeleteDocuments,
+        yesText: (listDataSelected.length > 0) ? 'Sí' : 'Ok',
+        noFunction: (listDataSelected.length > 0) ? this.onToggleDeleteDocuments : null
       },
       {
         showModal: showCreateCircularModal,
@@ -233,21 +249,25 @@ class DocCirculares extends Component{
     ];
 
 
-    return(
+    return (
       <Fragment>
         {
-          modalProps && modalProps.length>0 ?
-            map(modalProps, (modal, index)=>{
-              return <CommonModal key={'modal'+index} {...modal}/>
+          modalProps && modalProps.length > 0 ?
+            map(modalProps, (modal, index) => {
+              return <CommonModal key={'modal' + index} {...modal}/>
             }) : null
         }
-        <CommonTableManage
-          tableStructure={this.getTableStructure}
-          title={'OFICIOS CIRCULARES - OGPL'}
-          listData={lista_circulares}
-          getFooterTableStructure={this.getFooterTableStructure}
-          onSetSelected={this.onSetSelectOficiosCirculares}
-        />
+        {
+          documentsIntern && documentsIntern.length > 0 ?
+            <CommonTableManage
+              tableStructure={this.getTableStructure}
+              title={'OFICIOS CIRCULARES - OGPL'}
+              listData={documentsIntern}
+              getFooterTableStructure={this.getFooterTableStructure}
+              onSetSelected={this.onSetSelectOficiosCirculares}
+            /> : null
+        }
+
       </Fragment>
     )
   }
@@ -258,25 +278,27 @@ const mapDispatchToProps = (dispatch) => ({
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
   getUserBossOffice: () => dispatch(getUserBossOffice()),
   createCircularDocuments: (documentIntern, destinations, officeId, userId) =>
-    dispatch(createCircularDocuments(documentIntern, destinations, officeId, userId))
+    dispatch(createCircularDocuments(documentIntern, destinations, officeId, userId)),
+  getCircularDocuments: (typeDocuments, userId) => dispatch(getCircularDocuments(typeDocuments, userId))
 });
 
-function mapStateToProps(state){
-  const getTypeDocumentsCircular  = (listData) => {
+function mapStateToProps(state) {
+  const getTypeDocumentsCircular = (listData) => {
     return map(filter(listData, data => data.flag2 === 'NPC'), data => ({
       ...data,
       value: data.nombreTipo
     }))
   };
   const listTypeDocuments = getTypeDocumentsCircular(state.typeDocuments.data)
-  return{
+  return {
     formOfficeCircular: formOficiosCirculares(listTypeDocuments),
     listTypeDocuments,
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
-    bossOffice: state.user.userBossOffice
+    bossOffice: state.user.userBossOffice,
+    documentsIntern: state.documentIntern.data
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(DocCirculares)
+export default connect(mapStateToProps, mapDispatchToProps)(DocCirculares)

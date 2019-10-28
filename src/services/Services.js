@@ -89,4 +89,9 @@ export default class Service {
     const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/office/'+officeId+"/user/"+userId)
     return ApiIntegration.doPost(url, body, true)
   }
+
+  static getInternDocuments(userId){
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/user/'+userId)
+    return ApiIntegration.doGet(url, true)
+  }
 }

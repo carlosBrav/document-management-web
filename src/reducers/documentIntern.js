@@ -2,7 +2,7 @@ import * as Constants from '../actions/Constants';
 import filter from "lodash/filter";
 import some from "lodash/some";
 
-const initialState =  {message: [], isLoading: false, data: []};
+const initialState =  {message: [], isLoading: false, data: [], details: []};
 
 export function documentIntern(state = initialState, action) {
   const {message, errors, data} = action
@@ -46,7 +46,18 @@ export function documentIntern(state = initialState, action) {
         ...state,
         isLoading:false,
         message: [errors]
-      }
+      };
+    case Constants.GET_CIRCULAR_DETAILS_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case Constants.GET_CIRCULAR_DETAILS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        details: data
+      };
     default: return state
   }
 }

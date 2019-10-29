@@ -184,6 +184,22 @@ export function createCircularDocuments(documentIntern, destinations, officeId, 
   function failure(errors) { return {type: Constants.CREATE_CIRCULAR_DOCUMENTS_FAILURE, errors}}
 }
 
+export function editCircularDocuments(id, asunto, dependencyId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode,errors, message} = await Services.editCircularDocuments(id, asunto, dependencyId)
+    if(responseCode === 0){
+      dispatch(success(message))
+    }else{
+      dispatch(failure(errors))
+    }
+  };
+
+  function request(){ return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_REQUEST}}
+  function success(message) { return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_SUCCESS, message}}
+  function failure(errors){ return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_FAILURE, errors}}
+}
+
 export function getCircularDocuments(typeDocuments, userId){
   return async dispatch => {
     dispatch(request());
@@ -198,5 +214,36 @@ export function getCircularDocuments(typeDocuments, userId){
   function request() { return { type: Constants.GET_CIRCULAR_DOCUMENTS_REQUEST}}
   function success(typeDocuments, data) { return { type: Constants.GET_CIRCULAR_DOCUMENTS_SUCCESS, typeDocuments, data}}
   function failure(errors) { return { type: Constants.GET_CIRCULAR_DOCUMENTS_FAILURE, errors}}
+}
+
+export function getCircularDetails(documentId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getCircularDetails(documentId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.GET_CIRCULAR_DETAILS_REQUEST}}
+  function success(data){ return { type: Constants.GET_CIRCULAR_DETAILS_SUCCESS, data}}
+  function failure(errors){ return { type: Constants.GET_CIRCULAR_DETAILS_FAILURE, errors}}
+}
+
+export function deleteDocuments(documentsIds){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.deleteInternDocuments(documentsIds)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+  function request(){ return {type: Constants.DELETE_INTERN_DOCUMENT_REQUEST}}
+  function success(data) { return {type: Constants.DELETE_INTERN_DOCUMENT_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.DELETE_INTERN_DOCUMENT_FAILURE, errors}}
 }
 

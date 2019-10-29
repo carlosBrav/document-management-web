@@ -13,7 +13,8 @@ const endPoints = {
   TYPE_DOCUMENTS: '/api/typeDocuments',
   MAX_CORRELATIVE: '/api/correlativeMax',
   USER_BOSS_OFFICE: '/api/userBossOffice',
-  DOCUMENT_INTERN: '/api/documentIntern'
+  DOCUMENT_INTERN: '/api/documentIntern',
+  CIRCULAR_DETAILS: '/api/circularDetails'
 };
 
 function getUrlPath(...data){
@@ -28,23 +29,23 @@ export default class Service {
 
   static login(user, password) {
     const postBody = JSON.stringify({user,password})
-    const url = getUrlPath(endPoints.AUTHENTICATION_LOGIN)
+    const url = getUrlPath(endPoints.AUTHENTICATION_LOGIN);
     return ApiIntegration.doPost(url, postBody,true);
   }
 
   static getView2Data(){
-    const url = getUrlPath(endPoints.VIEW_2)
+    const url = getUrlPath(endPoints.VIEW_2);
     return ApiIntegration.doGet(url);
   }
 
   static getInitialData(){
-    const url = getUrlPath(endPoints.INITIAL_DATA)
+    const url = getUrlPath(endPoints.INITIAL_DATA);
     return ApiIntegration.doGet(url)
   }
 
   static insertMovements(movements,userId){
-    const postBody = JSON.stringify({movements})
-    const url = getUrlPath(endPoints.MOVEMENTS, userId)
+    const postBody = JSON.stringify({movements});
+    const url = getUrlPath(endPoints.MOVEMENTS, userId);
     return ApiIntegration.doPost(url,postBody,true)
   }
 
@@ -63,35 +64,52 @@ export default class Service {
   }
 
   static deleteMovement(movementsIds){
-    const listIds = JSON.stringify({movementsIds})
-    const url = getUrlPath(endPoints.MOVEMENTS)
+    const listIds = JSON.stringify({movementsIds});
+    const url = getUrlPath(endPoints.MOVEMENTS);
     return ApiIntegration.doDelete(url, listIds, true)
   }
 
   static getTypeDocuments(){
-    const url = getUrlPath(endPoints.TYPE_DOCUMENTS)
+    const url = getUrlPath(endPoints.TYPE_DOCUMENTS);
     return ApiIntegration.doGet(url)
   }
 
   static getCorrelativeMax(officeId, typeDocumentId, siglas){
-    const body = JSON.stringify({officeId,typeDocumentId,siglas})
-    const url = getUrlPath(endPoints.MAX_CORRELATIVE)
+    const body = JSON.stringify({officeId,typeDocumentId,siglas});
+    const url = getUrlPath(endPoints.MAX_CORRELATIVE);
     return ApiIntegration.doPost(url, body, true)
   }
 
   static getUserBossOffice(){
-    const url = getUrlPath(endPoints.USER_BOSS_OFFICE)
+    const url = getUrlPath(endPoints.USER_BOSS_OFFICE);
     return ApiIntegration.doGet(url)
   }
 
   static createCircularDocuments(documentIntern, destinations, officeId, userId){
     const body = JSON.stringify({documentIntern,destinations})
-    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/office/'+officeId+"/user/"+userId)
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/office/'+officeId+"/user/"+userId);
     return ApiIntegration.doPost(url, body, true)
   }
 
   static getInternDocuments(userId){
-    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/user/'+userId)
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/user/'+userId);
+    return ApiIntegration.doGet(url, true)
+  }
+
+  static editCircularDocuments(id, asunto, dependencyId){
+    const body = JSON.stringify({asunto, dependencyId});
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN,id);
+    return ApiIntegration.doPut(url, body, true)
+  }
+
+  static deleteInternDocuments(documentsIds){
+    const body = JSON.stringify({documentsIds})
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN);
+    return ApiIntegration.doDelete(url, body, true)
+  }
+
+  static getCircularDetails(documentId){
+    const url = getUrlPath(endPoints.CIRCULAR_DETAILS, documentId);
     return ApiIntegration.doGet(url, true)
   }
 }

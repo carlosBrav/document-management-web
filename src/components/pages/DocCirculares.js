@@ -15,7 +15,10 @@ import {
   getCorrelativeMax,
   getUserBossOffice,
   createCircularDocuments,
-  getCircularDocuments
+  getCircularDocuments,
+  editCircularDocuments,
+  deleteDocuments,
+  getCircularDetails
 } from "../../actions/actions";
 import {connect} from 'react-redux';
 import {getParseObj} from "../../utils/Utils";
@@ -58,8 +61,8 @@ class DocCirculares extends Component {
         }]
       },
       {
-        columnHeader: 'Correlativo',
-        rowProp: 'correlativo',
+        columnHeader: 'Documento',
+        rowProp: 'correlative',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
@@ -69,13 +72,13 @@ class DocCirculares extends Component {
       },
       {
         columnHeader: 'Area Resp.',
-        rowProp: 'area_resp',
+        rowProp: 'dependencyName',
         classSearchRow: 'container-search-field long-size',
         filterHeader: true
       },
       {
         columnHeader: 'Fecha Env.',
-        rowProp: 'fech_envio'
+        rowProp: 'fechaCreacion'
       },
       {
         columnHeader: 'Firma',
@@ -91,7 +94,7 @@ class DocCirculares extends Component {
         actions: [
           {
             actionType: ICON_TYPE.SEARCH,
-            action: data => this.onToggleViewDocument(data)
+            action: data => this.onToggleViewDocumentDetails(data, true)
           },
           {
             actionType: ICON_TYPE.EDIT,
@@ -106,14 +109,19 @@ class DocCirculares extends Component {
     this.setState({valueMapCircular: {...this.state.valueMapCircular, [prop]: value}})
   }
 
-  onToggleViewDocument = (data = {}) => {
-    console.log('DOCUMENT SELECTED ', data)
-    this.setState({showViewCircularModal: !this.state.showViewCircularModal, circularSelected: {...data}})
+  onToggleViewDocumentDetails = (data = {}, isToOpen) => {
+    if(isToOpen){
+      const {getCircularDetails} = this.props
+      getCircularDetails(data.id).then(()=> {
+        this.setState({showViewCircularModal: !this.state.showViewCircularModal, valueMapCircular: {...data}})
+      })
+    }else{
+      this.setState({showViewCircularModal: !this.state.showViewCircularModal, valueMapCircular: {}})
+    }
   }
 
   onToggleEditDocument = (data = {}) => {
-    console.log('DOCUMENT EDIT ', data)
-    this.setState({showEditCircularModal: !this.state.showEditCircularModal, valueMapEditCircular: {...data}})
+    this.setState({showEditCircularModal: !this.state.showEditCircularModal, valueMapCircular: {...data}})
   }
 
   onSetSelectOficiosCirculares = (listDataSelected) => {
@@ -125,10 +133,6 @@ class DocCirculares extends Component {
   }
 
   onToggleDeleteDocuments = () => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal})
-  }
-
-  onDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
@@ -171,10 +175,25 @@ class DocCirculares extends Component {
   };
 
   onEditCircular = () => {
-    const {valueMapCircular} = this.state
-    console.log('circular editado ', valueMapCircular)
-    this.onToggleEditDocument()
-  }
+    const {valueMapCircular} = this.state;
+    const {editCircularDocuments, getCircularDocuments, listTypeDocuments} = this.props;
+    editCircularDocuments(valueMapCircular.id,valueMapCircular.asunto,valueMapCircular.dependenciaId).then(()=>{
+      const typeDocuments = map(listTypeDocuments, document => document.id);
+      getCircularDocuments(typeDocuments, currentUser.id)
+      this.onToggleEditDocument()
+    })
+  };
+
+  onDeleteDocuments = () => {
+    const {listDataSelected} = this.state;
+    const {deleteDocuments, listTypeDocuments, getCircularDocuments} = this.props
+    const documentsIds = map(listDataSelected, data => data.id);
+    deleteDocuments(documentsIds).then(()=>{
+      const typeDocuments = map(listTypeDocuments, document => document.id);
+      getCircularDocuments(typeDocuments, currentUser.id)
+      this.setState({showDeleteModal: !this.state.showDeleteModal})
+    });
+  };
 
   onGetMaxCorrelative = (typeDocumentId) => {
     const {getCorrelativeMax, listTypeDocuments} = this.props
@@ -190,8 +209,7 @@ class DocCirculares extends Component {
 
   render() {
 
-    const {formOfficeCircular, documentsIntern} = this.props
-    console.log("DOCUMENTS INTERN ", documentsIntern)
+    const {formOfficeCircular, documentsIntern, detailsCircular} = this.props;
     const {
       showDeleteModal,
       listDataSelected,
@@ -202,12 +220,14 @@ class DocCirculares extends Component {
       showViewCircularModal
     } = this.state
 
+    const titleEdit = showEditCircularModal? valueMapCircular.correlative : null
+
 
     const modalProps = [
       {
         showModal: showDeleteModal,
-        title: 'Eliminar documentos circulares',
-        message: (listDataSelected.length > 0) ? `¿Desea imprimir estos ${listDataSelected.length} documentos ?` : `Debe seleccionar al menos un documento`,
+        title: 'Eliminar documento(s) circular(es)',
+        message: (listDataSelected.length > 0) ? `¿Desea eliminar estos ${listDataSelected.length} documentos ?` : `Debe seleccionar al menos un documento`,
         yesFunction: (listDataSelected.length > 0) ? this.onDeleteDocuments : this.onToggleDeleteDocuments,
         yesText: (listDataSelected.length > 0) ? 'Sí' : 'Ok',
         noFunction: (listDataSelected.length > 0) ? this.onToggleDeleteDocuments : null
@@ -228,16 +248,16 @@ class DocCirculares extends Component {
       },
       {
         showModal: showViewCircularModal,
-        title: 'Circular 025466-OGPL-2019',
-        yesFunction: this.onToggleViewDocument,
+        title: 'Circular Details',
+        yesFunction: ()=>this.onToggleViewDocumentDetails(false),
         yesText: 'Aceptar',
         content: <CommonListGroup idSection='list-group'
-                                  numDocument={circularSelected.correlativo}
-                                  listDestinations={circularSelected.destinations}/>
+                                  numDocument={valueMapCircular.correlative}
+                                  listDestinations={detailsCircular}/>
       },
       {
         showModal: showEditCircularModal,
-        title: 'Editar circular 025466-OGPL-2019',
+        title: 'Editar '+titleEdit,
         yesFunction: this.onEditCircular,
         yesText: 'Editar',
         noFunction: this.onToggleEditDocument,
@@ -258,14 +278,14 @@ class DocCirculares extends Component {
             }) : null
         }
         {
-          documentsIntern && documentsIntern.length > 0 ?
+
             <CommonTableManage
               tableStructure={this.getTableStructure}
               title={'OFICIOS CIRCULARES - OGPL'}
               listData={documentsIntern}
               getFooterTableStructure={this.getFooterTableStructure}
               onSetSelected={this.onSetSelectOficiosCirculares}
-            /> : null
+            />
         }
 
       </Fragment>
@@ -279,7 +299,10 @@ const mapDispatchToProps = (dispatch) => ({
   getUserBossOffice: () => dispatch(getUserBossOffice()),
   createCircularDocuments: (documentIntern, destinations, officeId, userId) =>
     dispatch(createCircularDocuments(documentIntern, destinations, officeId, userId)),
-  getCircularDocuments: (typeDocuments, userId) => dispatch(getCircularDocuments(typeDocuments, userId))
+  getCircularDocuments: (typeDocuments, userId) => dispatch(getCircularDocuments(typeDocuments, userId)),
+  editCircularDocuments: (id, asunto, dependencyId) => dispatch(editCircularDocuments(id, asunto, dependencyId)),
+  deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
+  getCircularDetails: (documentId) => dispatch(getCircularDetails(documentId))
 });
 
 function mapStateToProps(state) {
@@ -289,6 +312,20 @@ function mapStateToProps(state) {
       value: data.nombreTipo
     }))
   };
+
+  const getCircularDocuments = (listData) => {
+    return map(listData, data => ({
+      ...data,
+      correlative: data.documentName + " Nº " + data.numDocumento + "-" + data.siglas + "-" + data.anio,
+      responsable: data.userLastName+", "+data.userName,
+      check: false
+    }))
+  };
+
+  const getDetails = (listData) => {
+    return map(listData, data => ({value : data.destinoNombre}))
+  };
+
   const listTypeDocuments = getTypeDocumentsCircular(state.typeDocuments.data)
   return {
     formOfficeCircular: formOficiosCirculares(listTypeDocuments),
@@ -297,7 +334,8 @@ function mapStateToProps(state) {
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
     bossOffice: state.user.userBossOffice,
-    documentsIntern: state.documentIntern.data
+    documentsIntern: getCircularDocuments(state.documentIntern.data),
+    detailsCircular: getDetails(state.documentIntern.details)
   }
 }
 

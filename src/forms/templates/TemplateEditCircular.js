@@ -4,7 +4,7 @@ import {list_dependencies} from "../../fakedata/ListDataDocuments";
 export const formEditOficioCircular = [
 
   {
-    "id": "correlativo",
+    "id": "correlative",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
@@ -17,7 +17,7 @@ export const formEditOficioCircular = [
     "required": true
   },
   {
-    "id": "responsable",
+    "id": "dependenciaId",
     "label": "Área responsable:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "listItems":list_dependencies,

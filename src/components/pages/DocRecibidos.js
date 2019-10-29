@@ -76,19 +76,17 @@ class DocRecibidos extends Component{
 
   onConfirmDocuments= async ()=>{
     const {listDataSelected} = this.state
-    const {insertMovements} = this.props
+    const {insertMovements, getView2Data} = this.props
     const currentUser = getParseObj('CURRENT_USER')
-    await insertMovements(listDataSelected, currentUser.id)
+    await insertMovements(listDataSelected, currentUser.id).then(()=>{
+      getView2Data()
+    });
     this.toggleModal()
   };
 
   onAcceptConfirmation= async ()=>{
-    const {listDataSelected} = this.state
-    const {getView2Data} = this.props
-    await getView2Data()
     this.setState({listDataSelected: []})
     this.toggleModal()
-
     //exportPDF()
   };
 
@@ -119,7 +117,6 @@ class DocRecibidos extends Component{
     return(
       <Fragment>
         {
-          data && data.length > 0 ?
             <CommonTableManage
               tableStructure={this.getTableStructure}
               title={'DOCUMENTOS RECIBIDOS'}
@@ -128,8 +125,7 @@ class DocRecibidos extends Component{
               onSetSelected={this.onSetSelectDocuments}
               onAdd={this.onChangeInitialIndex}
               onSubtract={this.onChangeInitialIndex}
-            /> :
-            null
+            />
         }
         <CommonModal key={'modalView'} {...modalProps}/>
       </Fragment>

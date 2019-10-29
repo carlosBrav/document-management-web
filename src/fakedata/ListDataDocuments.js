@@ -1300,26 +1300,30 @@ export const list_busqueda_avanzada =
 export const list_dependencies =
   [
     {
-      "id": "1",
-      "value":"OFICINA DE PRESUPUESTO"
+      "id": "1001868",
+      "value":"OGPL - OFICINA DE PRESUPUESTO"
     },
     {
-      "id": "2",
-      "value":"OFICINA DE RACIONALIZACION"
+      "id": "1001869",
+      "value":"OGPL - OFICINA DE RACIONALIZACION"
     },
     {
-      "id": "3",
-      "value":"OFICINA DE PLANES Y PROGRAMAS"
+      "id": "1001870",
+      "value":"OGPL - OFICINA DE ESTADISTICA E INFORMATICA"
     },
     {
-      "id": "4",
-      "value":"OFICINA DE CENTRO DE PRODUCCION"
+      "id": "1001871",
+      "value":"OGPL - OFICINA DE COORDINACION DE CENPRO"
     },
     {
-      "id": "5",
-      "value":"OFICINA DE ESTADISTICA E INFORMATICA"
+      "id": "1001872",
+      "value":"OGPL - OFICINA DE PLANES Y PROGRAMAS"
+    },
+    {
+      "id": "100392",
+      "value":"OFICINA GENERAL DE PLANIFICACION"
     }
-  ]
+  ];
 
 export const list_type_destinations = [
   {

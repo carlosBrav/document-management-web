@@ -22,7 +22,7 @@ class AppRouter extends Component {
             <Route exact path="/" component={AuthorizedRoute()}/>
             <Route exact path="/login" component={AuthorizedRoute()}/>
             <Route path="/admin" component={AuthorizedRoute(ContainerAdmin)}/>
-            <Route path="/user" component={AuthorizedRoute(ContainerUser)}/>
+            <Route path="/usuario" component={AuthorizedRoute(ContainerUser)}/>
           </Switch>
         </Router>
       </Provider>

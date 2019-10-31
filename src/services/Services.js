@@ -14,7 +14,8 @@ const endPoints = {
   MAX_CORRELATIVE: '/api/correlativeMax',
   USER_BOSS_OFFICE: '/api/userBossOffice',
   DOCUMENT_INTERN: '/api/documentIntern',
-  CIRCULAR_DETAILS: '/api/circularDetails'
+  CIRCULAR_DETAILS: '/api/circularDetails',
+  USER_MOVEMENTS: '/api/movements/user'
 };
 
 function getUrlPath(...data){
@@ -110,6 +111,11 @@ export default class Service {
 
   static getCircularDetails(documentId){
     const url = getUrlPath(endPoints.CIRCULAR_DETAILS, documentId);
+    return ApiIntegration.doGet(url, true)
+  }
+
+  static getUserMovementsByOffice(officeId){
+    const url = getUrlPath(endPoints.USER_MOVEMENTS+'/office/'+officeId);
     return ApiIntegration.doGet(url, true)
   }
 }

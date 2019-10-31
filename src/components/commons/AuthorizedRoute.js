@@ -28,7 +28,7 @@ const AuthorizedRoute = InnerComponent => class extends Component {
           switch(currentUser.rolName){
             case "admin":
               return (<ContainerAdmin {...this.props} currentUser={currentUser} />);
-            case "user":
+            case "usuario":
               return (<ContainerUser {...this.props} currentUser={currentUser} />);
             default: return null;
           }

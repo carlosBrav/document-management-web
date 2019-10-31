@@ -6,6 +6,11 @@ import FormRender from "../../forms/FormRender";
 import {formOficiosToExp, formOficios} from '../../forms/templates/TemplateCreateOficios';
 import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
+import {connect} from 'react-redux';
+import {getDocuments} from "../../actions/actions";
+import {getParseObj} from "../../utils/Utils";
+
+const currentUser = getParseObj('CURRENT_USER');
 
 class DocRespuesta extends Component{
 
@@ -212,4 +217,10 @@ class DocRespuesta extends Component{
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  getOficios: (typeDocuments, userId) => dispatch(getDocuments(typeDocuments, userId))
+});
+
+
 export default DocRespuesta

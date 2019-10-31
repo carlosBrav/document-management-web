@@ -56,7 +56,7 @@ export function removeUser(key = 'CURRENT_USER'){
 }
 
 export function getPath(role){
-  const roles = ["admin", "user"]
+  const roles = ["admin", "usuario"]
   const idx = findIndex(roles, (item) => isEqual(item,role))
 
   if(idx !== -1){

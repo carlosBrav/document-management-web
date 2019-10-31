@@ -55,7 +55,7 @@ class Login extends Component {
               <div className='form-label-content'>
                 <CommonIcon type={ICON_TYPE.LOGO_USER}/>
                 <input className='input-text' type='text' placeholder={'Usuario'}
-                onChange={(e) => this.onChange(e.target.value, 'user')}/>
+                onChange={(e) => this.onChange(e.target.value, 'user')} onKeyUp={ e => {if (e.keyCode === 13) this.onLogin()}}/>
               </div>
             </div>
             <div className='container-form-label'>
@@ -63,7 +63,7 @@ class Login extends Component {
               <div className='form-label-content'>
                 <CommonIcon type={ICON_TYPE.PADLOCK}/>
                 <input className='input-text' type='password' placeholder={'Contraseña'}
-                       onChange={(e) => this.onChange(e.target.value, 'password')}/>
+                       onChange={(e) => this.onChange(e.target.value, 'password')} onKeyUp={ e => {if (e.keyCode === 13) this.onLogin()}}/>
               </div>
             </div>
           </div>

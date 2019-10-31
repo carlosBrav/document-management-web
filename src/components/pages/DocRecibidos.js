@@ -1,7 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
-import {listData_1} from "../../fakedata/ListDataDocuments";
-import {exportPDF} from "../utils/ExportPDF";
 import {BUTTON_TYPE} from '../../constants/Constants';
 import {getView2Data, insertMovements} from "../../actions/actions"
 import { connect } from 'react-redux';

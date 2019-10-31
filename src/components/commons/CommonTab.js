@@ -19,7 +19,7 @@ class CommonTab extends Component{
                                 href={`#nav-${tab.id}`}
                                 role="tab"
                                 aria-controls={`nav-${tab.id}`}
-                                aria-selected="true">{tab.title}</a>
+                                aria-selected="true" >{tab.title}</a>
                     })
                   }
                 </div>

@@ -104,7 +104,7 @@ export default class Service {
   }
 
   static deleteInternDocuments(documentsIds){
-    const body = JSON.stringify({documentsIds})
+    const body = JSON.stringify({documentsIds});
     const url = getUrlPath(endPoints.DOCUMENT_INTERN);
     return ApiIntegration.doDelete(url, body, true)
   }
@@ -117,5 +117,16 @@ export default class Service {
   static getUserMovementsByOffice(officeId){
     const url = getUrlPath(endPoints.USER_MOVEMENTS+'/office/'+officeId);
     return ApiIntegration.doGet(url, true)
+  }
+
+  static getUserMovementsByAssignedTo(userId){
+    const url = getUrlPath(endPoints.MOVEMENTS,userId);
+    return ApiIntegration.doGet(url, true)
+  }
+
+  static confirmDocuments(userId, movementsIds, currentDate, asignadoA){
+    const body = JSON.stringify({userId, movementsIds, currentDate, asignadoA});
+    const url = getUrlPath(endPoints.MOVEMENTS);
+    return ApiIntegration.doPut(url, body, true)
   }
 }

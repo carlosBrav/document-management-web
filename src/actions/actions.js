@@ -13,7 +13,7 @@ export function isLogged() {
 }
 
 export function login(username, password) {
-  return dispatch => {
+  return async dispatch => {
     dispatch(request());
 
     return Services.login(username, password)
@@ -67,11 +67,12 @@ export function getView2Data(){
 
 export function loadInitialData(){
   return async dispatch => {
+    console.log("initial data exec")
     const {data} = await Services.getInitialData()
     dispatch(success(data))
   };
 
-  function success(data) { return { type: Constants.GET_INITIAL_DATA, data}}
+  function success(initialData) { return { type: Constants.GET_INITIAL_DATA, initialData}}
 }
 
 export function insertMovements(movements, userId){
@@ -250,7 +251,7 @@ export function deleteDocuments(documentsIds){
 export function getUserMovementsByOffice(officeId){
   return async dispatch => {
     dispatch(request());
-    const {responseCode, data, responseMessage} = await Services.getUserMovementsByOffice(officeId)
+    const {responseCode, data, responseMessage} = await Services.getUserMovementsByOffice(officeId);
     if(responseCode === 0){
       dispatch(success(data))
     }else{
@@ -260,6 +261,38 @@ export function getUserMovementsByOffice(officeId){
 
   function request(){ return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_REQUEST}}
   function success(data) { return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
+}
+
+export function getUserMovementsByAssignedTo(userId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getUserMovementsByAssignedTo(userId);
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_REQUEST}}
+  function success(data) {return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
+}
+
+export function confirmDocuments(userId, movementsIds, currentDate, asignadoA){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.confirmDocuments(userId, movementsIds, currentDate, asignadoA);
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_REQUEST}}
+  function success(message) { return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS, message}}
   function failure(errors) { return { type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
 }
 

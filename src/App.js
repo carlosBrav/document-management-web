@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import ContainerLogin from '../src/containers/ContainerLogin'
 import ContainerAdmin from '../src/containers/ContainerAdmin'
 import ContainerUser from '../src/containers/ContainerUser'
 import store from './store';
@@ -10,7 +9,7 @@ import { Provider, connect } from 'react-redux';
 
 class AppRouter extends Component {
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.loadInitialData()
   }
 
@@ -32,7 +31,7 @@ class AppRouter extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   loadInitialData: () => dispatch(loadInitialData())
-})
+});
 
 AppRouter = connect(null,mapDispatchToProps)(AppRouter)
 

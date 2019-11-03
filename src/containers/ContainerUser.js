@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 import CommonMenu from "../components/commons/CommonMenu";
 import {Route, Switch} from "react-router-dom";
 import DocumentsReceived from "../components/pages/usuario/documents_received";
+import DocumentsAssigned from "../components/pages/usuario/documents_assigned";
 import DocConfirmados from "../components/pages/DocConfirmados";
 import DocRespuesta from "../components/pages/DocRespuesta";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import {delete_cookie, getParseObj, removeUser} from "../utils/Utils";
-
-const currentUser = getParseObj('CURRENT_USER');
 
 class ContainerAdmin extends Component{
 
@@ -17,13 +16,14 @@ class ContainerAdmin extends Component{
   };
 
   onLogOut= () => {
-    const {history} = this.props
+    const {history} = this.props;
     delete_cookie('1P_JAR');
     removeUser();
     history.push(`/`);
-  }
+  };
 
   render(){
+    const currentUser = getParseObj('CURRENT_USER');
     const columns =
       {
         head: {
@@ -35,7 +35,7 @@ class ContainerAdmin extends Component{
           subMenus: [
             {
               title: 'Documentos',
-              url: '/usuario/documentos'
+              url: (currentUser.rolName === 'asignador') ? '/usuario/documentos' : '/usuario/documentos_asignados'
             },
             {
               title: 'Documentos internos',
@@ -79,6 +79,7 @@ class ContainerAdmin extends Component{
           <Route>
             <Switch>
               <Route exact path="/usuario/documentos" component={DocumentsReceived}/>
+              <Route exact path="/usuario/documentos_asignados" component={DocumentsAssigned}/>
               <Route exact path="/usuario/document_internos" component={DocConfirmados}/>
               <Route exact path='/usuario/document_oficios' component={DocRespuesta}/>
               <Route exact path='/usuario/busqueda_avanzada' component={Busqueda_avanzada}/>

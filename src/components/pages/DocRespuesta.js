@@ -184,7 +184,7 @@ class DocRespuesta extends Component{
         getFooterTableStructure={this.getFooterTableStructureDocInt}
         onSetSelected={this.onSetSelectToCreateOficio}
       />)
-    }
+    };
 
     const tableOficios =()=> {
       return (
@@ -196,7 +196,7 @@ class DocRespuesta extends Component{
           onSetSelected={this.onSetSelectedToDeleteOficio}
         />
       )
-    }
+    };
 
     const tabs =
       [ {title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt},

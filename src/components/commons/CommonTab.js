@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class CommonTab extends Component{
 
   render(){
-    const {tabList} = this.props
+    const {tabList, currentUser} = this.props
     return(
       <div style={{paddingLeft: 10, paddingRight: 10, paddingTop: 10}}>
         {
@@ -19,7 +19,8 @@ class CommonTab extends Component{
                                 href={`#nav-${tab.id}`}
                                 role="tab"
                                 aria-controls={`nav-${tab.id}`}
-                                aria-selected="true" >{tab.title}</a>
+                                aria-selected="true"
+                                onClick={tab.onClick}>{tab.title}</a>
                     })
                   }
                 </div>

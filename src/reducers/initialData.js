@@ -1,14 +1,17 @@
 
 
 import * as Constants from '../actions/Constants';
-const initialState =  {dependencies: []};
+const initialState =  {dependencies: [], users: []};
 
 export function initialData(state = initialState, action){
-  const {data} = action
+  const {initialData} = action
   switch(action.type){
     case Constants.GET_INITIAL_DATA:
+      const {dependencies, users} = initialData
       return {
-        ...data
+        ...state,
+        dependencies,
+        users
       };
     default:
       return state

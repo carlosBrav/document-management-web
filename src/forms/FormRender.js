@@ -7,12 +7,12 @@ class FormRender extends Component{
   render(){
     const {formTemplate, onChange, isFormCircular, valueMap, onChangeInputSelect} = this.props
 
-    const rows = map(formTemplate, (section)=>{
-      return (<CommonElement onChangeInputSelect={onChangeInputSelect}
+    const rows = map(formTemplate, (section, index)=>{
+      return (<CommonElement key={"element"+index} onChangeInputSelect={onChangeInputSelect}
                              isFormCircular={isFormCircular}
                              valueMap={valueMap} onChange={onChange}
                              {...section}/>)
-    })
+    });
     return(
       <form>
         {rows}

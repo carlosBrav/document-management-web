@@ -88,7 +88,7 @@ class CommonMenu extends Component {
                   <a className="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
                     {fifthColumn.title}</a>
-                  <div className="dropdown-menu" style={{left: -57, minWidth: "9rem"}} aria-labelledby="navbarDropdown">
+                  <div className="dropdown-menu" style={{left: 10, minWidth: "9rem"}} aria-labelledby="navbarDropdown">
                     {
                       fifthColumn.subMenus && fifthColumn.subMenus.length > 0 ?
                         fifthColumn.subMenus.map((column,index) =>

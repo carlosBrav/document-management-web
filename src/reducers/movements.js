@@ -14,13 +14,16 @@ import {
   GET_MOVEMENTS_BY_ASSIGNED_TO_REQUEST,
   GET_MOVEMENTS_BY_ASSIGNED_TO_SUCCESS,
   GET_USER_MOVEMENTS_BY_OFFICE_REQUEST,
-  GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS
+  GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS,
+  DERIVE_DOCUMENTS_REQUEST,
+  DERIVE_DOCUMENTS_SUCCESS,
+  DERIVE_DOCUMENTS_FAILURE
 } from "../actions/Constants";
 
-const initialState =  {errors: [], data: [], dataConfirmed: [], isLoading: false};
+const initialState =  {errors: [], message: [], data: [], dataAssigned: [], isLoading: false};
 
 export function movements(state = initialState, action){
-  const {error, data} = action;
+  const {errors, data} = action;
   switch(action.type){
     case INSERT_MOVEMENTS_REQUEST:
       return {...state, isLoading: true}
@@ -35,7 +38,7 @@ export function movements(state = initialState, action){
       return {
         ...state,
         isLoading: false,
-        errors: error
+        errors
       };
     case GET_MOVEMENTS_REQUEST:
       return {
@@ -52,7 +55,7 @@ export function movements(state = initialState, action){
       return {
         ...state,
         isLoading: false,
-        errors: error
+        errors
       };
     case CLEAN_MOVEMENTS_LIST:
       return {
@@ -81,16 +84,33 @@ export function movements(state = initialState, action){
         ...state,
         isLoading: false
       };
-    case GET_USER_MOVEMENTS_BY_OFFICE_REQUEST:
+    case GET_MOVEMENTS_BY_ASSIGNED_TO_REQUEST:
       return {
         ...state,
         isLoading: true
       };
-    case GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS:
+    case GET_MOVEMENTS_BY_ASSIGNED_TO_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        dataConfirmed: data
+        dataAssigned: data
+      };
+    case DERIVE_DOCUMENTS_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case DERIVE_DOCUMENTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        message: data
+      };
+    case DERIVE_DOCUMENTS_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        errors
       };
     default: return state
   }

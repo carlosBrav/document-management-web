@@ -1,6 +1,8 @@
 import {Component, Fragment} from "react";
 import {getUserMovementsByOffice,
-        confirmDocuments} from "../../../actions/actions"
+        confirmDocuments,
+        getUserMovementsByAssignedTo,
+        deriveDocuments} from "../../../actions/actions"
 import {getParseObj} from "../../../utils/Utils";
 import {BUTTON_TYPE} from "../../../constants/Constants";
 import map from "lodash/map";
@@ -11,6 +13,7 @@ import { connect } from 'react-redux';
 import CommonModal from '../../commons/CommonModal';
 import FormRender from "../../../forms/FormRender";
 import {formConfirmDocuments} from "../../../forms/templates/TemplateConfirmDocument";
+import {formDeriveDocuments} from "../../../forms/templates/TemplateDeriveDocuments";
 import {getFormattedDate} from "../../../utils/Constants";
 import CommonTab from '../../commons/CommonTab';
 
@@ -18,16 +21,18 @@ class DocumentsReceived extends Component{
 
   state = {
     listDataSelected: [],
+    listDataAssignedSelected: [],
     isModalOpen: false,
     showConfirmationModal: false,
+    showDerivedModal: false,
     valueMap : {},
     currentUser: {}
   };
 
   async componentDidMount(){
     const currentUser = getParseObj('CURRENT_USER');
-    this.setState({currentUser})
-    const {getUserMovementsByOffice} = this.props
+    this.setState({currentUser});
+    const {getUserMovementsByOffice} = this.props;
     getUserMovementsByOffice(currentUser.dependencyId)
   }
 
@@ -39,20 +44,40 @@ class DocumentsReceived extends Component{
     this.setState({listDataSelected})
   };
 
-  onConfirmDocuments=()=>{
-    const {listDataSelected, valueMap, currentUser} = this.state
-    const {confirmDocuments, getUserMovementsByOffice} = this.props
+  onSetSelectAssignedDocuments=(listDataAssignedSelected) => {
+    this.setState({listDataAssignedSelected})
+  };
 
-    const documentsIds = map(listDataSelected, data => data.id)
+  onConfirmDocuments=()=>{
+    const {listDataSelected, valueMap, currentUser} = this.state;
+    const {confirmDocuments, getUserMovementsByOffice} = this.props;
+
+    const documentsIds = map(listDataSelected, data => data.id);
     confirmDocuments(currentUser.id,documentsIds, valueMap['currentDate'],valueMap['asignadoA']).then(()=>{
       this.onToggleConfirmModal();
       getUserMovementsByOffice(currentUser.dependencyId)
     })
   };
 
+  onDeriveDocuments=()=>{
+    const {listDataSelected, valueMap, currentUser} = this.state;
+    const {deriveDocuments, getUserMovementsByOffice} = this.props;
+    deriveDocuments(currentUser.id, valueMap['officeId'], valueMap['currentDate'],listDataSelected).then(()=>{
+      this.onToggleDerivedModal();
+      getUserMovementsByOffice(currentUser.dependencyId)
+    })
+  };
+
   onToggleConfirmModal=()=>{
+    this.setState({valueMap: {}});
     this.onChangeValueMap('currentDate',getFormattedDate());
     this.setState({showConfirmationModal: !this.state.showConfirmationModal})
+  };
+
+  onToggleDerivedModal=()=>{
+    this.setState({valueMap: {}});
+    this.onChangeValueMap('currentDate',getFormattedDate());
+    this.setState({showDerivedModal: !this.state.showDerivedModal})
   };
 
   getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
@@ -159,11 +184,19 @@ class DocumentsReceived extends Component{
     ])
   };
 
+  getFooterTableAssignedStructure = () => {
+    return([
+      {text: 'Seguimiento', action: ()=>{}},
+      {text: 'Responder', action: ()=>{}},
+      {text: 'Derivar', action: () => {}},
+    ])
+  };
+
   getFooterTableStructure = () => {
     return([
       {text: 'Seguimiento', action: ()=>{}},
       {text: 'Confirmar', action: this.onToggleConfirmModal},
-      {text: 'Derivar', action: () => {}},
+      {text: 'Derivar', action: this.onToggleDerivedModal},
     ])
   };
 
@@ -173,18 +206,34 @@ class DocumentsReceived extends Component{
     getUserMovementsByOffice(currentUser.dependencyId)
   };
 
+  onClickTabAssignedDocuments=()=>{
+    const {currentUser}=this.state;
+    const {getUserMovementsByAssignedTo} = this.props;
+    getUserMovementsByAssignedTo(currentUser.id)
+  };
+
   render(){
-    const {data, errors, users} = this.props;
-    const {showConfirmationModal,listDataSelected, valueMap,currentUser} = this.state;
-    const {dependencyName} = currentUser
+    const {data, users, dataAssigned} = this.props;
+    const {showConfirmationModal,showDerivedModal,listDataSelected, valueMap,currentUser} = this.state;
+    const {dependencyName} = currentUser;
     const modalProps = [
       {
         showModal: showConfirmationModal,
-        title: 'Confirmar documentos recibidos',
+        title: 'Confirmar Documentos Recibidos',
         message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
         yesFunction: (listDataSelected.length > 0) ? this.onConfirmDocuments : this.onToggleConfirmModal,
         yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
         content: <FormRender formTemplate={formConfirmDocuments(users)}
+                             onChange={this.onChangeValueMap}
+                             valueMap={valueMap}/>
+      },
+      {
+        showModal: showDerivedModal,
+        title: 'Derivar Documentos',
+        message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
+        yesFunction: (listDataSelected.length > 0) ? this.onDeriveDocuments : this.onToggleDerivedModal,
+        yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
+        content: <FormRender formTemplate={formDeriveDocuments}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       },
@@ -200,10 +249,21 @@ class DocumentsReceived extends Component{
       />)
     };
 
+    const tableDocumentsAssigned=()=>{
+      return(<CommonTableManage
+        tableStructure={this.getTableStructureAssigned}
+        title={'DOCUMENTOS ASIGNADOS'}
+        listData={dataAssigned}
+        getFooterTableStructure={this.getFooterTableAssignedStructure}
+        onSetSelected={this.onSetSelectAssignedDocuments}
+      />)
+    };
+
     const tabs =
       [ {title: 'Doc. Recibidos', id: 'docReceived', action: tableDocumentsReceived,
         onClick: this.onClickTabDocumentReceived},
-        {title: 'Doc. Asignados', id: 'docAssigned', action: ()=>{}}
+        {title: 'Doc. Asignados', id: 'docAssigned', action: tableDocumentsAssigned,
+        onClick: this.onClickTabAssignedDocuments}
       ];
 
     return(
@@ -222,12 +282,14 @@ class DocumentsReceived extends Component{
 
 const mapDispatchToProps = (dispatch) => ({
   getUserMovementsByOffice: (officeId) => dispatch(getUserMovementsByOffice(officeId)),
-  confirmDocuments: (userId, movementsIds, currentDate, asignadoA) => dispatch(confirmDocuments(userId, movementsIds, currentDate, asignadoA))
+  getUserMovementsByAssignedTo: (userId) => dispatch(getUserMovementsByAssignedTo(userId)),
+  confirmDocuments: (userId, movementsIds, currentDate, asignadoA) => dispatch(confirmDocuments(userId, movementsIds, currentDate, asignadoA)),
+  deriveDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveDocuments(userId, officeId, currentDate, movements))
 });
 
 function mapStateToProps(state){
   const listDocuments = (listData) => {
-    return map(listData, (data,index) => ({
+    return map(listData, data => ({
       ...data,
       document: `${data.docuNombre} ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
       check: false
@@ -245,7 +307,8 @@ function mapStateToProps(state){
   return {
     data: listDocuments(state.user.movements),
     errors: state.user.errors,
-    users: lisUsers(state.initialData.users)
+    users: lisUsers(state.initialData.users),
+    dataAssigned: listDocuments(state.movements.dataAssigned)
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentsReceived)

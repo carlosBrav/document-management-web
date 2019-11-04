@@ -275,9 +275,9 @@ export function getUserMovementsByAssignedTo(userId){
     }
   };
 
-  function request(){ return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_REQUEST}}
-  function success(data) {return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS, data}}
-  function failure(errors) { return { type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
+  function request(){ return {type: Constants.GET_MOVEMENTS_BY_ASSIGNED_TO_REQUEST}}
+  function success(data) {return {type: Constants.GET_MOVEMENTS_BY_ASSIGNED_TO_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_MOVEMENTS_BY_ASSIGNED_TO_FAILURE, errors}}
 }
 
 export function confirmDocuments(userId, movementsIds, currentDate, asignadoA){
@@ -291,8 +291,24 @@ export function confirmDocuments(userId, movementsIds, currentDate, asignadoA){
     }
   };
 
-  function request(){ return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_REQUEST}}
-  function success(message) { return {type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_SUCCESS, message}}
-  function failure(errors) { return { type: Constants.GET_USER_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
+  function request(){ return {type: Constants.CONFIRM_DOCUMENTS_REQUEST}}
+  function success(message) { return {type: Constants.CONFIRM_DOCUMENTS_SUCCESS, message}}
+  function failure(errors) { return { type: Constants.CONFIRM_DOCUMENTS_FAILURE, errors}}
 }
 
+
+export function deriveDocuments(userId, officeId, currentDate, movements){
+  return async dispatch=>{
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.deriveDocuments(userId, officeId, currentDate, movements);
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.DERIVE_DOCUMENTS_REQUEST}}
+  function success(message){ return {type: Constants.DERIVE_DOCUMENTS_SUCCESS, message}}
+  function failure(errors){ return {type: Constants.DERIVE_DOCUMENTS_FAILURE, errors}}
+}

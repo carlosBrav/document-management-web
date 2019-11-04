@@ -24,7 +24,12 @@ class Login extends Component {
     login(user, password).then(response => {
       const {responseCode} = response
       if(responseCode === 0){
-        onLogin(`/${getPath(response.data.rolName)}`)
+        if(response.data.rolName === 'asignador'){
+          onLogin(`/${getPath('usuario')}`)
+        }else{
+          onLogin(`/${getPath(response.data.rolName)}`)
+        }
+
       }
     })
   };

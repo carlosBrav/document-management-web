@@ -120,7 +120,7 @@ function mapStateToProps(state){
     }))
   };
   return {
-    data: listDocuments(state.movements.dataConfirmed)
+    data: listDocuments(state.movements.dataAssigned)
   }
 }
 

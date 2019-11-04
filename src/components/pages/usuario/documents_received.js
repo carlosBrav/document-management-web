@@ -2,7 +2,8 @@ import {Component, Fragment} from "react";
 import {getUserMovementsByOffice,
         confirmDocuments,
         getUserMovementsByAssignedTo,
-        deriveDocuments} from "../../../actions/actions"
+        deriveDocuments,
+        deriveAssignedDocuments} from "../../../actions/actions"
 import {getParseObj} from "../../../utils/Utils";
 import {BUTTON_TYPE} from "../../../constants/Constants";
 import map from "lodash/map";
@@ -25,6 +26,7 @@ class DocumentsReceived extends Component{
     isModalOpen: false,
     showConfirmationModal: false,
     showDerivedModal: false,
+    showDeriveAssignedModal: false,
     valueMap : {},
     currentUser: {}
   };
@@ -68,6 +70,10 @@ class DocumentsReceived extends Component{
     })
   };
 
+  onDeriveAssignedDocuments=()=>{
+
+  };
+
   onToggleConfirmModal=()=>{
     this.setState({valueMap: {}});
     this.onChangeValueMap('currentDate',getFormattedDate());
@@ -78,6 +84,12 @@ class DocumentsReceived extends Component{
     this.setState({valueMap: {}});
     this.onChangeValueMap('currentDate',getFormattedDate());
     this.setState({showDerivedModal: !this.state.showDerivedModal})
+  };
+
+  onToggleDerivedAssignedModal=()=>{
+    this.setState({valueMap: {}});
+    this.onChangeValueMap('currentDate',getFormattedDate());
+    this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
   };
 
   getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
@@ -237,6 +249,16 @@ class DocumentsReceived extends Component{
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       },
+      {
+        showModal: showDerivedModal,
+        title: 'Derivar Documentos',
+        message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
+        yesFunction: (listDataSelected.length > 0) ? this.onDeriveDocuments : this.onToggleDerivedAssignedModal,
+        yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
+        content: <FormRender formTemplate={formDeriveDocuments}
+                             onChange={this.onChangeValueMap}
+                             valueMap={valueMap}/>
+      }
     ];
 
     const tableDocumentsReceived = () =>{
@@ -284,7 +306,8 @@ const mapDispatchToProps = (dispatch) => ({
   getUserMovementsByOffice: (officeId) => dispatch(getUserMovementsByOffice(officeId)),
   getUserMovementsByAssignedTo: (userId) => dispatch(getUserMovementsByAssignedTo(userId)),
   confirmDocuments: (userId, movementsIds, currentDate, asignadoA) => dispatch(confirmDocuments(userId, movementsIds, currentDate, asignadoA)),
-  deriveDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveDocuments(userId, officeId, currentDate, movements))
+  deriveDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveDocuments(userId, officeId, currentDate, movements)),
+  deriveAssignedDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveAssignedDocuments(userId, officeId, currentDate, movements))
 });
 
 function mapStateToProps(state){

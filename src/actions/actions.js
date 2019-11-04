@@ -312,3 +312,19 @@ export function deriveDocuments(userId, officeId, currentDate, movements){
   function success(message){ return {type: Constants.DERIVE_DOCUMENTS_SUCCESS, message}}
   function failure(errors){ return {type: Constants.DERIVE_DOCUMENTS_FAILURE, errors}}
 }
+
+export function deriveAssignedDocuments(userId, officeId, currentDate, movements){
+  return async dispatch=>{
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.deriveAssignedDocuments(userId, officeId, currentDate, movements);
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.DERIVE_ASSIGNED_DOCUMENTS_REQUEST}}
+  function success(message){ return {type: Constants.DERIVE_ASSIGNED_DOCUMENTS_SUCCESS, message}}
+  function failure(errors){ return {type: Constants.DERIVE_ASSIGNED_DOCUMENTS_FAILURE, errors}}
+}

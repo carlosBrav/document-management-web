@@ -135,4 +135,10 @@ export default class Service {
     const url = getUrlPath(endPoints.MOVEMENTS+'/derived');
     return ApiIntegration.doPost(url, body, true)
   }
+
+  static deriveAssignedDocuments(userId, officeId, currentDate, movements){
+    const body = JSON.stringify({userId, officeId, currentDate, movements});
+    const url = getUrlPath(endPoints.MOVEMENTS+'/derivedAssigned');
+    return ApiIntegration.doPost(url, body, true)
+  }
 }

@@ -3,7 +3,8 @@ import {getUserMovementsByOffice,
         confirmDocuments,
         getUserMovementsByAssignedTo,
         deriveDocuments,
-        deriveAssignedDocuments} from "../../../actions/actions"
+        deriveAssignedDocuments,
+        getTypeDocuments} from "../../../actions/actions"
 import {getParseObj} from "../../../utils/Utils";
 import {BUTTON_TYPE} from "../../../constants/Constants";
 import map from "lodash/map";
@@ -15,7 +16,7 @@ import CommonModal from '../../commons/CommonModal';
 import FormRender from "../../../forms/FormRender";
 import {formConfirmDocuments} from "../../../forms/templates/TemplateConfirmDocument";
 import {formDeriveDocuments} from "../../../forms/templates/TemplateDeriveDocuments";
-import {getFormattedDate} from "../../../utils/Constants";
+import {getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../../utils/Constants";
 import CommonTab from '../../commons/CommonTab';
 
 class DocumentsReceived extends Component{
@@ -71,7 +72,12 @@ class DocumentsReceived extends Component{
   };
 
   onDeriveAssignedDocuments=()=>{
-
+    const {listDataAssignedSelected, valueMap, currentUser} = this.state;
+    const {deriveAssignedDocuments, getUserMovementsByOffice} = this.props;
+    deriveAssignedDocuments(currentUser.id, valueMap['officeId'], valueMap['currentDate'],listDataAssignedSelected).then(()=>{
+      this.onToggleDerivedAssignedModal();
+      getUserMovementsByOffice(currentUser.dependencyId)
+    })
   };
 
   onToggleConfirmModal=()=>{
@@ -88,8 +94,15 @@ class DocumentsReceived extends Component{
 
   onToggleDerivedAssignedModal=()=>{
     this.setState({valueMap: {}});
-    this.onChangeValueMap('currentDate',getFormattedDate());
-    this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
+    const {listDataAssignedSelected, currentUser} = this.state
+    const {getTypeDocuments} = this.props;
+    getTypeDocuments().then(()=>{
+      this.onChangeValueMap('fecha',getFormattedOnlyDate());
+      this.onChangeValueMap('hora',getFormattedOnlyTime());
+      this.onChangeValueMap('referencia',listDataAssignedSelected[0].numTram);
+      this.onChangeValueMap('user',currentUser.apellido+", "+currentUser.nombre);
+      this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
+    });
   };
 
   getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
@@ -200,7 +213,7 @@ class DocumentsReceived extends Component{
     return([
       {text: 'Seguimiento', action: ()=>{}},
       {text: 'Responder', action: ()=>{}},
-      {text: 'Derivar', action: () => {}},
+      {text: 'Derivar', action: this.onToggleDerivedAssignedModal},
     ])
   };
 
@@ -225,8 +238,8 @@ class DocumentsReceived extends Component{
   };
 
   render(){
-    const {data, users, dataAssigned} = this.props;
-    const {showConfirmationModal,showDerivedModal,listDataSelected, valueMap,currentUser} = this.state;
+    const {data, users, dataAssigned,typeDocuments} = this.props;
+    const {showConfirmationModal,showDeriveAssignedModal,showDerivedModal,listDataAssignedSelected,listDataSelected, valueMap,currentUser} = this.state;
     const {dependencyName} = currentUser;
     const modalProps = [
       {
@@ -234,6 +247,8 @@ class DocumentsReceived extends Component{
         title: 'Confirmar Documentos Recibidos',
         message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
         yesFunction: (listDataSelected.length > 0) ? this.onConfirmDocuments : this.onToggleConfirmModal,
+        noFunction: this.onToggleConfirmModal,
+        noText: "Cancelar",
         yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
         content: <FormRender formTemplate={formConfirmDocuments(users)}
                              onChange={this.onChangeValueMap}
@@ -244,18 +259,22 @@ class DocumentsReceived extends Component{
         title: 'Derivar Documentos',
         message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
         yesFunction: (listDataSelected.length > 0) ? this.onDeriveDocuments : this.onToggleDerivedModal,
+        noFunction: this.onToggleConfirmModal,
+        noText: "Cancelar",
         yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
-        content: <FormRender formTemplate={formDeriveDocuments}
+        content: <FormRender formTemplate={formDeriveDocuments(typeDocuments)}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       },
       {
-        showModal: showDerivedModal,
+        showModal: showDeriveAssignedModal,
         title: 'Derivar Documentos',
-        message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
-        yesFunction: (listDataSelected.length > 0) ? this.onDeriveDocuments : this.onToggleDerivedAssignedModal,
-        yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
-        content: <FormRender formTemplate={formDeriveDocuments}
+        message: (listDataAssignedSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
+        yesFunction: (listDataAssignedSelected.length > 0) ? this.onDeriveAssignedDocuments : this.onToggleDerivedAssignedModal,
+        yesText: (listDataAssignedSelected.length > 0) ? 'Confirmar' : 'Aceptar',
+        noFunction: this.onToggleDerivedAssignedModal,
+        noText: "Cancelar",
+        content: <FormRender formTemplate={formDeriveDocuments(typeDocuments)}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       }
@@ -307,10 +326,17 @@ const mapDispatchToProps = (dispatch) => ({
   getUserMovementsByAssignedTo: (userId) => dispatch(getUserMovementsByAssignedTo(userId)),
   confirmDocuments: (userId, movementsIds, currentDate, asignadoA) => dispatch(confirmDocuments(userId, movementsIds, currentDate, asignadoA)),
   deriveDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveDocuments(userId, officeId, currentDate, movements)),
-  deriveAssignedDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveAssignedDocuments(userId, officeId, currentDate, movements))
+  deriveAssignedDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveAssignedDocuments(userId, officeId, currentDate, movements)),
+  getTypeDocuments: () => dispatch(getTypeDocuments())
 });
 
 function mapStateToProps(state){
+  const getTypeDocuments = (listData) => {
+    return map(filter(listData, data => data.flag2 !== 'NPC'), data => ({
+      ...data,
+      value: data.nombreTipo
+    }))
+  };
   const listDocuments = (listData) => {
     return map(listData, data => ({
       ...data,
@@ -321,16 +347,17 @@ function mapStateToProps(state){
 
   const currentUser = getParseObj('CURRENT_USER');
 
-  const lisUsers = (listData) => {
+  const listUsers = (listData) => {
     return map(filter(listData, value => value.dependenciaId === currentUser.dependencyId), data => ({
       ...data,
       value: `${data.apellido}, ${data.nombre}`
     }))
   };
   return {
+    typeDocuments: getTypeDocuments(state.typeDocuments.data),
     data: listDocuments(state.user.movements),
     errors: state.user.errors,
-    users: lisUsers(state.initialData.users),
+    users: listUsers(state.initialData.users),
     dataAssigned: listDocuments(state.movements.dataAssigned)
   }
 }

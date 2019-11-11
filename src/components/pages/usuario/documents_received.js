@@ -4,7 +4,9 @@ import {getUserMovementsByOffice,
         getUserMovementsByAssignedTo,
         deriveDocuments,
         deriveAssignedDocuments,
-        getTypeDocuments} from "../../../actions/actions"
+        getTypeDocuments,
+        getCorrelativeMax,
+        generateResponseToMovement} from "../../../actions/actions"
 import {getParseObj} from "../../../utils/Utils";
 import {BUTTON_TYPE} from "../../../constants/Constants";
 import map from "lodash/map";
@@ -18,6 +20,9 @@ import {formConfirmDocuments} from "../../../forms/templates/TemplateConfirmDocu
 import {formDeriveDocuments} from "../../../forms/templates/TemplateDeriveDocuments";
 import {getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../../utils/Constants";
 import CommonTab from '../../commons/CommonTab';
+import find from "lodash/find";
+import parseInt from "lodash/parseInt";
+import {DOCUMENT_INTERN,MOVEMENT} from '../../../utils/Constants';
 
 class DocumentsReceived extends Component{
 
@@ -37,10 +42,24 @@ class DocumentsReceived extends Component{
     this.setState({currentUser});
     const {getUserMovementsByOffice} = this.props;
     getUserMovementsByOffice(currentUser.dependencyId)
-  }
+  };
+
+  onGetMaxCorrelative = (typeDocumentId) => {
+    const {getCorrelativeMax, typeDocuments} = this.props;
+    const {currentUser}=this.state
+    getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(() => {
+      const {documentNumber, documentSiglas, documentYear} = this.props
+      const {nombreTipo,id} = find(typeDocuments, {'id': typeDocumentId});
+      this.onChangeValueMap('tipoDocuId', id)
+      this.onChangeValueMap('numDocumento', parseInt(documentNumber));
+      this.onChangeValueMap('siglas', documentSiglas);
+      this.onChangeValueMap('anio', documentYear);
+      this.onChangeValueMap("document", nombreTipo + " N° " + documentNumber + "-" + documentSiglas + "-" + documentYear)
+    })
+  };
 
   onChangeValueMap=(prop, value) => {
-    this.setState({valueMap: {...this.state.valueMap, [prop]: value}})
+    this.setState({valueMap: {...this.state.valueMap, [prop]: value}});
   };
 
   onSetSelectDocuments=(listDataSelected)=>{
@@ -62,22 +81,63 @@ class DocumentsReceived extends Component{
     })
   };
 
-  onDeriveDocuments=()=>{
+  generateObjectMovement=()=>{
+    const {listDataAssignedSelected, valueMap} = this.state;
+    const movement = {...listDataAssignedSelected[0]}
+    return({
+      [MOVEMENT.MOVEMENT]: movement[MOVEMENT.MOVEMENT],
+      [MOVEMENT.NUM_TRAM]: movement[MOVEMENT.NUM_TRAM],
+      [MOVEMENT.DOCUMENT_STATE]: movement[MOVEMENT.DOCUMENT_STATE],
+      [MOVEMENT.DESTINY]: movement[MOVEMENT.DESTINY],
+      [MOVEMENT.OBSERVATION]: movement[MOVEMENT.OBSERVATION],
+      [MOVEMENT.NAME_INDICATOR]: movement[MOVEMENT.NAME_INDICATOR],
+      [MOVEMENT.CODE_INDICATOR]: movement[MOVEMENT.CODE_INDICATOR],
+      [MOVEMENT.DOCUMENT_NAME]: movement[MOVEMENT.DOCUMENT_NAME],
+      [MOVEMENT.DOCUMENT_NUMBER]: movement[MOVEMENT.DOCUMENT_NUMBER],
+      [MOVEMENT.DOCUMENT_SIGLAS]: movement[MOVEMENT.DOCUMENT_SIGLAS],
+      [MOVEMENT.DOCUMENT_YEAR]: movement[MOVEMENT.DOCUMENT_YEAR],
+      [MOVEMENT.CURRENT_DATE]: valueMap[MOVEMENT.CURRENT_DATE]
+    });
+  };
+
+  generateObjectInternDocument=()=>{
+    const {valueMap} = this.state;
+    return({
+      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'GENERADO',
+      [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: valueMap[DOCUMENT_INTERN.TYPE_DOCUMENT_ID],
+      [DOCUMENT_INTERN.DOCUMENT_NUMBER]: valueMap[DOCUMENT_INTERN.DOCUMENT_NUMBER],
+      [DOCUMENT_INTERN.SIGLAS]: valueMap[DOCUMENT_INTERN.SIGLAS],
+      [DOCUMENT_INTERN.YEAR]: valueMap[DOCUMENT_INTERN.YEAR],
+      [DOCUMENT_INTERN.OBSERVATION]: '',
+      [DOCUMENT_INTERN.ASUNTO]: valueMap[DOCUMENT_INTERN.ASUNTO],
+      [DOCUMENT_INTERN.DEPENDENCY_ID]: valueMap['dependenciaId1'],
+      [DOCUMENT_INTERN.USER_ID]: valueMap[DOCUMENT_INTERN.USER_ID],
+      [DOCUMENT_INTERN.FIRM]: '',
+      [DOCUMENT_INTERN.ACTIVE]: true,
+      [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE]
+
+    })
+  };
+
+  /*onDeriveDocuments=()=>{
     const {listDataSelected, valueMap, currentUser} = this.state;
     const {deriveDocuments, getUserMovementsByOffice} = this.props;
     deriveDocuments(currentUser.id, valueMap['officeId'], valueMap['currentDate'],listDataSelected).then(()=>{
       this.onToggleDerivedModal();
       getUserMovementsByOffice(currentUser.dependencyId)
     })
-  };
+  };*/
 
   onDeriveAssignedDocuments=()=>{
-    const {listDataAssignedSelected, valueMap, currentUser} = this.state;
-    const {deriveAssignedDocuments, getUserMovementsByOffice} = this.props;
-    deriveAssignedDocuments(currentUser.id, valueMap['officeId'], valueMap['currentDate'],listDataAssignedSelected).then(()=>{
-      this.onToggleDerivedAssignedModal();
+    const {currentUser} = this.state;
+    const movement = this.generateObjectMovement();
+    const intern_document = this.generateObjectInternDocument();
+    const {generateResponseToMovement, getUserMovementsByOffice} = this.props;
+    generateResponseToMovement(currentUser.id, currentUser.dependencyId, intern_document,movement).then(()=>{
+      this.onToggleCloseDerived();
       getUserMovementsByOffice(currentUser.dependencyId)
     })
+
   };
 
   onToggleConfirmModal=()=>{
@@ -86,24 +146,31 @@ class DocumentsReceived extends Component{
     this.setState({showConfirmationModal: !this.state.showConfirmationModal})
   };
 
-  onToggleDerivedModal=()=>{
+  /*onToggleDerivedModal=()=>{
     this.setState({valueMap: {}});
     this.onChangeValueMap('currentDate',getFormattedDate());
     this.setState({showDerivedModal: !this.state.showDerivedModal})
-  };
+  };*/
 
   onToggleDerivedAssignedModal=()=>{
     this.setState({valueMap: {}});
-    const {listDataAssignedSelected, currentUser} = this.state
+    const {listDataAssignedSelected, currentUser} = this.state;
     const {getTypeDocuments} = this.props;
     getTypeDocuments().then(()=>{
+      this.onChangeValueMap('currentDate',getFormattedDate());
       this.onChangeValueMap('fecha',getFormattedOnlyDate());
       this.onChangeValueMap('hora',getFormattedOnlyTime());
       this.onChangeValueMap('referencia',listDataAssignedSelected[0].numTram);
       this.onChangeValueMap('user',currentUser.apellido+", "+currentUser.nombre);
+      this.onChangeValueMap('motivo', listDataAssignedSelected[0].observacion);
+      this.onChangeValueMap('userId', currentUser.id)
       this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
     });
   };
+
+  onToggleCloseDerived=()=>{
+    this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
+  }
 
   getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
     return ([
@@ -212,7 +279,6 @@ class DocumentsReceived extends Component{
   getFooterTableAssignedStructure = () => {
     return([
       {text: 'Seguimiento', action: ()=>{}},
-      {text: 'Responder', action: ()=>{}},
       {text: 'Derivar', action: this.onToggleDerivedAssignedModal},
     ])
   };
@@ -220,8 +286,7 @@ class DocumentsReceived extends Component{
   getFooterTableStructure = () => {
     return([
       {text: 'Seguimiento', action: ()=>{}},
-      {text: 'Confirmar', action: this.onToggleConfirmModal},
-      {text: 'Derivar', action: this.onToggleDerivedModal},
+      {text: 'Confirmar', action: this.onToggleConfirmModal}
     ])
   };
 
@@ -239,7 +304,7 @@ class DocumentsReceived extends Component{
 
   render(){
     const {data, users, dataAssigned,typeDocuments} = this.props;
-    const {showConfirmationModal,showDeriveAssignedModal,showDerivedModal,listDataAssignedSelected,listDataSelected, valueMap,currentUser} = this.state;
+    const {showConfirmationModal,showDeriveAssignedModal,listDataAssignedSelected,listDataSelected, valueMap,currentUser} = this.state;
     const {dependencyName} = currentUser;
     const modalProps = [
       {
@@ -254,7 +319,7 @@ class DocumentsReceived extends Component{
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       },
-      {
+      /*{
         showModal: showDerivedModal,
         title: 'Derivar Documentos',
         message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
@@ -265,7 +330,7 @@ class DocumentsReceived extends Component{
         content: <FormRender formTemplate={formDeriveDocuments(typeDocuments)}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
-      },
+      },*/
       {
         showModal: showDeriveAssignedModal,
         title: 'Derivar Documentos',
@@ -276,7 +341,8 @@ class DocumentsReceived extends Component{
         noText: "Cancelar",
         content: <FormRender formTemplate={formDeriveDocuments(typeDocuments)}
                              onChange={this.onChangeValueMap}
-                             valueMap={valueMap}/>
+                             valueMap={valueMap}
+                             onChangeInputSelect={(typeDocumentId) => this.onGetMaxCorrelative(typeDocumentId)}/>
       }
     ];
 
@@ -327,7 +393,9 @@ const mapDispatchToProps = (dispatch) => ({
   confirmDocuments: (userId, movementsIds, currentDate, asignadoA) => dispatch(confirmDocuments(userId, movementsIds, currentDate, asignadoA)),
   deriveDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveDocuments(userId, officeId, currentDate, movements)),
   deriveAssignedDocuments: (userId, officeId, currentDate, movements) => dispatch(deriveAssignedDocuments(userId, officeId, currentDate, movements)),
-  getTypeDocuments: () => dispatch(getTypeDocuments())
+  getTypeDocuments: () => dispatch(getTypeDocuments()),
+  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
+  generateResponseToMovement: (userId, officeId, documentIntern, movement) => dispatch(generateResponseToMovement(userId, officeId, documentIntern, movement))
 });
 
 function mapStateToProps(state){
@@ -358,7 +426,10 @@ function mapStateToProps(state){
     data: listDocuments(state.user.movements),
     errors: state.user.errors,
     users: listUsers(state.initialData.users),
-    dataAssigned: listDocuments(state.movements.dataAssigned)
+    dataAssigned: listDocuments(state.movements.dataAssigned),
+    documentNumber: state.correlative.documentNumber,
+    documentSiglas: state.correlative.documentSiglas,
+    documentYear: state.correlative.documentYear,
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DocumentsReceived)

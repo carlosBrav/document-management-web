@@ -4,15 +4,16 @@ import {list_dependencies} from "../../fakedata/ListDataDocuments";
 export const formDeriveDocuments= (typeDocuments) =>
   [
   {
-    "id": "tipoDocumento",
+    "id": "numDocumento",
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems": typeDocuments
+    "listItems": typeDocuments,
+    "useOnChange": true
   },
   {
-    "id": "documento",
+    "id": "document",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
@@ -31,12 +32,13 @@ export const formDeriveDocuments= (typeDocuments) =>
     "readOnly": true
   },
   {
-    "id": "destinyId",
+    "id": "dependenciaId1",
     "label": "Oficina Interna:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems": list_dependencies
+    "listItems": list_dependencies,
+    "useOnChange": false
   },
   {
     "id": "fecha",

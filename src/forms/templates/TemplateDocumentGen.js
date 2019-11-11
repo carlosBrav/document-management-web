@@ -8,7 +8,8 @@ export const formDocumGenerado = [
     "label": "Tipo de documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
-    "required": true
+    "required": true,
+    "useOnChange": true
   },
   {
     "id": "documentId",
@@ -41,7 +42,8 @@ export const formDocumGenerado = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems":list_dependencies
+    "listItems":list_dependencies,
+    "useOnChange": false
   },
   {
     "id": "destinoId",

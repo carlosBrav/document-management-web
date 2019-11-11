@@ -328,3 +328,19 @@ export function deriveAssignedDocuments(userId, officeId, currentDate, movements
   function success(message){ return {type: Constants.DERIVE_ASSIGNED_DOCUMENTS_SUCCESS, message}}
   function failure(errors){ return {type: Constants.DERIVE_ASSIGNED_DOCUMENTS_FAILURE, errors}}
 }
+
+export function generateResponseToMovement(userId, officeId, documentIntern, movement){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.generateResponseToMovement(userId, officeId, documentIntern, movement)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_REQUEST}}
+  function success(message){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_SUCCESS, message}}
+  function failure(errors){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_FAILURE, errors}}
+}

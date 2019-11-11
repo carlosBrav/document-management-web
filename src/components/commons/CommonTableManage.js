@@ -46,22 +46,22 @@ class CommonTableManage extends Component{
   }
 
   onToggleAddDocSelect=(id)=>{
-    const {onSetSelected} = this.props
+    const {onSetSelected} = this.props;
     let {documentsDataList} = this.state;
     const index = findIndex(documentsDataList, {id: id});
     documentsDataList[index].check = !documentsDataList[index].check;
-    this.setState({documentsDataList})
+    this.setState({documentsDataList});
     onSetSelected(filter(this.state.documentsDataList, (data)=> data.check))
-  }
+  };
 
   renderRowsChecked=()=>{
     const changeCheck =(element)=>{
       return {...element, ['check']:!element.check}
-    }
-    const {documentsDataList} = this.state
-    const listChecked = documentsDataList.map((element)=> changeCheck(element))
+    };
+    const {documentsDataList} = this.state;
+    const listChecked = documentsDataList.map((element)=> changeCheck(element));
     this.setState({documentsDataList: listChecked})
-  }
+  };
 
   componentDidMount(){
     const {tableStructure, listData} = this.props
@@ -125,7 +125,7 @@ class CommonTableManage extends Component{
             <div className='container-table'>
               {(documentsTableStructure && documentsTableStructure.length > 0) ?
                 <CommonTable tableStructure={documentsTableStructure} data={this.renderRows()}
-                             onClick={this.onToggleAddDocSelect} onChange={this.changeSearchColumn}/> : null
+                             onClick={(index) => this.onToggleAddDocSelect(index)} onChange={this.changeSearchColumn}/> : null
               }
             </div>
             <div className='content-pagination'>

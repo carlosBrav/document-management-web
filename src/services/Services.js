@@ -141,4 +141,10 @@ export default class Service {
     const url = getUrlPath(endPoints.MOVEMENTS+'/derivedAssigned');
     return ApiIntegration.doPost(url, body, true)
   }
+
+  static generateResponseToMovement(userId,officeId,documentIntern, movement){
+    const body = JSON.stringify({documentIntern, movement});
+    const url = getUrlPath(endPoints.MOVEMENTS+'/user/'+userId+'/office/'+officeId);
+    return ApiIntegration.doPost(url, body, true)
+  }
 }

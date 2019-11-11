@@ -20,13 +20,15 @@ export const formEditProveido = [
     "label": "Origen:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "listItems":list_dependencies,
-    "required": true
+    "required": true,
+    "useOnChange": false
   },
   {
     "id": "destino",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "listItems":list_dependencies_2,
-    "required": true
+    "required": true,
+    "useOnChange": false
   }
   ]

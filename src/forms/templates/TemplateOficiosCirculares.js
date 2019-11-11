@@ -15,7 +15,8 @@ const formOficiosCirculares = (typeDocuments)=> [
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "required": true,
-    "listItems":typeDocuments
+    "listItems":typeDocuments,
+    "useOnChange": true
   },
   {
     "id": "document",

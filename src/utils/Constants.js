@@ -12,6 +12,37 @@ export const setCookie = (userInfo) => {
 export const CONSTANTS = {
   LOGGED_IN_USER:"LOGGED_IN_USER",
   CURRENT_USER:"CURRENT_USER",
+};
+
+export const DOCUMENT_INTERN = {
+  DOCUMENT_STATE: 'estadoDocumento',
+  TYPE_DOCUMENT_ID: 'tipoDocuId',
+  DOCUMENT_NUMBER: 'numDocumento',
+  SIGLAS: 'siglas',
+  YEAR: 'anio',
+  OBSERVATION: 'observacion',
+  ASUNTO: 'asunto',
+  DEPENDENCY_ID: 'dependenciaId',
+  USER_ID: 'userId',
+  FIRM: 'firma',
+  ACTIVE: 'active',
+  CURRENT_DATE: 'currentDate'
+};
+
+export const MOVEMENT = {
+  ID: 'id',
+  MOVEMENT: 'movimiento',
+  NUM_TRAM: 'numTram',
+  DOCUMENT_STATE: 'estadoDocumento',
+  DESTINY: 'dependenciasId1',
+  OBSERVATION: 'observacion',
+  NAME_INDICATOR: 'indiNombre',
+  CODE_INDICATOR: 'indiCod',
+  DOCUMENT_NAME: 'docuNombre',
+  DOCUMENT_NUMBER: 'docuNum',
+  DOCUMENT_SIGLAS: 'docuSiglas',
+  DOCUMENT_YEAR: 'docuAnio',
+  CURRENT_DATE: 'currentDate'
 }
 
 export function getFormattedDate(){

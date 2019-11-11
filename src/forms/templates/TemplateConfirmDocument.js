@@ -8,7 +8,8 @@ export const formConfirmDocuments = (users) => [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems": users
+    "listItems": users,
+    "useOnChange": false
   },
   {
     "id": "currentDate",

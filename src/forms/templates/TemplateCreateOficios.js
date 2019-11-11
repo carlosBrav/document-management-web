@@ -7,7 +7,8 @@ export const formOficios = [
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": false,
-    "required": true
+    "required": true,
+    "useOnChange": true
   },
   {
     "id": "asuntoId",
@@ -34,7 +35,8 @@ export const formOficios = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems":list_dependencies
+    "listItems":list_dependencies,
+    "useOnChange": false
   },
   {
     "id": "tipoDestinoId",
@@ -50,7 +52,8 @@ export const formOficios = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems":list_dependencies_2
+    "listItems":list_dependencies_2,
+    "useOnChange": false
   }
 ]
 
@@ -98,13 +101,15 @@ export const formOficiosToExp = [
     "label": "Tipo de Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
-    "listItems":list_dependencies
+    "listItems":list_dependencies,
+    "useOnChange": false
   },
   {
     "id": "destinoId",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
-    "listItems":list_dependencies_2
+    "listItems":list_dependencies_2,
+    "useOnChange": false
   }
 ];

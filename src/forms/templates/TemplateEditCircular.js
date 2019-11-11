@@ -21,6 +21,7 @@ export const formEditOficioCircular = [
     "label": "Área responsable:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "listItems":list_dependencies,
-    "required": true
+    "required": true,
+    "useOnChange": false
   }
 ];

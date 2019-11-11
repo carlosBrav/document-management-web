@@ -3,9 +3,9 @@ import React, {Component} from 'react';
 class CommonSelectInput extends Component{
 
   onChange=(idSection, e)=>{
-    const {onChange,onChangeInputSelect} = this.props
+    const {onChange,onChangeInputSelect,useOnChange} = this.props
     onChange(idSection, e.target.value)
-    if(onChangeInputSelect){
+    if(useOnChange && onChangeInputSelect){
       onChangeInputSelect(e.target.value)
     }
   };

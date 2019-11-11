@@ -107,7 +107,7 @@ class DocCirculares extends Component {
 
   onChangeValueCircular = (prop, value) => {
     this.setState({valueMapCircular: {...this.state.valueMapCircular, [prop]: value}})
-  }
+  };
 
   onToggleViewDocumentDetails = (data = {}, isToOpen) => {
     if(isToOpen){
@@ -196,7 +196,7 @@ class DocCirculares extends Component {
   };
 
   onGetMaxCorrelative = (typeDocumentId) => {
-    const {getCorrelativeMax, listTypeDocuments} = this.props
+    const {getCorrelativeMax, listTypeDocuments} = this.props;
     getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(() => {
       const {documentNumber, documentSiglas, documentYear} = this.props
       const {nombreTipo} = find(listTypeDocuments, {'id': typeDocumentId});

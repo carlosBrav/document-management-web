@@ -25,7 +25,7 @@ class CommonTableManage extends Component{
     const keysList = keys(searchList);
     let keysEmpty = true
     let filterData = [...listData]
-    keysList.map((key)=>{
+    keysList.forEach((key)=>{
       if(searchList[key].length>0) {
         filterData = filter(filterData, filter => {
           return filter[key].toLowerCase().includes(searchList[key].toLowerCase())

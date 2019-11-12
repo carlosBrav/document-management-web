@@ -85,10 +85,11 @@ class DocumentsReceived extends Component{
     const {listDataAssignedSelected, valueMap} = this.state;
     const movement = {...listDataAssignedSelected[0]}
     return({
+      [MOVEMENT.ID]: valueMap['movementId'],
       [MOVEMENT.MOVEMENT]: movement[MOVEMENT.MOVEMENT],
       [MOVEMENT.NUM_TRAM]: movement[MOVEMENT.NUM_TRAM],
       [MOVEMENT.DOCUMENT_STATE]: movement[MOVEMENT.DOCUMENT_STATE],
-      [MOVEMENT.DESTINY]: movement[MOVEMENT.DESTINY],
+      [MOVEMENT.DESTINY]: valueMap['destinyId'],
       [MOVEMENT.OBSERVATION]: movement[MOVEMENT.OBSERVATION],
       [MOVEMENT.NAME_INDICATOR]: movement[MOVEMENT.NAME_INDICATOR],
       [MOVEMENT.CODE_INDICATOR]: movement[MOVEMENT.CODE_INDICATOR],
@@ -101,16 +102,16 @@ class DocumentsReceived extends Component{
   };
 
   generateObjectInternDocument=()=>{
-    const {valueMap} = this.state;
+    const {valueMap, currentUser} = this.state;
     return({
-      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'GENERADO',
+      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'EN PROCESO',
       [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: valueMap[DOCUMENT_INTERN.TYPE_DOCUMENT_ID],
       [DOCUMENT_INTERN.DOCUMENT_NUMBER]: valueMap[DOCUMENT_INTERN.DOCUMENT_NUMBER],
       [DOCUMENT_INTERN.SIGLAS]: valueMap[DOCUMENT_INTERN.SIGLAS],
       [DOCUMENT_INTERN.YEAR]: valueMap[DOCUMENT_INTERN.YEAR],
       [DOCUMENT_INTERN.OBSERVATION]: '',
       [DOCUMENT_INTERN.ASUNTO]: valueMap[DOCUMENT_INTERN.ASUNTO],
-      [DOCUMENT_INTERN.DEPENDENCY_ID]: valueMap['dependenciaId1'],
+      [DOCUMENT_INTERN.DEPENDENCY_ID]: currentUser.dependencyId,
       [DOCUMENT_INTERN.USER_ID]: valueMap[DOCUMENT_INTERN.USER_ID],
       [DOCUMENT_INTERN.FIRM]: '',
       [DOCUMENT_INTERN.ACTIVE]: true,
@@ -132,12 +133,11 @@ class DocumentsReceived extends Component{
     const {currentUser} = this.state;
     const movement = this.generateObjectMovement();
     const intern_document = this.generateObjectInternDocument();
-    const {generateResponseToMovement, getUserMovementsByOffice} = this.props;
+    const {generateResponseToMovement, getUserMovementsByAssignedTo} = this.props;
     generateResponseToMovement(currentUser.id, currentUser.dependencyId, intern_document,movement).then(()=>{
       this.onToggleCloseDerived();
-      getUserMovementsByOffice(currentUser.dependencyId)
+      getUserMovementsByAssignedTo(currentUser.id)
     })
-
   };
 
   onToggleConfirmModal=()=>{
@@ -161,6 +161,7 @@ class DocumentsReceived extends Component{
       this.onChangeValueMap('fecha',getFormattedOnlyDate());
       this.onChangeValueMap('hora',getFormattedOnlyTime());
       this.onChangeValueMap('referencia',listDataAssignedSelected[0].numTram);
+      this.onChangeValueMap('movementId', listDataAssignedSelected[0].id);
       this.onChangeValueMap('user',currentUser.apellido+", "+currentUser.nombre);
       this.onChangeValueMap('motivo', listDataAssignedSelected[0].observacion);
       this.onChangeValueMap('userId', currentUser.id)

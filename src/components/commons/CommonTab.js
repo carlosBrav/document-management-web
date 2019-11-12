@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class CommonTab extends Component{
 
   render(){
-    const {tabList, currentUser} = this.props
+    const {tabList} = this.props
     return(
       <div style={{paddingLeft: 10, paddingRight: 10, paddingTop: 10}}>
         {

@@ -19,7 +19,7 @@ class CommonMenu extends Component {
             {
               firstColumn ?
                 <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                  <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
                      data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
                     {firstColumn.title}
@@ -40,7 +40,7 @@ class CommonMenu extends Component {
             {
               secondColumn ?
                 <li className="nav-item dropdown">
-                  <a className="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                  <a className="nav-link  dropdown-toggle" href="/#" role="button" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
                     {secondColumn.title}</a>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -50,7 +50,7 @@ class CommonMenu extends Component {
                           column.subMenus && column.subMenus.length > 0 ?
                             <li key={"columnLi"+index} className="dropdown-submenu">
                               <a className="dropdown-item dropdown-toggle" data-toggle="dropdown"
-                                 href="#">{column.title}</a>
+                                 href="/#">{column.title}</a>
                               <ul className="dropdown-menu">
                                 {
                                   column.subMenus.map((col,index) => {
@@ -78,14 +78,14 @@ class CommonMenu extends Component {
             }
 
             <li className="nav-item">
-              <a className="nav-link" href="#">{fourthColumn.title}</a>
+              <a className="nav-link" href="/#">{fourthColumn.title}</a>
             </li>
           </ul>
           <ul className="navbar-nav">
             {
               fifthColumn && fifthColumn.title ?
                 <li className="nav-item dropdown">
-                  <a className="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                  <a className="nav-link  dropdown-toggle" href="/#" role="button" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
                     {fifthColumn.title}</a>
                   <div className="dropdown-menu" style={{left: 10, minWidth: "9rem"}} aria-labelledby="navbarDropdown">
@@ -95,7 +95,7 @@ class CommonMenu extends Component {
                           column.subMenus && column.subMenus.length > 0 ?
                             <li key={"subMenuLi"+index} className="dropdown-submenu">
                               <a className="dropdown-item dropdown-toggle" data-toggle="dropdown"
-                                 href="#">{column.title}</a>
+                                 href="/#">{column.title}</a>
                               <ul className="dropdown-menu">
                                 {
                                   column.subMenus.map((col, index) => {

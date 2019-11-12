@@ -32,7 +32,7 @@ export const formDeriveDocuments= (typeDocuments) =>
     "readOnly": true
   },
   {
-    "id": "dependenciaId1",
+    "id": "destinyId",
     "label": "Oficina Interna:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,

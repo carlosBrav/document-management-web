@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import keys from 'lodash/keys';
-import isEmpty from 'lodash/isEmpty';
-import filter from 'lodash/filter';
 import CommonIcon from '../commons/CommonIcon';
 import CommonButton from "./CommonButton";
 import {BUTTON_TYPE} from "../../constants/Constants";

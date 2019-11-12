@@ -215,7 +215,6 @@ class DocCirculares extends Component {
       listDataSelected,
       showCreateCircularModal,
       valueMapCircular,
-      circularSelected,
       showEditCircularModal,
       showViewCircularModal
     } = this.state

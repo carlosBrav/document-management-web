@@ -82,6 +82,7 @@ class CommonPickList extends React.Component {
       case LIST_CASE.LIST_RIGHT:
         listDataSelected[index].check = !listDataSelected[index].check
         break;
+      default: return null;
     }
     this.setState({listData, listDataSelected})
   }

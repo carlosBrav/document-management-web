@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Redirect } from 'react-router-dom';
 import {getParseObj, getDecodedToken} from "../../utils/Utils";
 import ContainerLogin from "../../containers/ContainerLogin";
 import ContainerAdmin from "../../containers/ContainerAdmin";

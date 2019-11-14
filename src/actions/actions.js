@@ -201,6 +201,22 @@ export function editCircularDocuments(id, asunto, dependencyId){
   function failure(errors){ return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_FAILURE, errors}}
 }
 
+export function getInternDocuments(userId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getInternDocuments(userId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_INTERN_DOCUMENTS_REQUEST}}
+  function success(data) { return { type: Constants.GET_INTERN_DOCUMENTS_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_INTERN_DOCUMENTS_FAILURE, errors}}
+}
+
 export function getDocuments(typeDocuments, userId){
   return async dispatch => {
     dispatch(request());

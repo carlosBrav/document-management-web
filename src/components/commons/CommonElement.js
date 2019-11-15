@@ -41,8 +41,8 @@ const InputSelect=(props)=>(
                      listItems={props.listItems}
                      value={get(props.valueMap,props.id,'')}
                      isFormCircular={props.isFormCircular}
-                     onChangeInputSelect={props.onChangeInputSelect}
-                     useOnChange={props.useOnChange}/>
+                     useOnChange={props.useOnChange}
+                     onChangeCustom={props.onChangeCustom}/>
 );
 
 class CommonElement extends Component{

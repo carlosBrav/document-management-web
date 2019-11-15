@@ -3,6 +3,7 @@ import CommonMenu from "../components/commons/CommonMenu";
 import {Route, Switch} from "react-router-dom";
 import DocumentsReceived from "../components/pages/usuario/recieved_documents";
 import DocumentsAssigned from "../components/pages/usuario/assigned_documents";
+import InternDocuments from "../components/pages/usuario/intern_documents";
 import DocConfirmados from "../components/pages/DocConfirmados";
 import DocRespuesta from "../components/pages/DocRespuesta";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
@@ -80,7 +81,7 @@ class ContainerAdmin extends Component{
             <Switch>
               <Route exact path="/usuario/documentos" component={DocumentsReceived}/>
               <Route exact path="/usuario/documentos_asignados" component={DocumentsAssigned}/>
-              <Route exact path="/usuario/document_internos" component={DocConfirmados}/>
+              <Route exact path="/usuario/document_internos" component={InternDocuments}/>
               <Route exact path='/usuario/document_oficios' component={DocRespuesta}/>
               <Route exact path='/usuario/busqueda_avanzada' component={Busqueda_avanzada}/>
             </Switch>

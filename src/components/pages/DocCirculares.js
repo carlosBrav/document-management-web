@@ -137,7 +137,8 @@ class DocCirculares extends Component {
   }
 
   onToggleCreateCircular = () => {
-    this.setState({valueMapCircular: {}})
+    this.setState({valueMapCircular: {}});
+    const currentUser = getParseObj('CURRENT_USER');
     const {getTypeDocuments, getUserBossOffice} = this.props;
     getUserBossOffice().then(() => {
       getTypeDocuments().then(() => {

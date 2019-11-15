@@ -2,7 +2,16 @@
 export const BUTTON_TYPE = {
   CHECKBOX : 1,
   NORMAL: 2
-}
+};
+
+export const TYPE_DESTINYS = [
+  {id: '0',value: 'Facultad'},
+  {id: '1',value: 'Oficina Interna'},
+  {id: '2',value: 'Institucion Externa'},
+  {id: '3',value: 'Dependencia Int. UNMSM'},
+  {id: '4',value: 'Dependencia Ext. UNMSM'},
+  {id: '5',value: 'Dependencia Sede Central'}
+];
 
 export const TYPE_INPUT = {
   INPUT_TEXT: 'text',

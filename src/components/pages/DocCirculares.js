@@ -1,15 +1,6 @@
-import React, {Component, Fragment} from 'react';
-import CommonTableManage from '../commons/CommonTableManage';
-import {ICON_TYPE} from "../commons/CommonIcon";
-import {exportPDF} from "../utils/ExportPDF";
+import React, {Component} from 'react';
 import map from "lodash/map";
 import filter from "lodash/filter";
-import CommonModal from '../commons/CommonModal';
-import CommonListGroup from '../commons/CommonListGroup';
-import formOficiosCirculares from "../../forms/templates/TemplateOficiosCirculares";
-import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
-import FormRender from "../../forms/FormRender";
-import {TYPE_CONTENT_MODAL} from '../../constants/Constants';
 import {
   getTypeDocuments,
   getCorrelativeMax,
@@ -22,12 +13,7 @@ import {
 } from "../../actions/actions";
 import {connect} from 'react-redux';
 import {getParseObj} from "../../utils/Utils";
-import find from "lodash/find";
-import {getFormattedDate} from "../../utils/Constants";
-import parseInt from "lodash/parseInt";
 import CommonCircularDocuments from "../commons/CommonCircularDocuments";
-
-
 
 class DocCirculares extends Component {
 

@@ -1,16 +1,13 @@
 import React, {Component, Fragment} from "react";
-import {getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../utils/Constants";
+import {getFormattedDate} from "../../utils/Constants";
 import find from "lodash/find";
 import parseInt from "lodash/parseInt";
 import map from "lodash/map";
-import filter from "lodash/filter";
 import FormRender from "../../forms/FormRender";
-import {formCreateInternDocument} from "../../forms/templates/TemplateInternDocument";
 import CommonModal from "./CommonModal";
 import CommonTableManage from "./CommonTableManage";
 import {ICON_TYPE} from "./CommonIcon";
 import {exportPDF} from "../utils/ExportPDF";
-import {getParseObj} from "../../utils/Utils";
 import formOficiosCirculares from "../../forms/templates/TemplateOficiosCirculares";
 import {TYPE_CONTENT_MODAL} from "../../constants/Constants";
 import CommonListGroup from "./CommonListGroup";

@@ -195,7 +195,7 @@ class CommonCircularDocuments extends Component{
 
   render() {
 
-    const {documentsIntern, detailsCircular, listTypeDocuments} = this.props;
+    const {circularDocuments, detailsCircular, listTypeDocuments} = this.props;
     const {
       showDeleteModal,
       listDataSelected,
@@ -266,7 +266,7 @@ class CommonCircularDocuments extends Component{
           <CommonTableManage
             tableStructure={this.getTableStructure}
             title={'OFICIOS CIRCULARES - OGPL'}
-            listData={documentsIntern}
+            listData={circularDocuments}
             getFooterTableStructure={this.getFooterTableStructure}
             onSetSelected={this.onSetSelectOficiosCirculares}
           />

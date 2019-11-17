@@ -217,7 +217,7 @@ export function getInternDocuments(userId){
   function failure(errors) { return { type: Constants.GET_INTERN_DOCUMENTS_FAILURE, errors}}
 }
 
-export function getDocuments(typeDocuments, userId){
+export function getCircularDocuments(typeDocuments, userId){
   return async dispatch => {
     dispatch(request());
     const {responseCode, data, responseMessage} = await Services.getCircularDocuments(userId)

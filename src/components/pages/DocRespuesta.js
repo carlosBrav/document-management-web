@@ -6,7 +6,8 @@ import FormRender from "../../forms/FormRender";
 import {formOficiosToExp, formOficios} from '../../forms/templates/TemplateCreateOficios';
 import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
-import {getDocuments} from "../../actions/actions";
+import {getInternDocuments} from "../../actions/actions";
+
 class DocRespuesta extends Component{
 
   state = {
@@ -214,7 +215,7 @@ class DocRespuesta extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getOficios: (typeDocuments, userId) => dispatch(getDocuments(typeDocuments, userId))
+  getOficios: (typeDocuments, userId) => dispatch(getInternDocuments(typeDocuments, userId))
 });
 
 

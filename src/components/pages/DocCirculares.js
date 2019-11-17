@@ -6,7 +6,7 @@ import {
   getCorrelativeMax,
   getUserBossOffice,
   createCircularDocuments,
-  getDocuments,
+  getCircularDocuments,
   editCircularDocuments,
   deleteDocuments,
   getCircularDetails
@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch) => ({
   getUserBossOffice: () => dispatch(getUserBossOffice()),
   createCircularDocuments: (documentIntern, destinations, officeId, userId) =>
     dispatch(createCircularDocuments(documentIntern, destinations, officeId, userId)),
-  getCircularDocuments: (typeDocuments, userId) => dispatch(getDocuments(typeDocuments, userId)),
+  getCircularDocuments: (typeDocuments, userId) => dispatch(getCircularDocuments(typeDocuments, userId)),
   editCircularDocuments: (id, asunto, dependencyId) => dispatch(editCircularDocuments(id, asunto, dependencyId)),
   deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
   getCircularDetails: (documentId) => dispatch(getCircularDetails(documentId))
@@ -70,8 +70,8 @@ function mapStateToProps(state) {
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
     bossOffice: state.user.userBossOffice,
-    documentsIntern: getCircularDocuments(state.documentIntern.data),
-    detailsCircular: getDetails(state.documentIntern.details)
+    circularDocuments: getCircularDocuments(state.documentIntern.circularData),
+    detailsCircular: getDetails(state.documentIntern.circularDetails)
   }
 }
 

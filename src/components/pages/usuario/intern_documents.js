@@ -1,5 +1,13 @@
 import React, {Component, Fragment} from "react";
-import {getCorrelativeMax, getInternDocuments, getTypeDocuments,createInternDocument,deleteDocuments} from "../../../actions/actions";
+import {
+  getCorrelativeMax,
+  getInternDocuments,
+  getTypeDocuments,
+  createInternDocument,
+  deleteDocuments,
+  editCircularDocuments, getCircularDetails, getUserBossOffice,
+  getCircularDocuments, createCircularDocuments
+} from "../../../actions/actions";
 import { connect } from 'react-redux';
 import {getParseObj} from "../../../utils/Utils";
 import CommonTableManage from "../../commons/CommonTableManage";
@@ -11,6 +19,8 @@ import CommonModal from "../../commons/CommonModal";
 import find from "lodash/find";
 import parseInt from "lodash/parseInt";
 import {getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../../utils/Constants";
+import CommonCircularDocuments from "../../commons/CommonCircularDocuments";
+import CommonTab from "../../commons/CommonTab";
 
 class InternDocuments extends Component{
 
@@ -24,6 +34,10 @@ class InternDocuments extends Component{
   };
 
   async componentDidMount(){
+    this.onGetRegularDocuments()
+  }
+
+  onGetRegularDocuments=()=>{
     const currentUser = getParseObj('CURRENT_USER');
     this.setState({currentUser});
     const {getInternDocuments} = this.props
@@ -106,6 +120,16 @@ class InternDocuments extends Component{
     })
   };
 
+  onGetCircularDocuments=()=>{
+    const {getTypeDocuments, getCircularDocuments} = this.props
+    const currentUser = getParseObj('CURRENT_USER');
+    getTypeDocuments().then(()=>{
+      const {listTypeDocuments} = this.props
+      const typeDocuments = map(listTypeDocuments, document => document.id);
+      getCircularDocuments(typeDocuments, currentUser.id)
+    });
+  }
+
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
@@ -185,6 +209,34 @@ class InternDocuments extends Component{
       }
     ];
 
+    const tableRegularDocuments =()=>{
+      return (
+        <CommonTableManage
+          tableStructure={this.getTableStructure}
+          title={'DOCUMENTOS INTERNOS'}
+          listData={documents}
+          getFooterTableStructure={this.getFooterTableStructure}
+          onSetSelected={this.onSetSelectDocuments}
+        />
+      )
+    };
+
+    const tableCircularDocuments =()=>{
+      const currentUser = getParseObj('CURRENT_USER');
+
+      return (
+        <CommonCircularDocuments
+          currentUser={currentUser}
+          {...this.props}
+        />
+      )
+    };
+
+    const tabs =
+      [ {title: 'Doc. Internos', id: 'docuInt', action: tableRegularDocuments, onClick: this.onGetRegularDocuments},
+        {title: 'Doc. Circulares', id: 'docCirculares', action: tableCircularDocuments, onClick: this.onGetCircularDocuments}
+      ];
+
     return(
       <Fragment>
         {
@@ -193,19 +245,20 @@ class InternDocuments extends Component{
               return <CommonModal key={'modal' + index} {...modal}/>
             }) : null
         }
-        <CommonTableManage
-          tableStructure={this.getTableStructure}
-          title={'DOCUMENTOS INTERNOS'}
-          listData={documents}
-          getFooterTableStructure={this.getFooterTableStructure}
-          onSetSelected={this.onSetSelectDocuments}
-        />
+        <CommonTab tabList={tabs}/>
       </Fragment>)
   }
 }
 
 function mapStateToProps(state){
   const currentUser = getParseObj('CURRENT_USER');
+
+  const getTypeDocumentsCircular = (listData) => {
+    return map(filter(listData, data => data.flag2 === 'NPC'), data => ({
+      ...data,
+      value: data.nombreTipo
+    }))
+  };
 
   const getUsersOfCurrentOffice=(listData)=>{
     return map(filter(listData, data => data.dependenciaId === currentUser.dependencyId), user =>({
@@ -224,11 +277,18 @@ function mapStateToProps(state){
     return map(listData, (data) => ({
       ...data,
       document: `${data.documentName} ${data.numDocumento}-${data.siglas}-${data.anio}`,
+      correlative: `${data.documentName} ${data.numDocumento}-${data.siglas}-${data.anio}`,
       responsable: `${data.userLastName}, ${data.userName}`,
       check: false
     }))
   };
+
+  const getCircularDetails = (listData) => {
+    return map(listData, data => ({value : data.destinoNombre}))
+  };
   return {
+    listTypeDocuments: getTypeDocumentsCircular(state.typeDocuments.data),
+    circularDocuments: listDocuments(state.documentIntern.circularData),
     typeDocuments: getTypeDocuments(state.typeDocuments.data),
     documents: listDocuments(state.documentIntern.data),
     dependencies: state.initialData.dependencies,
@@ -236,6 +296,8 @@ function mapStateToProps(state){
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
+    bossOffice: state.user.userBossOffice,
+    detailsCircular: getCircularDetails(state.documentIntern.circularDetails)
   }
 }
 const mapDispatchToProps = (dispatch) => ({
@@ -243,6 +305,12 @@ const mapDispatchToProps = (dispatch) => ({
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
   getInternDocuments: (userId) => dispatch(getInternDocuments(userId)),
   createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument)),
-  deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds))
+  deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
+  editCircularDocuments: (id, asunto, dependencyId) => dispatch(editCircularDocuments(id, asunto, dependencyId)),
+  getCircularDetails: (documentId) => dispatch(getCircularDetails(documentId)),
+  getUserBossOffice: () => dispatch(getUserBossOffice()),
+  getCircularDocuments: (typeDocuments, userId) => dispatch(getCircularDocuments(typeDocuments, userId)),
+  createCircularDocuments: (documentIntern, destinations, officeId, userId) =>
+    dispatch(createCircularDocuments(documentIntern, destinations, officeId, userId)),
 });
 export default connect (mapStateToProps, mapDispatchToProps)(InternDocuments)

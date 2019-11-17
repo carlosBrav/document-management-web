@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {getCorrelativeMax, getInternDocuments, getTypeDocuments} from "../../../actions/actions";
+import {getCorrelativeMax, getInternDocuments, getTypeDocuments,createInternDocument,deleteDocuments} from "../../../actions/actions";
 import { connect } from 'react-redux';
 import {getParseObj} from "../../../utils/Utils";
 import CommonTableManage from "../../commons/CommonTableManage";
@@ -51,14 +51,6 @@ class InternDocuments extends Component{
     });
   };
 
-  toggleCloseModalCreate=()=>{
-    this.setState({isShowModalCreate: !this.state.isShowModalCreate,destinations:[],valueMap:{}})
-  }
-
-  onSaveInternDocument=()=>{
-
-  };
-
   onGetMaxCorrelative = (typeDocumentId) => {
     const {getCorrelativeMax, typeDocuments} = this.props;
     const {currentUser}=this.state
@@ -69,6 +61,9 @@ class InternDocuments extends Component{
       this.onChangeValueMap('numDocumento', parseInt(documentNumber));
       this.onChangeValueMap('siglas', documentSiglas);
       this.onChangeValueMap('anio', documentYear);
+      this.onChangeValueMap('origenId',currentUser.dependencyId);
+      this.onChangeValueMap('userId',currentUser.id);
+      this.onChangeValueMap('firma',"");
       this.onChangeValueMap("document", nombreTipo + " N° " + documentNumber + "-" + documentSiglas + "-" + documentYear)
     })
   };
@@ -87,8 +82,29 @@ class InternDocuments extends Component{
   };
 
   onDeleteInternDocuments=()=>{
+    const currentUser = getParseObj('CURRENT_USER');
+    const {listDataSelected} = this.state;
+    const {deleteDocuments,getInternDocuments} = this.props;
+    const documentsIds = map(listDataSelected, data => data.id);
+    deleteDocuments(documentsIds).then(()=>{
+      getInternDocuments(currentUser.id);
+      this.setState({isShowModalDelete: !this.state.isShowModalDelete})
+    })
+  };
 
+  toggleCloseModalCreate=()=>{
+    this.setState({isShowModalCreate: !this.state.isShowModalCreate,destinations:[],valueMap:{}})
   }
+
+  onSaveInternDocument=()=>{
+    const {valueMap} = this.state;
+    const currentUser = getParseObj('CURRENT_USER');
+    const {createInternDocument,getInternDocuments} = this.props
+    createInternDocument(valueMap).then(()=>{
+      this.toggleCloseModalCreate();
+      getInternDocuments(currentUser.id)
+    })
+  };
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
@@ -225,6 +241,8 @@ function mapStateToProps(state){
 const mapDispatchToProps = (dispatch) => ({
   getTypeDocuments: () => dispatch(getTypeDocuments()),
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
-  getInternDocuments: (userId) => dispatch(getInternDocuments(userId))
+  getInternDocuments: (userId) => dispatch(getInternDocuments(userId)),
+  createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument)),
+  deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds))
 });
 export default connect (mapStateToProps, mapDispatchToProps)(InternDocuments)

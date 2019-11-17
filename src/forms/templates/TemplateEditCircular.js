@@ -17,7 +17,7 @@ export const formEditOficioCircular = [
     "required": true
   },
   {
-    "id": "dependenciaId",
+    "id": "origenId",
     "label": "Área responsable:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "listItems":list_dependencies,

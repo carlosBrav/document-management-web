@@ -9,14 +9,14 @@ const typeDestinations = [
   {id: "5", value: "Dependencia Sede Central"}
 ]
 
-const formOficiosCirculares = (typeDocuments)=> [
+const formOficiosCirculares = (typeDocuments, onChange)=> [
   {
     "id": "tipoDocuId",
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "required": true,
     "listItems":typeDocuments,
-    "useOnChange": true
+    "onChangeCustom": onChange
   },
   {
     "id": "document",

@@ -13,7 +13,7 @@ const endPoints = {
   TYPE_DOCUMENTS: '/api/typeDocuments',
   MAX_CORRELATIVE: '/api/correlativeMax',
   USER_BOSS_OFFICE: '/api/userBossOffice',
-  DOCUMENT_INTERN: '/api/documentIntern',
+  DOCUMENT_INTERN: '/api/internDocument',
   CIRCULAR_DETAILS: '/api/circularDetails',
   USER_MOVEMENTS: '/api/movements/user'
 };
@@ -97,8 +97,13 @@ export default class Service {
     return ApiIntegration.doGet(url, true)
   }
 
-  static editCircularDocuments(id, asunto, dependencyId){
-    const body = JSON.stringify({asunto, dependencyId});
+  static getCircularDocuments(userId){
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/circulars/'+userId);
+    return ApiIntegration.doGet(url, true)
+  }
+
+  static editCircularDocuments(id, asunto, origenId){
+    const body = JSON.stringify({asunto, origenId});
     const url = getUrlPath(endPoints.DOCUMENT_INTERN,id);
     return ApiIntegration.doPut(url, body, true)
   }
@@ -145,6 +150,12 @@ export default class Service {
   static generateResponseToMovement(userId,officeId,documentIntern, movement){
     const body = JSON.stringify({documentIntern, movement});
     const url = getUrlPath(endPoints.MOVEMENTS+'/user/'+userId+'/office/'+officeId);
+    return ApiIntegration.doPost(url, body, true)
+  }
+
+  static createInternDocument(internDocument){
+    const body = JSON.stringify({internDocument});
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN);
     return ApiIntegration.doPost(url, body, true)
   }
 }

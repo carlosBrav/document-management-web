@@ -220,7 +220,7 @@ export function getInternDocuments(userId){
 export function getDocuments(typeDocuments, userId){
   return async dispatch => {
     dispatch(request());
-    const {responseCode, data, responseMessage} = await Services.getInternDocuments(userId)
+    const {responseCode, data, responseMessage} = await Services.getCircularDocuments(userId)
     if(responseCode === 0){
       dispatch(success(typeDocuments, data))
     }else{
@@ -232,6 +232,7 @@ export function getDocuments(typeDocuments, userId){
   function success(typeDocuments, data) { return { type: Constants.GET_CIRCULAR_DOCUMENTS_SUCCESS, typeDocuments, data}}
   function failure(errors) { return { type: Constants.GET_CIRCULAR_DOCUMENTS_FAILURE, errors}}
 }
+
 
 export function getCircularDetails(documentId){
   return async dispatch => {
@@ -359,4 +360,20 @@ export function generateResponseToMovement(userId, officeId, documentIntern, mov
   function request(){ return { type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_REQUEST}}
   function success(message){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_SUCCESS, message}}
   function failure(errors){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_FAILURE, errors}}
+}
+
+export function createInternDocument(internDocument){
+  return async dispatch =>{
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.createInternDocument(internDocument)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.CREATE_INTERN_DOCUMENTS_REQUEST}}
+  function success(message){ return {type: Constants.CREATE_INTERN_DOCUMENTS_SUCCESS, message}}
+  function failure(errors){ return {type: Constants.CREATE_INTERN_DOCUMENTS_FAILURE, errors}}
 }

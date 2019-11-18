@@ -1,4 +1,4 @@
-import {TYPE_INPUT} from '../../constants/Constants';
+import {TYPE_DESTINYS, TYPE_INPUT} from '../../constants/Constants';
 import {list_dependencies,list_dependencies_2} from '../../fakedata/ListDataDocuments';
 
 export const formOficios = [
@@ -7,8 +7,7 @@ export const formOficios = [
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": false,
-    "required": true,
-    "useOnChange": true
+    "required": true
   },
   {
     "id": "asuntoId",
@@ -57,41 +56,40 @@ export const formOficios = [
   }
 ]
 
-export const formOficiosToExp = [
+export const formOficiosToExp= (change1,destinations) => [
   {
-    "id": "oficioId",
+    "id": "numTram",
     "label": "Expediente:",
     "type": TYPE_INPUT.INPUT_TEXT,
-    "readOnly": false,
-    "required": true
+    "readOnly": true
   },
   {
-    "id": "asuntoId",
+    "id": "asunto",
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": true
   },
   {
-    "id": "observacionId",
+    "id": "observacion",
     "label": "Observación:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,
     "required": true
   },
   {
-    "id": "fechaId",
+    "id": "fecha",
     "label": "Fecha:",
     "type": TYPE_INPUT.INPUT_TEXT,
-    "readOnly": false
+    "readOnly": true
   },
   {
-    "id": "origenId",
+    "id": "origen",
     "label": "Origen:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "responsableId",
+    "id": "responsable",
     "label": "Responsable:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
@@ -101,15 +99,14 @@ export const formOficiosToExp = [
     "label": "Tipo de Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
-    "listItems":list_dependencies,
-    "useOnChange": false
+    "listItems":TYPE_DESTINYS,
+    "onChangeCustom": change1
   },
   {
     "id": "destinoId",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
-    "listItems":list_dependencies_2,
-    "useOnChange": false
+    "listItems":destinations
   }
 ];

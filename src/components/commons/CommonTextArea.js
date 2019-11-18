@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class CommonTextArea extends Component{
 
   render(){
-    const {idSection, value, isFormCircular, label, onChange, classContainer, classInput, isRequired, isReadonly} = this.props
+    const {idSection, value, isFormCircular, label, onChange, classContainer, classInput, isRequired, isReadOnly} = this.props;
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
@@ -13,7 +13,7 @@ class CommonTextArea extends Component{
                   id={idSection}
                   onChange={(e)=>onChange(idSection, e.target.value)}
                   required={isRequired}
-                  readOnly={isReadonly}
+                  readOnly={isReadOnly}
                   value={value}/>
       </div>
     )

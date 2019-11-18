@@ -23,6 +23,7 @@ import CommonTab from '../../commons/CommonTab';
 import find from "lodash/find";
 import parseInt from "lodash/parseInt";
 import {DOCUMENT_INTERN,MOVEMENT} from '../../../utils/Constants';
+import CommonAssignedDocuments from "../../commons/CommonAssignedDocuments";
 
 class DocumentsReceived extends Component{
 
@@ -66,9 +67,9 @@ class DocumentsReceived extends Component{
     this.setState({listDataSelected})
   };
 
-  onSetSelectAssignedDocuments=(listDataAssignedSelected) => {
+/*  onSetSelectAssignedDocuments=(listDataAssignedSelected) => {
     this.setState({listDataAssignedSelected})
-  };
+  };*/
 
   onConfirmDocuments=()=>{
     const {listDataSelected, valueMap, currentUser} = this.state;
@@ -121,16 +122,7 @@ class DocumentsReceived extends Component{
     })
   };
 
-  /*onDeriveDocuments=()=>{
-    const {listDataSelected, valueMap, currentUser} = this.state;
-    const {deriveDocuments, getUserMovementsByOffice} = this.props;
-    deriveDocuments(currentUser.id, valueMap['officeId'], valueMap['currentDate'],listDataSelected).then(()=>{
-      this.onToggleDerivedModal();
-      getUserMovementsByOffice(currentUser.dependencyId)
-    })
-  };*/
-
-  onDeriveAssignedDocuments=()=>{
+  /*onDeriveAssignedDocuments=()=>{
     const {currentUser} = this.state;
     const movement = this.generateObjectMovement();
     const intern_document = this.generateObjectInternDocument();
@@ -139,7 +131,7 @@ class DocumentsReceived extends Component{
       this.onToggleCloseDerived();
       getUserMovementsByAssignedTo(currentUser.id)
     })
-  };
+  };*/
 
   onToggleConfirmModal=()=>{
     this.setState({valueMap: {}});
@@ -147,13 +139,7 @@ class DocumentsReceived extends Component{
     this.setState({showConfirmationModal: !this.state.showConfirmationModal})
   };
 
-  /*onToggleDerivedModal=()=>{
-    this.setState({valueMap: {}});
-    this.onChangeValueMap('currentDate',getFormattedDate());
-    this.setState({showDerivedModal: !this.state.showDerivedModal})
-  };*/
-
-  onToggleDerivedAssignedModal=()=>{
+  /*onToggleDerivedAssignedModal=()=>{
     this.setState({valueMap: {}});
     const {listDataAssignedSelected, currentUser} = this.state;
     const {getTypeDocuments} = this.props;
@@ -168,13 +154,13 @@ class DocumentsReceived extends Component{
       this.onChangeValueMap('userId', currentUser.id)
       this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
     });
-  };
+  };*/
 
-  onToggleCloseDerived=()=>{
+  /*onToggleCloseDerived=()=>{
     this.setState({showDeriveAssignedModal: !this.state.showDeriveAssignedModal})
-  }
+  }*/
 
-  getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
+  /*getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
     return ([
       {
         columnHeader: '',
@@ -227,7 +213,7 @@ class DocumentsReceived extends Component{
         rowProp: 'document'
       }
     ])
-  };
+  };*/
 
   getTableStructureReceived = (onChangeCheck,onToggleAddDocSelect) => {
     return ([
@@ -278,12 +264,12 @@ class DocumentsReceived extends Component{
     ])
   };
 
-  getFooterTableAssignedStructure = () => {
+  /*getFooterTableAssignedStructure = () => {
     return([
       {text: 'Seguimiento', action: ()=>{}},
       {text: 'Derivar', action: this.onToggleDerivedAssignedModal},
     ])
-  };
+  };*/
 
   getFooterTableStructure = () => {
     return([
@@ -305,8 +291,8 @@ class DocumentsReceived extends Component{
   };
 
   render(){
-    const {data, users, dataAssigned,typeDocuments} = this.props;
-    const {showConfirmationModal,showDeriveAssignedModal,listDataAssignedSelected,listDataSelected, valueMap,currentUser} = this.state;
+    const {data, users} = this.props;
+    const {showConfirmationModal,listDataSelected, valueMap,currentUser} = this.state;
     const {dependencyName} = currentUser;
     const modalProps = [
       {
@@ -322,18 +308,6 @@ class DocumentsReceived extends Component{
                              valueMap={valueMap}/>
       },
       /*{
-        showModal: showDerivedModal,
-        title: 'Derivar Documentos',
-        message: (listDataSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
-        yesFunction: (listDataSelected.length > 0) ? this.onDeriveDocuments : this.onToggleDerivedModal,
-        noFunction: this.onToggleConfirmModal,
-        noText: "Cancelar",
-        yesText: (listDataSelected.length > 0) ? 'Confirmar' : 'Aceptar',
-        content: <FormRender formTemplate={formDeriveDocuments(typeDocuments)}
-                             onChange={this.onChangeValueMap}
-                             valueMap={valueMap}/>
-      },*/
-      {
         showModal: showDeriveAssignedModal,
         title: 'Derivar Documentos',
         message: (listDataAssignedSelected.length === 0) ? `Debe por lo menos seleccionar un documento` : null,
@@ -345,7 +319,7 @@ class DocumentsReceived extends Component{
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}
                              onChangeInputSelect={(typeDocumentId) => this.onGetMaxCorrelative(typeDocumentId)}/>
-      }
+      }*/
     ];
 
     const tableDocumentsReceived = () =>{
@@ -359,13 +333,8 @@ class DocumentsReceived extends Component{
     };
 
     const tableDocumentsAssigned=()=>{
-      return(<CommonTableManage
-        tableStructure={this.getTableStructureAssigned}
-        title={'DOCUMENTOS ASIGNADOS'}
-        listData={dataAssigned}
-        getFooterTableStructure={this.getFooterTableAssignedStructure}
-        onSetSelected={this.onSetSelectAssignedDocuments}
-      />)
+      return(<CommonAssignedDocuments currentUser={currentUser}
+                                      {...this.props}/>)
     };
 
     const tabs =

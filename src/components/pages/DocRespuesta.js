@@ -5,8 +5,13 @@ import {listData_1, listData_2} from "../../fakedata/ListDataDocuments";
 import FormRender from "../../forms/FormRender";
 import {formOficiosToExp, formOficios} from '../../forms/templates/TemplateCreateOficios';
 import map from "lodash/map";
+import find from "lodash/find";
 import CommonModal from '../commons/CommonModal';
-import {getInternDocuments} from "../../actions/actions";
+import {getInternDocuments, getTypeDocuments, getUserMovementsByOffice,getCorrelativeMax} from "../../actions/actions";
+import {getParseObj} from "../../utils/Utils";
+import { connect } from 'react-redux';
+import {getFormattedDate} from "../../utils/Constants";
+import filter from "lodash/filter";
 
 class DocRespuesta extends Component{
 
@@ -17,25 +22,50 @@ class DocRespuesta extends Component{
     showDeleteModal: false,
     showCreateModal: false,
     showCreateSecondModal: false,
-    valueMapCreateOficio: {},
-    valueMapCreateOnlyOficio: {}
+    valueMap: {},
+    currentUser: {},
+    correlativeOficio: '',
+    destinations: []
+
+  };
+
+  async componentDidMount(){
+    const currentUser = await getParseObj('CURRENT_USER');
+    this.setState({currentUser});
+
+    this.fillMovementsByOffice()
   }
 
-  onChangeValueOficio=(prop, value)=>{
-    this.setState({valueMapCreateOficio: {...this.state.valueMapCreateOficio, [prop]: value}})
+  fillMovementsByOffice=()=>{
+    const {currentUser} = this.state
+    const {getUserMovementsByOffice} = this.props
+    getUserMovementsByOffice(currentUser.dependencyId)
+  };
+
+  fillInternDocumentsOfUser=()=>{
+
   }
 
-  onChangeValueOnlyOficio=(prop, value)=>{
-    this.setState({valueMapCreateOnlyOficio: {...this.state.valueMapCreateOnlyOficio, [prop]: value}})
-  }
+  onChangeValueMap=(prop, value)=>{
+    this.setState({valueMap: {...this.state.valueMap, [prop]: value}})
+  };
 
   onSetSelectedToDeleteOficio=(listDataSelectedToDelete)=>{
     this.setState({listDataSelectedToDelete})
-  }
+  };
 
   onSetSelectToCreateOficio=(listDataSelectedDocInt)=>{
   this.setState({listDataSelectedDocInt})
-}
+  };
+
+  onChangeTypeDestination=(type)=>{
+    const {dependencies} = this.props;
+    const destinations = map(filter(dependencies, dependency => dependency.tipo === type), value =>({
+      ...value,
+      value: value.nombre
+    }));
+    this.setState({destinations})
+  };
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
@@ -48,7 +78,7 @@ class DocRespuesta extends Component{
       },
       {
         columnHeader: 'Num. Tram.',
-        rowProp: 'num_tram',
+        rowProp: 'numTram',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
@@ -57,20 +87,20 @@ class DocRespuesta extends Component{
         rowProp: 'movimiento'
       },
       {
-        columnHeader: 'Destino',
-        rowProp: 'destino',
+        columnHeader: 'Origen',
+        rowProp: 'origenNombre',
         classSearchRow: 'container-search-field long-size',
         filterHeader: true
       },
       {
         columnHeader: 'F. Envio',
-        rowProp: 'fech_envio',
+        rowProp: 'fechaEnvio',
         classSearchRow: 'container-search-field medium-size',
         filterHeader: true
       },
       {
         columnHeader: 'Indicador',
-        rowProp: 'indic'
+        rowProp: 'indiNombre'
       },
       {
         columnHeader: 'Observación',
@@ -78,11 +108,11 @@ class DocRespuesta extends Component{
       },
       {
         columnHeader: 'Doc. Nombre',
-        rowProp: 'docum_nomb'
+        rowProp: 'document'
       },
       {
         columnHeader: 'Estado',
-        rowProp: 'estado'
+        rowProp: 'estadoDocumento'
       }
     ])
   }
@@ -91,7 +121,29 @@ class DocRespuesta extends Component{
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
-  onToggleCreateOficio = () => {
+  onToggleOpenCreateOficio = () => {
+    const {listDataSelectedDocInt,currentUser} = this.state;
+    const {getTypeDocuments,getCorrelativeMax} = this.props;
+    const documentValue = {...listDataSelectedDocInt[0]}
+    getTypeDocuments().then(()=>{
+      const {typeDocuments} = this.props;
+      const typeOficio = find(typeDocuments, value => value.nombreTipo === 'OFICIO')
+      getCorrelativeMax(currentUser.dependencyId, typeOficio.id,currentUser.dependencySiglas).then(()=>{
+        const {documentNumber,documentSiglas,documentYear} = this.props;
+        this.setState({correlativeOficio: `${documentNumber}-${documentSiglas}-${documentYear}`});
+        this.onChangeValueMap('numTram', documentValue['numTram']);
+        this.onChangeValueMap('asunto', documentValue['observacion']);
+        this.onChangeValueMap('fecha',getFormattedDate());
+        this.onChangeValueMap('origen',documentValue.origenNombre);
+        this.onChangeValueMap('responsable',currentUser.dependencyName);
+
+        this.setState({showCreateModal: !this.state.showCreateModal})
+      })
+    });
+  };
+
+  onToggleCloseCreateOficio=()=>{
+    this.setState({valueMap: {}})
     this.setState({showCreateModal: !this.state.showCreateModal})
   }
 
@@ -101,7 +153,11 @@ class DocRespuesta extends Component{
 
   onDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
-  }
+  };
+
+  onClickMovementsToOffice = () =>{
+    this.fillMovementsByOffice()
+  };
 
   getFooterTableStructureOficios = () => {
     return([
@@ -112,7 +168,7 @@ class DocRespuesta extends Component{
 
   getFooterTableStructureDocInt = () => {
     return([
-      {text: 'Oficios', action: this.onToggleCreateOficio}
+      {text: 'Oficios', action: this.onToggleOpenCreateOficio}
     ])
   }
 
@@ -135,8 +191,12 @@ class DocRespuesta extends Component{
       showCreateModal,
       listDataSelectedDocInt,
       showCreateSecondModal,
-      valueMapCreateOficio,
-      valueMapCreateOnlyOficio} = this.state
+      valueMap,
+      correlativeOficio,
+      destinations} = this.state
+
+    const {movements} = this.props
+
 
     const modalProps = [
       {
@@ -147,20 +207,20 @@ class DocRespuesta extends Component{
         noFunction: this.onToggleCreateOnlyOficio,
         noText: 'Cancelar',
         content: <FormRender formTemplate={formOficios}
-                             onChange={this.onChangeValueOnlyOficio}
-                             valueMap={valueMapCreateOnlyOficio}/>
+                             onChange={this.onChangeValueMap}
+                             valueMap={valueMap}/>
       },
       {
         showModal: showCreateModal,
-        title: 'Crear Oficio',
+        title: `Crear Oficio Nº ${correlativeOficio}`,
         message: (listDataSelectedDocInt.length === 1)? null: 'Debe seleccionar 1 documento',
-        yesFunction: (listDataSelectedDocInt.length === 1) ? this.onCreateOficio:this.onToggleCreateOficio,
+        yesFunction: (listDataSelectedDocInt.length === 1) ? this.onCreateOficio:this.onToggleCloseCreateOficio,
         yesText: (listDataSelectedDocInt.length === 1) ? 'Crear Oficio':'Ok',
-        noFunction: (listDataSelectedDocInt.length === 1) ? this.onToggleCreateOficio:null,
+        noFunction: (listDataSelectedDocInt.length === 1) ? this.onToggleCloseCreateOficio:null,
         noText: (listDataSelectedDocInt.length === 1) ? 'Cancelar':null,
-        content: <FormRender formTemplate={formOficiosToExp}
-                             onChange={this.onChangeValueOficio}
-                             valueMap={valueMapCreateOficio}/>
+        content: <FormRender formTemplate={formOficiosToExp(this.onChangeTypeDestination,destinations)}
+                             onChange={this.onChangeValueMap}
+                             valueMap={valueMap}/>
       },
       {
         showModal: showDeleteModal,
@@ -176,7 +236,7 @@ class DocRespuesta extends Component{
       return (<CommonTableManage
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS INTERNOS'}
-        listData={listData_1}
+        listData={movements}
         getFooterTableStructure={this.getFooterTableStructureDocInt}
         onSetSelected={this.onSetSelectToCreateOficio}
       />)
@@ -215,8 +275,30 @@ class DocRespuesta extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getOficios: (typeDocuments, userId) => dispatch(getInternDocuments(typeDocuments, userId))
+  getOficios: (typeDocuments, userId) => dispatch(getInternDocuments(typeDocuments, userId)),
+  getUserMovementsByOffice: (officeId) => dispatch(getUserMovementsByOffice(officeId)),
+  getTypeDocuments: () => dispatch(getTypeDocuments()),
+  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas))
 });
 
+function mapStateToProps(state){
+  const listDocuments = (listData) => {
+    return map(listData, (data) => ({
+      ...data,
+      document: `${data.docuNombre} ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
+      responsable: `${data.userLastName}, ${data.userName}`,
+      check: false
+    }))
+  };
 
-export default DocRespuesta
+  return {
+    movements: listDocuments(state.user.movements),
+    typeDocuments: state.typeDocuments.data,
+    documentNumber: state.correlative.documentNumber,
+    documentSiglas: state.correlative.documentSiglas,
+    documentYear: state.correlative.documentYear,
+    dependencies: state.initialData.dependencies,
+  }
+}
+
+export default connect (mapStateToProps, mapDispatchToProps)(DocRespuesta)

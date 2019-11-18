@@ -62,7 +62,6 @@ export const formCreateInternDocument = (typeDocuments, listUsers, destinations,
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems":destinations,
-    "useOnChange": false
+    "listItems":destinations
   }
 ]

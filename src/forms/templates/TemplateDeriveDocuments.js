@@ -1,7 +1,7 @@
 import {TYPE_INPUT} from "../../constants/Constants";
 import {list_dependencies} from "../../fakedata/ListDataDocuments";
 
-export const formDeriveDocuments= (typeDocuments) =>
+export const formDeriveDocuments= (typeDocuments, onChange1) =>
   [
   {
     "id": "numDocumento",
@@ -10,7 +10,7 @@ export const formDeriveDocuments= (typeDocuments) =>
     "readOnly": false,
     "required": true,
     "listItems": typeDocuments,
-    "useOnChange": true
+    "onChangeCustom": onChange1
   },
   {
     "id": "document",
@@ -37,8 +37,7 @@ export const formDeriveDocuments= (typeDocuments) =>
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems": list_dependencies,
-    "useOnChange": false
+    "listItems": list_dependencies
   },
   {
     "id": "fecha",

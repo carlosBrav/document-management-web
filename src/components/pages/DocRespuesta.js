@@ -7,11 +7,18 @@ import {formOficiosToExp, formOficios} from '../../forms/templates/TemplateCreat
 import map from "lodash/map";
 import find from "lodash/find";
 import CommonModal from '../commons/CommonModal';
-import {getInternDocuments, getTypeDocuments, getUserMovementsByOffice,getCorrelativeMax} from "../../actions/actions";
+import {
+  getInternDocumentsByOffice,
+  getTypeDocuments,
+  getUserMovementsByOffice,
+  getCorrelativeMax,
+  generateResponseToMovementAdmin
+} from "../../actions/actions";
 import {getParseObj} from "../../utils/Utils";
 import { connect } from 'react-redux';
-import {getFormattedDate} from "../../utils/Constants";
+import {DOCUMENT_INTERN, getFormattedDate, MOVEMENT, TYPE_DOCUMENT} from "../../utils/Constants";
 import filter from "lodash/filter";
+import parseInt from "lodash/parseInt";
 
 class DocRespuesta extends Component{
 
@@ -42,9 +49,11 @@ class DocRespuesta extends Component{
     getUserMovementsByOffice(currentUser.dependencyId)
   };
 
-  fillInternDocumentsOfUser=()=>{
-
-  }
+  fillInternDocumentsByOffice=()=>{
+    const {currentUser} = this.state;
+    const {getOficios} = this.props;
+    getOficios(TYPE_DOCUMENT.oficios, currentUser.dependencyId)
+  };
 
   onChangeValueMap=(prop, value)=>{
     this.setState({valueMap: {...this.state.valueMap, [prop]: value}})
@@ -136,7 +145,7 @@ class DocRespuesta extends Component{
         this.onChangeValueMap('fecha',getFormattedDate());
         this.onChangeValueMap('origen',documentValue.origenNombre);
         this.onChangeValueMap('responsable',currentUser.dependencyName);
-
+        this.onChangeValueMap('currentDate',getFormattedDate());
         this.setState({showCreateModal: !this.state.showCreateModal})
       })
     });
@@ -155,10 +164,6 @@ class DocRespuesta extends Component{
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   };
 
-  onClickMovementsToOffice = () =>{
-    this.fillMovementsByOffice()
-  };
-
   getFooterTableStructureOficios = () => {
     return([
       {text: 'Crear', action: this.onToggleCreateOnlyOficio},
@@ -170,12 +175,64 @@ class DocRespuesta extends Component{
     return([
       {text: 'Oficios', action: this.onToggleOpenCreateOficio}
     ])
-  }
+  };
+
+  generateObjectMovement=()=>{
+    const {listDataSelectedDocInt, valueMap} = this.state;
+    const movement = {...listDataSelectedDocInt[0]};
+    return({
+      [MOVEMENT.ID]: movement['id'],
+      [MOVEMENT.MOVEMENT]: movement[MOVEMENT.MOVEMENT],
+      [MOVEMENT.NUM_TRAM]: movement[MOVEMENT.NUM_TRAM],
+      [MOVEMENT.DOCUMENT_STATE]: movement[MOVEMENT.DOCUMENT_STATE],
+      [MOVEMENT.DESTINY]: valueMap['destinyId'],
+      [MOVEMENT.OBSERVATION]: movement[MOVEMENT.OBSERVATION],
+      [MOVEMENT.NAME_INDICATOR]: movement[MOVEMENT.NAME_INDICATOR],
+      [MOVEMENT.CODE_INDICATOR]: movement[MOVEMENT.CODE_INDICATOR],
+      [MOVEMENT.DOCUMENT_NAME]: movement[MOVEMENT.DOCUMENT_NAME],
+      [MOVEMENT.DOCUMENT_NUMBER]: movement[MOVEMENT.DOCUMENT_NUMBER],
+      [MOVEMENT.DOCUMENT_SIGLAS]: movement[MOVEMENT.DOCUMENT_SIGLAS],
+      [MOVEMENT.DOCUMENT_YEAR]: movement[MOVEMENT.DOCUMENT_YEAR],
+      [MOVEMENT.CURRENT_DATE]: valueMap[MOVEMENT.CURRENT_DATE],
+      [MOVEMENT.ENTER_DATE]: '',
+      [MOVEMENT.SENT_DATE]: ''
+    });
+  };
+
+  generateObjectInternDocument=()=>{
+    const { documentNumber,documentSiglas,documentYear} = this.props;
+    const {valueMap, currentUser} = this.state;
+    return({
+      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'GENERADO',
+      [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: TYPE_DOCUMENT.oficios,
+      [DOCUMENT_INTERN.DOCUMENT_NUMBER]: parseInt(documentNumber),
+      [DOCUMENT_INTERN.SIGLAS]: documentSiglas,
+      [DOCUMENT_INTERN.YEAR]: documentYear,
+      [DOCUMENT_INTERN.OBSERVATION]: valueMap[DOCUMENT_INTERN.OBSERVATION],
+      [DOCUMENT_INTERN.ASUNTO]: valueMap[DOCUMENT_INTERN.ASUNTO],
+      [DOCUMENT_INTERN.ORIGIN_ID]: currentUser.dependencyId,
+      [DOCUMENT_INTERN.DESTINY_ID]: valueMap['destinyId'],
+      [DOCUMENT_INTERN.USER_ID]: currentUser.id,
+      [DOCUMENT_INTERN.FIRM]: '',
+      [DOCUMENT_INTERN.ACTIVE]: true,
+      [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE]
+
+    })
+  };
 
   onCreateOficio=()=>{
-    const {valueMapCreateOficio} = this.state
-    console.log('VALUE MAP TO CREATE OFICIO ', valueMapCreateOficio)
-    this.onToggleCreateOficio()
+    const {valueMap,currentUser} = this.state;
+    const {generateResponseToMovementAdmin} = this.props
+    console.log('VALUE MAP ', valueMap);
+    console.log('USER ID ', currentUser.id);
+    console.log('USER DEPENDENCY ID ', currentUser.dependencyId)
+    const movementObject = this.generateObjectMovement();
+    const documentObject = this.generateObjectInternDocument();
+    console.log('movement object ', movementObject);
+    console.log('document object ', documentObject);
+    generateResponseToMovementAdmin(currentUser.id,currentUser.dependencyId,documentObject,movementObject).then(()=>{
+      this.onToggleCloseCreateOficio()
+    })
   }
 
   onCreateOnlyOficio=()=>{
@@ -195,7 +252,7 @@ class DocRespuesta extends Component{
       correlativeOficio,
       destinations} = this.state
 
-    const {movements} = this.props
+    const {movements,internDocument} = this.props
 
 
     const modalProps = [
@@ -247,7 +304,7 @@ class DocRespuesta extends Component{
         <CommonTableManage
           tableStructure={this.getTableStructure}
           title={'OFICIOS'}
-          listData={listData_2}
+          listData={internDocument}
           getFooterTableStructure={this.getFooterTableStructureOficios}
           onSetSelected={this.onSetSelectedToDeleteOficio}
         />
@@ -255,8 +312,8 @@ class DocRespuesta extends Component{
     };
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt},
-        {title: 'Oficios', id: 'oficios', action: tableOficios}
+      [ {title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt, onClick: this.fillMovementsByOffice},
+        {title: 'Oficios', id: 'oficios', action: tableOficios, onClick: this.fillInternDocumentsByOffice}
       ];
 
 
@@ -275,10 +332,11 @@ class DocRespuesta extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getOficios: (typeDocuments, userId) => dispatch(getInternDocuments(typeDocuments, userId)),
+  getOficios: (typeDocumentId, officeId) => dispatch(getInternDocumentsByOffice(typeDocumentId, officeId)),
   getUserMovementsByOffice: (officeId) => dispatch(getUserMovementsByOffice(officeId)),
   getTypeDocuments: () => dispatch(getTypeDocuments()),
-  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas))
+  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
+  generateResponseToMovementAdmin: (userId, officeId, documentIntern, movement) => dispatch(generateResponseToMovementAdmin(userId, officeId, documentIntern, movement))
 });
 
 function mapStateToProps(state){
@@ -298,6 +356,7 @@ function mapStateToProps(state){
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
     dependencies: state.initialData.dependencies,
+    internDocument: state.documentIntern.data
   }
 }
 

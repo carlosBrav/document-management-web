@@ -217,6 +217,22 @@ export function getInternDocuments(userId){
   function failure(errors) { return { type: Constants.GET_INTERN_DOCUMENTS_FAILURE, errors}}
 }
 
+export function getInternDocumentsByOffice(typeDocumentId, officeId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getInternDocumentsByOffice(typeDocumentId,officeId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_INTERN_DOCUMENTS_REQUEST}}
+  function success(data) { return { type: Constants.GET_INTERN_DOCUMENTS_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_INTERN_DOCUMENTS_FAILURE, errors}}
+}
+
 export function getCircularDocuments(typeDocuments, userId){
   return async dispatch => {
     dispatch(request());
@@ -360,6 +376,22 @@ export function generateResponseToMovement(userId, officeId, documentIntern, mov
   function request(){ return { type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_REQUEST}}
   function success(message){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_SUCCESS, message}}
   function failure(errors){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_FAILURE, errors}}
+}
+
+export function generateResponseToMovementAdmin(userId, officeId, documentIntern, movement){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.generateResponseToMovementAdmin(userId, officeId, documentIntern, movement)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_ADMIN_REQUEST}}
+  function success(message){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_ADMIN_SUCCESS, message}}
+  function failure(errors){ return {type: Constants.GENERATE_RESPONSE_TO_MOVEMENT_ADMIN_FAILURE, errors}}
 }
 
 export function createInternDocument(internDocument){

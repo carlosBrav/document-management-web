@@ -46,7 +46,7 @@ export const formOficios = [
     "listItems":list_dependencies
   },
   {
-    "id": "destinoId",
+    "id": "destinyId",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
@@ -103,7 +103,7 @@ export const formOficiosToExp= (change1,destinations) => [
     "onChangeCustom": change1
   },
   {
-    "id": "destinoId",
+    "id": "destinyId",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,

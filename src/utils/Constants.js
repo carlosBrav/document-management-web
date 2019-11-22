@@ -43,7 +43,13 @@ export const MOVEMENT = {
   DOCUMENT_NUMBER: 'docuNum',
   DOCUMENT_SIGLAS: 'docuSiglas',
   DOCUMENT_YEAR: 'docuAnio',
-  CURRENT_DATE: 'currentDate'
+  CURRENT_DATE: 'currentDate',
+  ENTER_DATE: 'fechaIngreso',
+  SENT_DATE: 'fechaEnvio'
+};
+
+export const TYPE_DOCUMENT = {
+  oficios: '44545'
 }
 
 export function getFormattedDate(){

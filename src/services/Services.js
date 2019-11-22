@@ -97,6 +97,11 @@ export default class Service {
     return ApiIntegration.doGet(url, true)
   }
 
+  static getInternDocumentsByOffice(typeDocumentId, officeId){
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/office/'+officeId+'/documentId/'+typeDocumentId);
+    return ApiIntegration.doGet(url, true)
+  }
+
   static getCircularDocuments(userId){
     const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/circulars/'+userId);
     return ApiIntegration.doGet(url, true)
@@ -150,6 +155,12 @@ export default class Service {
   static generateResponseToMovement(userId,officeId,documentIntern, movement){
     const body = JSON.stringify({documentIntern, movement});
     const url = getUrlPath(endPoints.MOVEMENTS+'/user/'+userId+'/office/'+officeId);
+    return ApiIntegration.doPost(url, body, true)
+  }
+
+  static generateResponseToMovementAdmin(userId,officeId,documentIntern, movement){
+    const body = JSON.stringify({documentIntern, movement});
+    const url = getUrlPath(endPoints.MOVEMENTS+'/admin/'+userId+'/office/'+officeId);
     return ApiIntegration.doPost(url, body, true)
   }
 

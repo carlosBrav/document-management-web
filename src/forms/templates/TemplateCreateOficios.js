@@ -1,35 +1,34 @@
 import {TYPE_DESTINYS, TYPE_INPUT} from '../../constants/Constants';
 import {list_dependencies,list_dependencies_2} from '../../fakedata/ListDataDocuments';
 
-export const formOficios = [
+export const formOficios= (change1,destinations) => [
   {
-    "id": "documentId",
+    "id": "document",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
-    "readOnly": false,
-    "required": true
+    "readOnly": true
   },
   {
-    "id": "asuntoId",
+    "id": "asunto",
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,
     "required": true
   },
   {
-    "id": "fechaId",
+    "id": "currentDate",
     "label": "Fecha:",
     "type": TYPE_INPUT.INPUT_TEXT,
-    "readOnly": false
+    "readOnly": true
   },
   {
-    "id": "origenId",
+    "id": "origen",
     "label": "Origen:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "areaResponsableId",
+    "id": "responsableArea",
     "label": "Área responsable:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
@@ -43,7 +42,8 @@ export const formOficios = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems":list_dependencies
+    "listItems":TYPE_DESTINYS,
+    "onChangeCustom": change1
   },
   {
     "id": "destinyId",
@@ -51,8 +51,7 @@ export const formOficios = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "listItems":list_dependencies_2,
-    "useOnChange": false
+    "listItems":destinations,
   }
 ]
 
@@ -107,6 +106,7 @@ export const formOficiosToExp= (change1,destinations) => [
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
-    "listItems":destinations
+    "listItems":destinations,
+    "required": true,
   }
 ];

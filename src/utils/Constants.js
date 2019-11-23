@@ -27,7 +27,8 @@ export const DOCUMENT_INTERN = {
   USER_ID: 'userId',
   FIRM: 'firma',
   ACTIVE: 'active',
-  CURRENT_DATE: 'currentDate'
+  CURRENT_DATE: 'currentDate',
+  RESPONSABLE_AREA: 'responsableArea'
 };
 
 export const MOVEMENT = {

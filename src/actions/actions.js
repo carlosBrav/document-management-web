@@ -281,6 +281,22 @@ export function deleteDocuments(documentsIds){
   function failure(errors) { return { type: Constants.DELETE_INTERN_DOCUMENT_FAILURE, errors}}
 }
 
+export function getAdminMovementsByOffice(officeId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getAdminMovemetsByOffice(officeId);
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return {type: Constants.GET_ADMIN_MOVEMENTS_BY_OFFICE_REQUEST}}
+  function success(data) { return {type: Constants.GET_ADMIN_MOVEMENTS_BY_OFFICE_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_ADMIN_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
+}
+
 export function getUserMovementsByOffice(officeId){
   return async dispatch => {
     dispatch(request());

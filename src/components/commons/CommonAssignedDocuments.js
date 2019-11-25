@@ -26,7 +26,9 @@ class CommonAssignedDocuments extends Component{
 
   fillMovementsByAssigned=()=>{
     const {getUserMovementsByAssignedTo,currentUser} = this.props;
-    getUserMovementsByAssignedTo(currentUser.id)
+    if(currentUser.id){
+      getUserMovementsByAssignedTo(currentUser.id)
+    }
   };
 
   async componentDidMount(){
@@ -107,7 +109,7 @@ class CommonAssignedDocuments extends Component{
     const {listDataAssignedSelected, valueMap} = this.state;
     const movement = {...listDataAssignedSelected[0]}
     return({
-      [MOVEMENT.ID]: valueMap['movementId'],
+      [MOVEMENT.ID]: movement[MOVEMENT.ID],
       [MOVEMENT.MOVEMENT]: movement[MOVEMENT.MOVEMENT],
       [MOVEMENT.NUM_TRAM]: movement[MOVEMENT.NUM_TRAM],
       [MOVEMENT.DOCUMENT_STATE]: movement[MOVEMENT.DOCUMENT_STATE],

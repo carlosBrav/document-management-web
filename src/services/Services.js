@@ -15,7 +15,8 @@ const endPoints = {
   USER_BOSS_OFFICE: '/api/userBossOffice',
   DOCUMENT_INTERN: '/api/internDocument',
   CIRCULAR_DETAILS: '/api/circularDetails',
-  USER_MOVEMENTS: '/api/movements/user'
+  USER_MOVEMENTS: '/api/movements/user',
+  ADMIN_MOVEMENTS: '/api/movements/admin'
 };
 
 function getUrlPath(...data){
@@ -126,6 +127,11 @@ export default class Service {
 
   static getUserMovementsByOffice(officeId){
     const url = getUrlPath(endPoints.USER_MOVEMENTS+'/office/'+officeId);
+    return ApiIntegration.doGet(url, true)
+  }
+
+  static getAdminMovemetsByOffice(officeId){
+    const url = getUrlPath(endPoints.ADMIN_MOVEMENTS+'/office/'+officeId);
     return ApiIntegration.doGet(url, true)
   }
 

@@ -9,7 +9,7 @@ import CommonModal from '../commons/CommonModal';
 import {
   getInternDocumentsByOffice,
   getTypeDocuments,
-  getUserMovementsByOffice,
+  getAdminMovementsByOffice,
   getCorrelativeMax,
   generateResponseToMovementAdmin,
   createInternDocument
@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import {DOCUMENT_INTERN, getFormattedDate, MOVEMENT, TYPE_DOCUMENT} from "../../utils/Constants";
 import filter from "lodash/filter";
 import parseInt from "lodash/parseInt";
+import isEmpty from 'lodash/isEmpty';
 
 class DocRespuesta extends Component{
 
@@ -45,8 +46,8 @@ class DocRespuesta extends Component{
 
   fillMovementsByOffice=()=>{
     const {currentUser} = this.state
-    const {getUserMovementsByOffice} = this.props
-    getUserMovementsByOffice(currentUser.dependencyId)
+    const {getAdminMovementsByOffice} = this.props
+    getAdminMovementsByOffice(currentUser.dependencyId)
   };
 
   fillInternDocumentsByOffice=()=>{
@@ -96,6 +97,10 @@ class DocRespuesta extends Component{
         rowProp: 'movimiento'
       },
       {
+        columnHeader: 'Doc. Rpta.',
+        rowProp: 'internDocument'
+      },
+      {
         columnHeader: 'Origen',
         rowProp: 'origenNombre',
         classSearchRow: 'container-search-field long-size',
@@ -118,10 +123,6 @@ class DocRespuesta extends Component{
       {
         columnHeader: 'Doc. Nombre',
         rowProp: 'document'
-      },
-      {
-        columnHeader: 'Estado',
-        rowProp: 'estadoDocumento'
       }
     ])
   };
@@ -393,7 +394,7 @@ class DocRespuesta extends Component{
 
 const mapDispatchToProps = (dispatch) => ({
   getOficios: (typeDocumentId, officeId) => dispatch(getInternDocumentsByOffice(typeDocumentId, officeId)),
-  getUserMovementsByOffice: (officeId) => dispatch(getUserMovementsByOffice(officeId)),
+  getAdminMovementsByOffice: (officeId) => dispatch(getAdminMovementsByOffice(officeId)),
   getTypeDocuments: () => dispatch(getTypeDocuments()),
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
   generateResponseToMovementAdmin: (userId, officeId, documentIntern, movement) => dispatch(generateResponseToMovementAdmin(userId, officeId, documentIntern, movement)),
@@ -404,7 +405,7 @@ function mapStateToProps(state){
   const listDocuments = (listData) => {
     return map(listData, (data) => ({
       ...data,
-      document: `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
+      document: (!isEmpty(data.docuNombre)) ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}` : 'SIN DOCUMENTO',
       responsable: `${data.userLastName}, ${data.userName}`,
       check: false
     }))
@@ -413,13 +414,13 @@ function mapStateToProps(state){
   const listInternDocuments = (listData) => {
     return map(listData, data => ({
       ...data,
-      document: `${data.documentName} Nº ${data.numDocumento}-${data.siglas}-${data.anio}`,
+      document: (!isEmpty(data.documentName)) ? `${data.documentName} Nº ${data.numDocumento}-${data.siglas}-${data.anio}` : 'SIN DOCUMENTO',
       check: false
     }))
   }
 
   return {
-    movements: listDocuments(state.user.movements),
+    movements: listDocuments(state.user.adminMovements),
     typeDocuments: state.typeDocuments.data,
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,

@@ -62,6 +62,7 @@ class InternDocuments extends Component{
       this.onChangeValueMap('horaCreacion',getFormattedOnlyTime());
       this.onChangeValueMap('origenName',currentUser.dependencyName);
       this.onChangeValueMap('userAssignedId',currentUser.apellido+", "+currentUser.nombre);
+      this.onChangeValueMap('responsableArea','');
     });
   };
 
@@ -113,7 +114,7 @@ class InternDocuments extends Component{
   onSaveInternDocument=()=>{
     const {valueMap} = this.state;
     const currentUser = getParseObj('CURRENT_USER');
-    const {createInternDocument,getInternDocuments} = this.props
+    const {createInternDocument,getInternDocuments} = this.props;
     createInternDocument(valueMap).then(()=>{
       this.toggleCloseModalCreate();
       getInternDocuments(currentUser.id)
@@ -174,8 +175,8 @@ class InternDocuments extends Component{
 
   getFooterTableStructure = () => {
     return([
-      {text: 'Crear Documento', action: this.toggleOpenModalCreate},
-      {text: 'Eliminar Documento', action: this.onToggleDeleteDocuments}
+      {text: 'Crear', action: this.toggleOpenModalCreate},
+      {text: 'Eliminar', action: this.onToggleDeleteDocuments}
     ])
   };
 

@@ -271,7 +271,7 @@ class DocRespuesta extends Component{
       [DOCUMENT_INTERN.DOCUMENT_NUMBER]: parseInt(documentNumber),
       [DOCUMENT_INTERN.SIGLAS]: documentSiglas,
       [DOCUMENT_INTERN.YEAR]: documentYear,
-      [DOCUMENT_INTERN.OBSERVATION]: '',
+      [DOCUMENT_INTERN.OBSERVATION]: valueMap[DOCUMENT_INTERN.OBSERVATION],
       [DOCUMENT_INTERN.ASUNTO]: valueMap[DOCUMENT_INTERN.ASUNTO],
       [DOCUMENT_INTERN.ORIGIN_ID]: currentUser.dependencyId,
       [DOCUMENT_INTERN.DESTINY_ID]: valueMap['destinyId'],
@@ -279,7 +279,7 @@ class DocRespuesta extends Component{
       [DOCUMENT_INTERN.FIRM]: '',
       [DOCUMENT_INTERN.ACTIVE]: true,
       [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE],
-      [DOCUMENT_INTERN.RESPONSABLE_AREA] : valueMap[DOCUMENT_INTERN.RESPONSABLE_AREA]
+      [DOCUMENT_INTERN.RESPONSABLE_AREA] : ''
     })
   };
 

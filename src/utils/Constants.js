@@ -46,7 +46,8 @@ export const MOVEMENT = {
   DOCUMENT_YEAR: 'docuAnio',
   CURRENT_DATE: 'currentDate',
   ENTER_DATE: 'fechaIngreso',
-  SENT_DATE: 'fechaEnvio'
+  SENT_DATE: 'fechaEnvio',
+  PREVIOUS_MOVEMENT: 'previousMovementId'
 };
 
 export const TYPE_DOCUMENT = {

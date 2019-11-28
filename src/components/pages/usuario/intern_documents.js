@@ -68,11 +68,11 @@ class InternDocuments extends Component{
 
   onGetMaxCorrelative = (typeDocumentId) => {
     const {getCorrelativeMax, typeDocuments} = this.props;
-    const {currentUser}=this.state
+    const {currentUser}=this.state;
     getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(() => {
-      const {documentNumber, documentSiglas, documentYear} = this.props
+      const {documentNumber, documentSiglas, documentYear} = this.props;
       const {nombreTipo,id} = find(typeDocuments, {'id': typeDocumentId});
-      this.onChangeValueMap('tipoDocuId', id)
+      this.onChangeValueMap('tipoDocuId', id);
       this.onChangeValueMap('numDocumento', parseInt(documentNumber));
       this.onChangeValueMap('siglas', documentSiglas);
       this.onChangeValueMap('anio', documentYear);

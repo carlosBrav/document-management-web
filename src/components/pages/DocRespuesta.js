@@ -12,7 +12,8 @@ import {
   getAdminMovementsByOffice,
   getCorrelativeMax,
   generateResponseToMovementAdmin,
-  createInternDocument
+  createInternDocument,
+  deleteDocuments
 } from "../../actions/actions";
 import {getParseObj} from "../../utils/Utils";
 import { connect } from 'react-redux';
@@ -40,8 +41,9 @@ class DocRespuesta extends Component{
   async componentDidMount(){
     const currentUser = await getParseObj('CURRENT_USER');
     this.setState({currentUser});
-
-    this.fillMovementsByOffice()
+    const {getTypeDocuments} = this.props;
+    await getTypeDocuments();
+    await this.fillMovementsByOffice()
   }
 
   fillMovementsByOffice=()=>{
@@ -224,7 +226,13 @@ class DocRespuesta extends Component{
   };
 
   onDeleteDocuments = () => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal})
+    const {listDataSelectedToDelete} = this.state;
+    const {deleteDocuments} = this.props;
+    const documentsIds = map(listDataSelectedToDelete, data => data.id);
+    deleteDocuments(documentsIds).then(()=>{
+      this.fillInternDocumentsByOffice();
+      this.setState({showDeleteModal: !this.state.showDeleteModal})
+    });
   };
 
   getFooterTableStructureOficios = () => {
@@ -258,7 +266,8 @@ class DocRespuesta extends Component{
       [MOVEMENT.DOCUMENT_YEAR]: movement[MOVEMENT.DOCUMENT_YEAR],
       [MOVEMENT.CURRENT_DATE]: valueMap[MOVEMENT.CURRENT_DATE],
       [MOVEMENT.ENTER_DATE]: '',
-      [MOVEMENT.SENT_DATE]: ''
+      [MOVEMENT.SENT_DATE]: '',
+      [MOVEMENT.PREVIOUS_MOVEMENT]: ''
     });
   };
 
@@ -289,6 +298,7 @@ class DocRespuesta extends Component{
     const movementObject = this.generateObjectMovement();
     const documentObject = this.generateObjectInternDocument();
     generateResponseToMovementAdmin(currentUser.id,currentUser.dependencyId,documentObject,movementObject).then(()=>{
+      this.fillMovementsByOffice()
       this.onToggleCloseCreateOficio()
     })
   }
@@ -393,6 +403,7 @@ class DocRespuesta extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
   getOficios: (typeDocumentId, officeId) => dispatch(getInternDocumentsByOffice(typeDocumentId, officeId)),
   getAdminMovementsByOffice: (officeId) => dispatch(getAdminMovementsByOffice(officeId)),
   getTypeDocuments: () => dispatch(getTypeDocuments()),
@@ -403,12 +414,18 @@ const mapDispatchToProps = (dispatch) => ({
 
 function mapStateToProps(state){
   const listDocuments = (listData) => {
-    return map(listData, (data) => ({
-      ...data,
-      document: (!isEmpty(data.docuNombre)) ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}` : 'SIN DOCUMENTO',
-      responsable: `${data.userLastName}, ${data.userName}`,
-      check: false
-    }))
+    return map(listData, (data) => {
+        const document = data.tipoDocuId && find(state.typeDocuments.data, x=>x.id === data.tipoDocuId)
+        return ({
+          ...data,
+          document: (!isEmpty(data.docuNombre)) ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}` : 'SIN DOCUMENTO',
+          responsable: `${data.userLastName}, ${data.userName}`,
+          internDocument: data.tipoDocuId ? `${document.nombreTipo} Nº ${data.numDocumentIntern}-${data.siglasDocumentIntern}-${data.anioDocumentIntern}`
+            : 'SIN DOC. RPTA.',
+          check: false
+        })
+      }
+    )
   };
 
   const listInternDocuments = (listData) => {

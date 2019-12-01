@@ -1,5 +1,5 @@
 import {TYPE_DESTINYS, TYPE_INPUT} from '../../constants/Constants';
-import {list_dependencies,list_dependencies_2} from '../../fakedata/ListDataDocuments';
+import {list_dependencies} from '../../fakedata/ListDataDocuments';
 
 export const formOficios= (change1,destinations) => [
   {

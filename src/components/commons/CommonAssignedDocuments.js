@@ -21,7 +21,8 @@ class CommonAssignedDocuments extends Component{
     listDataAssignedSelected: [],
     isModalOpen: false,
     showDeriveAssignedModal: false,
-    valueMap : {}
+    valueMap : {},
+    data: []
   };
 
   fillMovementsByAssigned=()=>{
@@ -34,6 +35,12 @@ class CommonAssignedDocuments extends Component{
   async componentDidMount(){
     this.fillMovementsByAssigned()
   };
+
+  componentDidUpdate(){
+    if(this.props.dataAssigned.length !== this.state.data.length){
+      this.setState({data: this.props.dataAssigned})
+    }
+  }
 
   getTableStructureAssigned = (onChangeCheck,onToggleAddDocSelect) => {
     return ([
@@ -191,8 +198,8 @@ class CommonAssignedDocuments extends Component{
   };
 
   render(){
-    const {dataAssigned,typeDocuments} = this.props;
-    const {showDeriveAssignedModal,listDataAssignedSelected,valueMap} = this.state;
+    const {typeDocuments} = this.props;
+    const {showDeriveAssignedModal,listDataAssignedSelected,valueMap,data} = this.state;
     const modalProps = [
       {
         showModal: showDeriveAssignedModal,
@@ -220,7 +227,7 @@ class CommonAssignedDocuments extends Component{
         <CommonTableManage
           tableStructure={this.getTableStructureAssigned}
           title={'DOCUMENTOS ASIGNADOS'}
-          listData={dataAssigned}
+          listData={data}
           getFooterTableStructure={this.getFooterTableAssignedStructure}
           onSetSelected={this.onSetSelectAssignedDocuments}
         />

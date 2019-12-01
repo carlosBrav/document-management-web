@@ -4,7 +4,6 @@ import {Route, Switch} from "react-router-dom";
 import DocumentsReceived from "../components/pages/usuario/recieved_documents";
 import DocumentsAssigned from "../components/pages/usuario/assigned_documents";
 import InternDocuments from "../components/pages/usuario/intern_documents";
-import DocConfirmados from "../components/pages/DocConfirmados";
 import DocRespuesta from "../components/pages/DocRespuesta";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import {delete_cookie, getParseObj, removeUser} from "../utils/Utils";

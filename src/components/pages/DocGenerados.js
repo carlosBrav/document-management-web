@@ -7,6 +7,10 @@ import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
 import {formDocumGenerado} from "../../forms/templates/TemplateDocumentGen";
 import FormRender from "../../forms/FormRender";
+import {getInternDocuments} from "../../actions/actions";
+import isEmpty from "lodash/isEmpty";
+import {getParseObj} from "../../utils/Utils";
+import { connect } from 'react-redux';
 
 class DocGenerados extends Component{
 
@@ -15,7 +19,22 @@ class DocGenerados extends Component{
     listDataToDeleteSelected: [],
     showDeleteModal: false,
     showCreateModal: false,
-    valueMapCreateDocument: {}
+    valueMapCreateDocument: {},
+    data: []
+  };
+
+  async componentDidMount(){
+    const currentUser = await getParseObj('CURRENT_USER');
+    const {getInternDocuments} = this.props
+    getInternDocuments(currentUser.id).then(()=>{
+      this.setState({data: this.props.internDocument})
+    })
+  }
+
+  componentDidUpdate(){
+    if(this.state.data.length !== this.props.internDocument.length){
+      this.setState({data: this.props.internDocument})
+    }
   }
 
   toggleViewDocumentGenerado=(data)=>{
@@ -45,13 +64,13 @@ class DocGenerados extends Component{
       },
       {
         columnHeader: 'Documento',
-        rowProp: 'documento',
+        rowProp: 'document',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
       {
         columnHeader: 'Fech. Reg.',
-        rowProp: 'fech_reg'
+        rowProp: 'fechaCreacion'
       },
       {
         columnHeader: 'Asunto',
@@ -59,19 +78,15 @@ class DocGenerados extends Component{
       },
       {
         columnHeader: 'Origen',
-        rowProp: 'origen'
+        rowProp: 'origenName'
       },
       {
         columnHeader: 'Destino',
-        rowProp: 'destino',
+        rowProp: 'destinoName',
       },
       {
         columnHeader: 'Responsable',
         rowProp: 'responsable'
-      },
-      {
-        columnHeader: '#',
-        rowProp: 'numero'
       },
       {
         columnHeader: '',
@@ -117,7 +132,7 @@ class DocGenerados extends Component{
 
   render(){
 
-    const {showDeleteModal, showCreateModal,listDataToDeleteSelected,valueMapCreateDocument} = this.state
+    const {showDeleteModal, showCreateModal,listDataToDeleteSelected,valueMapCreateDocument,data} = this.state
 
     const modalProps = [{
       showModal: showDeleteModal,
@@ -150,7 +165,7 @@ class DocGenerados extends Component{
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS GENERADOS INTERNOS'}
-        listData={lista_generados}
+        listData={data}
         modalProps={modalProps}
         getFooterTableStructure={this.getFooterTableStructureGenerados}
         onSetSelected={this.onSetListDataToDelete}
@@ -159,4 +174,23 @@ class DocGenerados extends Component{
     )
   }
 }
-export default DocGenerados
+
+const mapDispatchToProps = (dispatch) => ({
+  getInternDocuments: (userId)=> dispatch(getInternDocuments(userId))
+});
+
+function mapStateToProps(state){
+  const listInternDocuments = (listData) => {
+    return map(listData, data => ({
+      ...data,
+      document: (!isEmpty(data.documentName)) ? `${data.documentName} Nº ${data.numDocumento}-${data.siglas}-${data.anio}` : 'SIN DOCUMENTO',
+      responsable: `${data.userName}, ${data.userLastName}`,
+      check: false
+    }))
+  }
+
+  return {
+    internDocument: listInternDocuments(state.documentIntern.data)
+  }
+}
+export default connect (mapStateToProps, mapDispatchToProps)(DocGenerados)

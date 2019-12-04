@@ -7,10 +7,14 @@ import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
 import {formDocumGenerado} from "../../forms/templates/TemplateDocumentGen";
 import FormRender from "../../forms/FormRender";
-import {getInternDocuments} from "../../actions/actions";
+import {getInternDocuments, getTypeDocuments, getCorrelativeMax, createInternDocument} from "../../actions/actions";
 import isEmpty from "lodash/isEmpty";
 import {getParseObj} from "../../utils/Utils";
 import { connect } from 'react-redux';
+import filter from "lodash/filter";
+import parseInt from "lodash/parseInt";
+import find from "lodash/find";
+import {DOCUMENT_INTERN, getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../utils/Constants";
 
 class DocGenerados extends Component{
 
@@ -19,8 +23,9 @@ class DocGenerados extends Component{
     listDataToDeleteSelected: [],
     showDeleteModal: false,
     showCreateModal: false,
-    valueMapCreateDocument: {},
-    data: []
+    valueMap: {},
+    data: [],
+    destinations: []
   };
 
   async componentDidMount(){
@@ -37,6 +42,10 @@ class DocGenerados extends Component{
     }
   }
 
+  onChangeValueMap=(prop, value) => {
+    this.setState({valueMap: {...this.state.valueMap, [prop]: value}});
+  };
+
   toggleViewDocumentGenerado=(data)=>{
     console.log('DOCUMENT GENERADO VIEW ', data)
   }
@@ -47,10 +56,6 @@ class DocGenerados extends Component{
 
   onSetListDataToDelete=(listDataToDeleteSelected)=>{
     this.setState({listDataToDeleteSelected})
-  }
-
-  onChangeValueCreateDocument=(prop, value)=>{
-    this.setState({valueMapCreateDocument: {...this.state.valueMapCreateDocument, [prop]: value}})
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -110,17 +115,40 @@ class DocGenerados extends Component{
   }
 
   onToggleCreateDocumentGen=()=>{
+    this.setState({valueMap: {}});
+    const currentUser = getParseObj('CURRENT_USER');
+    const {getTypeDocuments}= this.props;
+    getTypeDocuments().then(()=> {
+      this.onChangeValueMap('currentDate', getFormattedDate());
+      this.onChangeValueMap('fecha', getFormattedOnlyDate());
+      this.onChangeValueMap('hora', getFormattedOnlyTime());
+      this.onChangeValueMap('origen', currentUser.dependencyName);
+      this.onChangeValueMap('origenId', currentUser.dependencyId);
+      this.onChangeValueMap('userId', currentUser.id);
+      this.setState({showCreateModal: !this.state.showCreateModal})
+    })
+  };
+
+  onToggleCloseCreateDocument=()=>{
     this.setState({showCreateModal: !this.state.showCreateModal})
   }
+
 
   onDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
   onCreateDocument=()=>{
-    const {valueMapCreateDocument} = this.state
-    console.log('VALUE MAP CREATE ', valueMapCreateDocument)
-    this.onToggleCreateDocumentGen()
+    const {createInternDocument} = this.props
+    const internDocument = this.generateObjectInternDocument()
+    createInternDocument(internDocument).then(()=>{
+      const currentUser = getParseObj('CURRENT_USER');
+      const {getInternDocuments} = this.props
+      getInternDocuments(currentUser.id).then(()=>{
+        this.setState({data: this.props.internDocument})
+        this.onToggleCloseCreateDocument()
+      })
+    })
   }
 
   getFooterTableStructureGenerados=()=>{
@@ -130,9 +158,53 @@ class DocGenerados extends Component{
     ]
   }
 
+  onGetMaxCorrelative = (typeDocumentId) => {
+    const {getCorrelativeMax, listTypeDocuments} = this.props;
+    const currentUser = getParseObj('CURRENT_USER');
+    getCorrelativeMax(currentUser.dependencyId, typeDocumentId, currentUser.dependencySiglas).then(() => {
+      const {documentNumber, documentSiglas, documentYear} = this.props
+      const {nombreTipo,id} = find(listTypeDocuments, {'id': typeDocumentId});
+      this.onChangeValueMap('tipoDocuId', id)
+      this.onChangeValueMap('numDocumento', parseInt(documentNumber));
+      this.onChangeValueMap('siglas', documentSiglas);
+      this.onChangeValueMap('anio', documentYear);
+      this.onChangeValueMap("document", nombreTipo + " N° " + documentNumber + "-" + documentSiglas + "-" + documentYear)
+    })
+  };
+
+  onChangeTypeDestination=(type)=>{
+    const {dependencies} = this.props;
+    const destinations = map(filter(dependencies, dependency => dependency.tipo === type), value =>({
+      ...value,
+      value: value.nombre
+    }));
+    this.setState({destinations})
+  };
+
+  generateObjectInternDocument=()=>{
+    const {valueMap} = this.state;
+    return({
+      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'EN PROCESO',
+      [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: valueMap[DOCUMENT_INTERN.TYPE_DOCUMENT_ID],
+      [DOCUMENT_INTERN.DOCUMENT_NUMBER]: valueMap[DOCUMENT_INTERN.DOCUMENT_NUMBER],
+      [DOCUMENT_INTERN.SIGLAS]: valueMap[DOCUMENT_INTERN.SIGLAS],
+      [DOCUMENT_INTERN.YEAR]: valueMap[DOCUMENT_INTERN.YEAR],
+      [DOCUMENT_INTERN.OBSERVATION]: '',
+      [DOCUMENT_INTERN.ASUNTO]: valueMap[DOCUMENT_INTERN.ASUNTO],
+      [DOCUMENT_INTERN.ORIGIN_ID]: valueMap[DOCUMENT_INTERN.ORIGIN_ID],
+      [DOCUMENT_INTERN.DESTINY_ID]: valueMap[DOCUMENT_INTERN.DESTINY_ID],
+      [DOCUMENT_INTERN.USER_ID]: valueMap[DOCUMENT_INTERN.USER_ID],
+      [DOCUMENT_INTERN.FIRM]: '',
+      [DOCUMENT_INTERN.ACTIVE]: true,
+      [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE],
+      [DOCUMENT_INTERN.RESPONSABLE_AREA]: ''
+    })
+  };
+
   render(){
 
-    const {showDeleteModal, showCreateModal,listDataToDeleteSelected,valueMapCreateDocument,data} = this.state
+    const {listTypeDocuments} = this.props;
+    const {showDeleteModal, showCreateModal,listDataToDeleteSelected,valueMap,data,destinations} = this.state
 
     const modalProps = [{
       showModal: showDeleteModal,
@@ -148,10 +220,13 @@ class DocGenerados extends Component{
       yesFunction: this.onCreateDocument,
       yesText: 'Crear documento',
       noText: 'Cancelar',
-      noFunction: this.onToggleCreateDocumentGen,
-      content: <FormRender formTemplate={formDocumGenerado}
-                           onChange={this.onChangeValueCreateDocument}
-                           valueMap={valueMapCreateDocument}/>
+      noFunction: this.onToggleCloseCreateDocument,
+      content: <FormRender formTemplate={formDocumGenerado(listTypeDocuments,
+                                                          (typeDocumentId) => this.onGetMaxCorrelative(typeDocumentId),
+                                                          destinations,
+                                                          (type) => this.onChangeTypeDestination(type))}
+                           onChange={this.onChangeValueMap}
+                           valueMap={valueMap}/>
     }]
 
     return(
@@ -176,7 +251,10 @@ class DocGenerados extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getInternDocuments: (userId)=> dispatch(getInternDocuments(userId))
+  getTypeDocuments: () => dispatch(getTypeDocuments()),
+  getInternDocuments: (userId)=> dispatch(getInternDocuments(userId)),
+  getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
+  createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument))
 });
 
 function mapStateToProps(state){
@@ -187,10 +265,22 @@ function mapStateToProps(state){
       responsable: `${data.userName}, ${data.userLastName}`,
       check: false
     }))
-  }
+  };
+
+  const getTypeDocuments = (listData) => {
+    return map(filter(listData, data => data.flag2 !== 'NPC'), data => ({
+      ...data,
+      value: data.nombreTipo
+    }))
+  };
 
   return {
-    internDocument: listInternDocuments(state.documentIntern.data)
+    listTypeDocuments: getTypeDocuments(state.typeDocuments.data),
+    internDocument: listInternDocuments(state.documentIntern.data),
+    documentNumber: state.correlative.documentNumber,
+    documentSiglas: state.correlative.documentSiglas,
+    documentYear: state.correlative.documentYear,
+    dependencies: state.initialData.dependencies,
   }
 }
 export default connect (mapStateToProps, mapDispatchToProps)(DocGenerados)

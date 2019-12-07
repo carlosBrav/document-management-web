@@ -297,6 +297,22 @@ export function getAdminMovementsByOffice(officeId){
   function failure(errors) { return { type: Constants.GET_ADMIN_MOVEMENTS_BY_OFFICE_FAILURE, errors}}
 }
 
+export function getAdminInternDocuments(officeId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getInternDocumentsAdmin(officeId);
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return {type: Constants.GET_ADMIN_INTERN_DOCUMENTS_REQUEST}}
+  function success(data) { return {type: Constants.GET_ADMIN_INTERN_DOCUMENTS_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_ADMIN_INTERN_DOCUMENTS_FAILURE, errors}}
+}
+
 export function getUserMovementsByOffice(officeId){
   return async dispatch => {
     dispatch(request());

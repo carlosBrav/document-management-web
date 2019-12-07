@@ -175,4 +175,9 @@ export default class Service {
     const url = getUrlPath(endPoints.DOCUMENT_INTERN);
     return ApiIntegration.doPost(url, body, true)
   }
+
+  static getInternDocumentsAdmin(officeId){
+    const url = getUrlPath(endPoints.DOCUMENT_INTERN+'/admin/'+officeId);
+    return ApiIntegration.doGet(url, true)
+  }
 }

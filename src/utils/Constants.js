@@ -28,7 +28,8 @@ export const DOCUMENT_INTERN = {
   FIRM: 'firma',
   ACTIVE: 'active',
   CURRENT_DATE: 'currentDate',
-  RESPONSABLE_AREA: 'responsableArea'
+  RESPONSABLE_AREA: 'responsableArea',
+  REFERENCE_DOCUMENT: 'referenceDocument'
 };
 
 export const MOVEMENT = {
@@ -51,7 +52,8 @@ export const MOVEMENT = {
 };
 
 export const TYPE_DOCUMENT = {
-  oficios: '44545'
+  oficios: '44545',
+  proveidos: '84545'
 }
 
 export function getFormattedDate(){

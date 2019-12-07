@@ -7,7 +7,7 @@ import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
 import {formDocumGenerado} from "../../forms/templates/TemplateDocumentGen";
 import FormRender from "../../forms/FormRender";
-import {getInternDocuments, getTypeDocuments, getCorrelativeMax, createInternDocument} from "../../actions/actions";
+import {getInternDocuments, getTypeDocuments, getCorrelativeMax, createInternDocument,deleteDocuments} from "../../actions/actions";
 import isEmpty from "lodash/isEmpty";
 import {getParseObj} from "../../utils/Utils";
 import { connect } from 'react-redux';
@@ -135,7 +135,17 @@ class DocGenerados extends Component{
 
 
   onDeleteDocuments = () => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal})
+    const {listDataToDeleteSelected} = this.state;
+    const {deleteDocuments,getInternDocuments} = this.props;
+    const movementsIds = map(listDataToDeleteSelected, data => data.id);
+    deleteDocuments(movementsIds).then(()=>{
+      const currentUser = getParseObj('CURRENT_USER');
+      getInternDocuments(currentUser.id).then(()=>{
+        this.setState({data: this.props.internDocument})
+        this.setState({showDeleteModal: !this.state.showDeleteModal})
+      })
+    });
+
   }
 
   onCreateDocument=()=>{
@@ -195,9 +205,9 @@ class DocGenerados extends Component{
       [DOCUMENT_INTERN.DESTINY_ID]: valueMap[DOCUMENT_INTERN.DESTINY_ID],
       [DOCUMENT_INTERN.USER_ID]: valueMap[DOCUMENT_INTERN.USER_ID],
       [DOCUMENT_INTERN.FIRM]: '',
-      [DOCUMENT_INTERN.ACTIVE]: true,
       [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE],
-      [DOCUMENT_INTERN.RESPONSABLE_AREA]: ''
+      [DOCUMENT_INTERN.RESPONSABLE_AREA]: '',
+      [DOCUMENT_INTERN.REFERENCE_DOCUMENT]: valueMap[DOCUMENT_INTERN.REFERENCE_DOCUMENT],
     })
   };
 
@@ -208,8 +218,8 @@ class DocGenerados extends Component{
 
     const modalProps = [{
       showModal: showDeleteModal,
-      title: 'Eliminar Documentos Generados',
-      message: (listDataToDeleteSelected.length>0)?`¿Desea imprimir estos ${listDataToDeleteSelected.length} documentos ?`:`Debe seleccionar al menos un documento`,
+      title: 'Eliminar Documento Generado',
+      message: (listDataToDeleteSelected.length>0)?`¿Desea eliminar el documento?`:`Debe seleccionar al menos un documento`,
       yesFunction: (listDataToDeleteSelected.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
       yesText: (listDataToDeleteSelected.length>0)?'Sí':'Ok',
       noFunction: (listDataToDeleteSelected.length>0)?this.onToggleDeleteDocuments:null
@@ -254,6 +264,7 @@ const mapDispatchToProps = (dispatch) => ({
   getTypeDocuments: () => dispatch(getTypeDocuments()),
   getInternDocuments: (userId)=> dispatch(getInternDocuments(userId)),
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
+  deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
   createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument))
 });
 

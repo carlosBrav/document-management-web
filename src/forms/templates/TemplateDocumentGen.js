@@ -1,4 +1,3 @@
-import {list_dependencies, list_dependencies_2} from "../../fakedata/ListDataDocuments";
 import {TYPE_DESTINYS, TYPE_INPUT} from "../../constants/Constants";
 
 
@@ -19,7 +18,7 @@ export const formDocumGenerado = (typeDocuments, onChange1, destinations, onChan
     "readOnly": true
   },
   {
-    "id": "asuntoId",
+    "id": "asunto",
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,

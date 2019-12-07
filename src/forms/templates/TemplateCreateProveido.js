@@ -2,32 +2,32 @@ import {TYPE_INPUT} from "../../constants/Constants";
 
 export const formProveidosInternos = [
   {
-    "id": "documentId",
+    "id": "referenceDocument",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "asuntoId",
+    "id": "asunto",
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,
     "required": true
   },
   {
-    "id": "origenId",
+    "id": "originName",
     "label": "Origen:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "destinoId",
+    "id": "destinyName",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "fechaEmisionId",
+    "id": "currentDate",
     "label": "Fecha de emisión:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true

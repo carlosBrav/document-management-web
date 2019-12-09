@@ -1,4 +1,5 @@
-import {TYPE_INPUT} from "../../constants/Constants";
+import {TYPE_DESTINYS, TYPE_INPUT} from "../../constants/Constants";
+import {DOCUMENT_INTERN} from "../../utils/Constants";
 
 export const formProveidosInternos = [
   {
@@ -34,24 +35,24 @@ export const formProveidosInternos = [
   },
 ]
 
-export const formProveidosExternos = [
+export const formProveidosExternos = (typeDocuments, onChange1, destinationsOrigin, onChange2, destinationsFinal, onChange3) => [
   {
-    "id": "documentTipoId",
+    "id": "typeDocumentReference",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
-    "readOnly": false,
     "required": true,
-    "useOnChange": true
+    "listItems":typeDocuments,
+    "onChangeCustom": onChange1
   },
   {
-    "id": "nroDocumentoId",
+    "id": DOCUMENT_INTERN.REFERENCE_DOCUMENT,
     "label": "Nro. documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": false,
     "required": true
   },
   {
-    "id": "asuntoId",
+    "id": DOCUMENT_INTERN.ASUNTO,
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,
@@ -63,15 +64,16 @@ export const formProveidosExternos = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "useOnChange": false
+    "listItems":TYPE_DESTINYS,
+    "onChangeCustom": onChange2
   },
   {
-    "id": "depOrigenId",
+    "id": DOCUMENT_INTERN.ORIGIN_ID,
     "label": "Dep. origen:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "useOnChange": false
+    "listItems":destinationsOrigin
   },
   {
     "id": "tipoDestinoId",
@@ -79,24 +81,25 @@ export const formProveidosExternos = [
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required": true,
-    "useOnChange": false
+    "listItems":TYPE_DESTINYS,
+    "onChangeCustom": onChange3
   },
   {
-    "id": "depDestinoId",
+    "id": DOCUMENT_INTERN.DESTINY_ID,
     "label": "Dep. destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
     "required":true,
-    "useOnChange": false
+    "listItems":destinationsFinal
   },
   {
-    "id": "fechaId",
+    "id": DOCUMENT_INTERN.CURRENT_DATE,
     "label": "Fecha:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
   },
   {
-    "id": "usuarioId",
+    "id": "user",
     "label": "Usuario:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true

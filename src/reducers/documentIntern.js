@@ -2,7 +2,7 @@ import * as Constants from '../actions/Constants';
 import filter from "lodash/filter";
 import some from "lodash/some";
 
-const initialState =  {message: [], isLoading: false, data: [], dataAdmin: [], circularData: [], circularDetails: []};
+const initialState =  {message: [], isLoading: false, data: [], dataAdmin: [], circularData: [], circularDetails: [], proveidos:[]};
 
 export function documentIntern(state = initialState, action) {
   const {message, errors, data} = action
@@ -94,7 +94,24 @@ export function documentIntern(state = initialState, action) {
         ...state,
         isLoading: false,
         errors
-      }
+      };
+    case Constants.GET_INTERN_DOCUMENTS_BY_TYPE_DOCUMENT_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case Constants.GET_INTERN_DOCUMENTS_BY_TYPE_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        proveidos: data,
+        isLoading: false
+      };
+    case Constants.GET_INTERN_DOCUMENTS_BY_TYPE_DOCUMENT_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        errors
+      };
     default: return state
   }
 }

@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import CommonTableManage from "../commons/CommonTableManage";
-import {lista_proveidos_1, lista_proveidos_2} from "../../fakedata/ListDataDocuments";
 import CommonTab from "../commons/CommonTab";
 import {ICON_TYPE} from "../commons/CommonIcon";
 import {exportPDF} from "../utils/ExportPDF";
@@ -14,7 +13,8 @@ import {
   deleteDocuments,
   getCorrelativeMax,
   getAdminInternDocuments,
-  getTypeDocuments, getInternDocuments
+  getTypeDocuments,
+  getInternDocumentsByTypeDocument
 } from "../../actions/actions";
 import filter from "lodash/filter";
 import {getParseObj} from "../../utils/Utils";
@@ -33,7 +33,10 @@ class DocProveidos extends Component{
     showExternalModal: false,
     showEditModal: false,
     valueMap: {},
-    data:[]
+    data:[],
+    dataProveido: [],
+    destinationsOrigin: [],
+    destinationsFinal: [],
   };
 
   async componentDidMount(){
@@ -93,17 +96,17 @@ class DocProveidos extends Component{
       },
       {
         columnHeader: 'Documento',
-        rowProp: 'documento',
+        rowProp: 'document',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
       {
         columnHeader: 'Num. Doc.',
-        rowProp: 'num_doc'
+        rowProp: 'referenceDocument'
       },
       {
         columnHeader: 'Fech. Reg.',
-        rowProp: 'fech_registro'
+        rowProp: 'fechaCreacion'
       },
       {
         columnHeader: 'Asunto',
@@ -111,17 +114,17 @@ class DocProveidos extends Component{
       },
       {
         columnHeader: 'Origen',
-        rowProp: 'origen',
+        rowProp: 'origenName',
         classSearchRow: 'container-search-field long-size',
         filterHeader: true
       },
       {
         columnHeader: 'Destino',
-        rowProp: 'destino',
+        rowProp: 'destinoName',
       },
       {
         columnHeader: 'Usuario',
-        rowProp: 'usuario'
+        rowProp: 'user'
       },
       {
         columnHeader: '',
@@ -160,29 +163,22 @@ class DocProveidos extends Component{
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
-  onCreateProveidoInterno=async ()=>{
+  onCreateProveido= async (isIntern)=>{
     const currentUser = await getParseObj('CURRENT_USER');
     const {createInternDocument,getAdminInternDocuments} = this.props
     const internDocument = this.generateObjectInternDocument()
-    console.log('INTERN DOCUMENT ', internDocument)
     createInternDocument(internDocument).then(()=>{
       getAdminInternDocuments(currentUser.dependencyId).then(()=>{
         this.setState({data: this.props.internDocuments})
-        this.setState({showInternModal: !this.state.showInternModal});
+        this.setState(isIntern ? {showInternModal: !this.state.showInternModal}: {showExternalModal: !this.state.showExternalModal});
       })
     });
-  }
-
-  onCreateProveidoExterno=()=>{
-    const {valueMap} = this.state
-    console.log('PROVEIDO EXTERNO CREACION ', valueMap)
-    this.onToggleCreateProveidoExterno()
-  }
+  };
 
   generateObjectInternDocument=()=>{
     const {valueMap} = this.state;
     return({
-      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'EN PROCESO',
+      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'GENERADO',
       [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: valueMap[DOCUMENT_INTERN.TYPE_DOCUMENT_ID],
       [DOCUMENT_INTERN.DOCUMENT_NUMBER]: valueMap[DOCUMENT_INTERN.DOCUMENT_NUMBER],
       [DOCUMENT_INTERN.SIGLAS]: valueMap[DOCUMENT_INTERN.SIGLAS],
@@ -229,31 +225,83 @@ class DocProveidos extends Component{
   onToggleEditProveido=(data={})=>{
     console.log('DOCUMENT EDIT PROVEIDO ', data)
     this.setState({showEditModal: !this.state.showEditModal, valueMap: data})
-  }
+  };
 
   onEditProveido=()=>{
     const {valueMap} = this.state
     console.log('VALUE MAP EDIT PROVEIDO ', valueMap)
     this.onToggleEditProveido()
+  };
+
+  onToggleCloseProveidoExterno=()=>{
+    this.setState({valueMap: {}});
+    this.setState({showExternalModal: !this.state.showExternalModal})
   }
 
   onToggleCreateProveidoExterno=()=>{
-    this.setState({showExternalModal: !this.state.showExternalModal})
-  }
+    const {getCorrelativeMax, getTypeDocuments} = this.props;
+    const currentUser = getParseObj('CURRENT_USER');
+    getTypeDocuments().then(()=>{
+      getCorrelativeMax(currentUser.dependencyId, TYPE_DOCUMENT.proveidos, currentUser.dependencySiglas).then(() => {
+        const {documentNumber, documentSiglas, documentYear,listTypeDocuments} = this.props;
+        const {nombreTipo,id} = find(listTypeDocuments, {'id': TYPE_DOCUMENT.proveidos});
+        this.onChangeValueMap(DOCUMENT_INTERN.TYPE_DOCUMENT_ID, TYPE_DOCUMENT.proveidos)
+        this.onChangeValueMap([DOCUMENT_INTERN.CURRENT_DATE], getFormattedDate());
+        this.onChangeValueMap([DOCUMENT_INTERN.USER_ID],currentUser.id);
+        this.onChangeValueMap(DOCUMENT_INTERN.DOCUMENT_NUMBER, parseInt(documentNumber));
+        this.onChangeValueMap(DOCUMENT_INTERN.SIGLAS, documentSiglas);
+        this.onChangeValueMap(DOCUMENT_INTERN.YEAR, documentYear);
+        this.onChangeValueMap('user', currentUser.apellido+", "+currentUser.nombre);
+        this.onChangeValueMap("proveido", nombreTipo + " N° " + documentNumber + "-" + documentSiglas + "-" + documentYear)
+        this.setState({showExternalModal: !this.state.showExternalModal})
+      })
+    });
+  };
 
   getFooterTableInternDocument=()=>{
     return [
       {text: 'Proveidos Int.',  action: this.onToggleCreateProveidoInterno},
       {text: 'Proveidos Ext.', action: this.onToggleCreateProveidoExterno}
     ]
-  }
+  };
 
   getFooterTableProveido=()=>{
     return [
       {text: 'Eliminar',  action: this.onToggleDeleteDocuments},
       {text: 'Imprimir', action: this.onExportDocuments}
     ]
+  };
+
+  onGetInternDocument=async ()=>{
+    const currentUser = await getParseObj('CURRENT_USER');
+    const {getAdminInternDocuments} = this.props
+    getAdminInternDocuments(currentUser.dependencyId).then(()=>{
+      this.setState({data: this.props.internDocuments})
+    })
+  };
+
+  onGetProveidos= async ()=>{
+    const {getInternDocumentsByTypeDocument} = this.props
+    getInternDocumentsByTypeDocument(TYPE_DOCUMENT.proveidos).then(()=>{
+      this.setState({dataProveido: this.props.proveidos})
+    })
+  };
+
+  onChangeTypeDestinations=(type, isOrigin)=>{
+    const {dependencies} = this.props;
+    const newDestinations = map(filter(dependencies, dependency => dependency.tipo === type), value =>({
+      ...value,
+      value: value.nombre
+    }));
+    this.setState(isOrigin ? {destinationsOrigin:newDestinations} :{destinationsFinal:newDestinations})
+  };
+
+  onGetDocumentName=(typeDocumentId)=>{
+    const {listTypeDocuments} = this.props;
+    const document = find(listTypeDocuments, doc => doc.id===typeDocumentId);
+    this.onChangeValueMap([DOCUMENT_INTERN.REFERENCE_DOCUMENT], `${document.nombreTipo} Nº `);
   }
+
 
   render(){
 
@@ -262,9 +310,13 @@ class DocProveidos extends Component{
       showInternModal,
       showExternalModal,
       showEditModal,
-      valueMap,data} = this.state
+      valueMap,
+      data,
+      dataProveido,
+      destinationsOrigin,
+      destinationsFinal} = this.state;
 
-    console.log('VALUE MAP ', valueMap)
+    const {listTypeDocuments} = this.props;
     const modalProps = [
       {
         showModal: showDeleteModal,
@@ -278,7 +330,7 @@ class DocProveidos extends Component{
         showModal: showInternModal,
         title: (listDataSelected.length === 1)?valueMap.proveido:'Creación de Proveidos',
         message: (listDataSelected.length === 1)?null:'Debe seleccionar 1 documento',
-        yesFunction: (listDataSelected.length === 1)?this.onCreateProveidoInterno:this.onToggleCreateProveidoInterno,
+        yesFunction: (listDataSelected.length === 1)?()=>this.onCreateProveido(true):this.onToggleCreateProveidoInterno,
         yesText: (listDataSelected.length === 1)?'Crear proveido':'Ok',
         noFunction: (listDataSelected.length === 1)?this.onToggleCreateProveidoInterno:null,
         noText: (listDataSelected.length === 1)?'Cancelar':null,
@@ -288,14 +340,23 @@ class DocProveidos extends Component{
       },
       {
         showModal: showExternalModal,
-        title: 'Proveido Externo N° 00481-OGPL-2019',
-        yesFunction: this.onCreateProveidoExterno,
+        title: valueMap.proveido,
+        yesFunction: ()=>this.onCreateProveido(false),
         yesText: 'Crear proveido',
-        noFunction: this.onToggleCreateProveidoExterno,
+        noFunction: this.onToggleCloseProveidoExterno,
         noText: 'Cancelar',
-        content: <FormRender formTemplate={formProveidosExternos}
-                             onChange={this.onChangeValueMap}
-                             valueMap={valueMap}/>
+        content:
+          <FormRender
+            formTemplate={formProveidosExternos(
+              listTypeDocuments,
+              (typeDocumentId)=>this.onGetDocumentName(typeDocumentId),
+              destinationsOrigin,
+              (type)=>this.onChangeTypeDestinations(type,true),
+              destinationsFinal,
+              (type)=>this.onChangeTypeDestinations(type,false)
+              )}
+            onChange={this.onChangeValueMap}
+            valueMap={valueMap}/>
       },
       {
         showModal: showEditModal,
@@ -305,7 +366,7 @@ class DocProveidos extends Component{
         noFunction: this.onToggleEditProveido,
         noText: 'Cancelar',
         content: <FormRender formTemplate={formEditProveido}
-                             onChange={this.onChangeValueEditProveido}
+                             onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       }]
 
@@ -326,7 +387,7 @@ class DocProveidos extends Component{
         <CommonTableManage
           tableStructure={this.getTableStructureProveido}
           title={'PROVEIDOS'}
-          listData={lista_proveidos_2}
+          listData={dataProveido}
           modalProps={modalProps}
           getFooterTableStructure={this.getFooterTableProveido}
           onSetSelected={this.onSetListDataToDeleteSelected}
@@ -335,8 +396,8 @@ class DocProveidos extends Component{
     }
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuIntProv', action: tableDocumentInt},
-        {title: 'Proveidos', id: 'proveidos', action: tableProveidos}
+      [ {title: 'Doc. Internos', id: 'docuIntProv', action: tableDocumentInt,onClick: this.onGetInternDocument},
+        {title: 'Proveidos', id: 'proveidos', action: tableProveidos,onClick: this.onGetProveidos}
       ];
 
     return(
@@ -358,9 +419,9 @@ class DocProveidos extends Component{
 const mapDispatchToProps = (dispatch) => ({
   getTypeDocuments: () => dispatch(getTypeDocuments()),
   getAdminInternDocuments: (officeId)=> dispatch(getAdminInternDocuments(officeId)),
-  getInternDocuments: (userId)=> dispatch(getInternDocuments(userId)),
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
   deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
+  getInternDocumentsByTypeDocument: (typeDocumentId) => dispatch(getInternDocumentsByTypeDocument(typeDocumentId)),
   createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument))
 });
 
@@ -369,6 +430,7 @@ function mapStateToProps(state){
     return map(listData, data => ({
       ...data,
       document: `${data.documentName} Nº ${data.numDocumento}-${data.siglas}-${data.anio}`,
+      user: `${data.userName}, ${data.userLastName}`,
       check: false
     }))
   };
@@ -383,6 +445,7 @@ function mapStateToProps(state){
   return {
     listTypeDocuments: getTypeDocuments(state.typeDocuments.data),
     internDocuments: listInternDocuments(state.documentIntern.dataAdmin),
+    proveidos: listInternDocuments(state.documentIntern.proveidos),
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,

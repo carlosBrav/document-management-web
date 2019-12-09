@@ -233,6 +233,22 @@ export function getInternDocumentsByOffice(typeDocumentId, officeId){
   function failure(errors) { return { type: Constants.GET_INTERN_DOCUMENTS_FAILURE, errors}}
 }
 
+export function getInternDocumentsByTypeDocument(typeDocumentId){
+  return async dispatch => {
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getInternDocumentByTypeDocument(typeDocumentId)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_INTERN_DOCUMENTS_BY_TYPE_DOCUMENT_REQUEST}}
+  function success(data) { return { type: Constants.GET_INTERN_DOCUMENTS_BY_TYPE_DOCUMENT_SUCCESS, data}}
+  function failure(errors) { return { type: Constants.GET_INTERN_DOCUMENTS_BY_TYPE_DOCUMENT_FAILURE, errors}}
+}
+
 export function getCircularDocuments(typeDocuments, userId){
   return async dispatch => {
     dispatch(request());

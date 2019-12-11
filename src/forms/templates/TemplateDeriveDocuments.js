@@ -1,10 +1,11 @@
 import {TYPE_INPUT} from "../../constants/Constants";
 import {list_dependencies} from "../../fakedata/ListDataDocuments";
+import {DOCUMENT_INTERN} from "../../utils/Constants";
 
 export const formDeriveDocuments= (typeDocuments, onChange1) =>
   [
   {
-    "id": "numDocumento",
+    "id": DOCUMENT_INTERN.TYPE_DOCUMENT_ID,
     "label": "Tipo de Documento:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
@@ -19,7 +20,7 @@ export const formDeriveDocuments= (typeDocuments, onChange1) =>
     "readOnly": true
   },
   {
-    "id": "asunto",
+    "id": DOCUMENT_INTERN.ASUNTO,
     "label": "Asunto:",
     "type": TYPE_INPUT.INPUT_TEXT_AREA,
     "readOnly": false,
@@ -32,7 +33,7 @@ export const formDeriveDocuments= (typeDocuments, onChange1) =>
     "readOnly": true
   },
   {
-    "id": "destinyId",
+    "id": DOCUMENT_INTERN.DESTINY_ID,
     "label": "Oficina Interna:",
     "type": TYPE_INPUT.INPUT_SELECT,
     "readOnly": false,
@@ -40,17 +41,11 @@ export const formDeriveDocuments= (typeDocuments, onChange1) =>
     "listItems": list_dependencies
   },
   {
-    "id": "fecha",
+    "id": DOCUMENT_INTERN.CURRENT_DATE,
     "label": "Fecha:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": false,
     "required": true
-  },
-  {
-    "id": "hora",
-    "label": "Hora:",
-    "type": TYPE_INPUT.INPUT_TEXT,
-    "readOnly": true
   },
   {
     "id": "motivo",

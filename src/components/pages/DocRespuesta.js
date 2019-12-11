@@ -288,6 +288,7 @@ class DocRespuesta extends Component{
       [DOCUMENT_INTERN.FIRM]: '',
       [DOCUMENT_INTERN.ACTIVE]: true,
       [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE],
+      [DOCUMENT_INTERN.REFERENCE_DOCUMENT]: '',
       [DOCUMENT_INTERN.RESPONSABLE_AREA] : ''
     })
   };

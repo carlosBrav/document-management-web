@@ -2,6 +2,7 @@ import * as jwt_decode from "jwt-decode";
 import findIndex from "lodash/findIndex";
 import {CONSTANTS} from "./Constants";
 import isEqual from "lodash/isEqual";
+import moment from 'moment'
 
 export function delete_cookie (name) {
   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -81,4 +82,12 @@ export function proceedLogout(){
   delete_cookie('ppAppUser');
   localStorage.removeItem(CONSTANTS.LOGGED_IN_USER);
   localStorage.removeItem(CONSTANTS.CURRENT_USER);
+}
+
+export function transformToDate(dateString){
+  return moment(dateString)
+}
+
+export function subtractDates(date){
+  return moment().diff(date, 'days')
 }

@@ -27,10 +27,10 @@ const Rows = ({data, tableStructure, onClick}) => {
   return (
     data.map((value, index) => {
       const columns = tableStructure.map((column, index) => {
-        const {actions, rowProp} = column;
+        const {actions, rowProp, cellRenderer} = column;
         return (
           <td key={index + 'td'} className={column.rowStyle}>
-            {actions ? getButton(actions, value) : value[rowProp]}
+            {actions ? getButton(actions, value) : cellRenderer ? cellRenderer({value}) : value[rowProp]}
           </td>
         )
       });

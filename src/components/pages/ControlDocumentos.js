@@ -1,9 +1,27 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {list_control_documents} from '../../fakedata/ListDataDocuments';
 import CommonTableManage from '../commons/CommonTableManage';
 import {exportPDF} from "../utils/ExportPDF";
+import {loadMovementsToAnalyze} from "../../actions/actions";
+import {connect} from 'react-redux';
+import map from "lodash/map";
+import {transformToDate,subtractDates} from "../../utils/Utils";
+import CommonCircle,{STATUS_LEVEL} from "../commons/CommonCircle";
 
 class ControlDocumentos extends Component{
+
+  state = {
+    listDataSelected: []
+  }
+
+  onSetListDataSelected=(listDataSelected)=>{
+    this.setState({listDataSelected})
+  }
+
+  async componentDidMount (){
+    const {loadMovementsToAnalyze} = this.props
+    await loadMovementsToAnalyze()
+  }
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
@@ -16,27 +34,31 @@ class ControlDocumentos extends Component{
       },
       {
         columnHeader: 'Num. Tram.',
-        rowProp: 'num_tram',
+        rowProp: 'numTram',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
       {
         columnHeader: 'Mov.',
-        rowProp: 'mov'
+        rowProp: 'movimiento'
       },
       {
         columnHeader: 'Destino',
-        rowProp: 'destino',
+        rowProp: 'destinoNombre',
         classSearchRow: 'container-search-field long-size',
         filterHeader: true
       },
       {
         columnHeader: 'F. Envio',
-        rowProp: 'fech_envio'
+        rowProp: 'fechaEnvio'
+      },
+      {
+        columnHeader: 'F. Ingreso',
+        rowProp: 'fechaIngreso'
       },
       {
         columnHeader: 'Indicador',
-        rowProp: 'indicador',
+        rowProp: 'indiNombre',
       },
       {
         columnHeader: 'Observacion',
@@ -44,11 +66,11 @@ class ControlDocumentos extends Component{
       },
       {
         columnHeader: 'Doc. Nombre',
-        rowProp: 'doc_nombre',
+        rowProp: 'document',
       },
       {
         columnHeader: 'Estado',
-        rowProp: 'estado',
+        cellRenderer: ({value}) => <CommonCircle type={value['status']}/>
       }
     ])
   }
@@ -64,14 +86,45 @@ class ControlDocumentos extends Component{
   }
 
   render(){
+    const {data} = this.props
     return(
-      <CommonTableManage
-        tableStructure={this.getTableStructure}
-        title={'CONTROL DE DOCUMENTOS INTERNOS'}
-        listData={list_control_documents}
-        getFooterTableStructure={this.getFooterTableStructure}
-      />
+      <Fragment>
+        <CommonTableManage
+          tableStructure={this.getTableStructure}
+          title={'CONTROL DE MOVIMIENTOS INTERNOS'}
+          listData={data}
+          getFooterTableStructure={this.getFooterTableStructure}
+          onSetSelected={this.onSetListDataSelected}
+        />
+      </Fragment>
+
     )
   }
 }
-export default ControlDocumentos
+
+const mapDispatchToProps = (dispatch) => ({
+  loadMovementsToAnalyze: ()=> dispatch(loadMovementsToAnalyze())
+});
+
+function mapStateToProps(state) {
+
+  const getValidationDays=(days)=>{
+    if(days <= 3){
+      return STATUS_LEVEL.BASIC
+    } else if(days >3 && days <=7){
+      return STATUS_LEVEL.WARNING
+    } else return STATUS_LEVEL.DANGER
+  };
+
+  const getMovements = (listData) => {
+    return map(listData, data => ({
+      ...data,
+      document: data.docuNum ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`:'SIN DOCUMENTO',
+      status: getValidationDays(subtractDates(transformToDate(data.fechaEnvio)))
+    }))
+  };
+  return {
+    data: getMovements(state.movements.data)
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ControlDocumentos)

@@ -15,7 +15,10 @@ import {
   GET_MOVEMENTS_BY_ASSIGNED_TO_SUCCESS,
   DERIVE_DOCUMENTS_REQUEST,
   DERIVE_DOCUMENTS_SUCCESS,
-  DERIVE_DOCUMENTS_FAILURE
+  DERIVE_DOCUMENTS_FAILURE,
+  GET_MOVEMENTS_TO_ANALYZE_FAILURE,
+  GET_MOVEMENTS_TO_ANALYZE_SUCCESS,
+  GET_MOVEMENTS_TO_ANALYZE_REQUEST
 } from "../actions/Constants";
 
 const initialState =  {errors: [], message: [], data: [], dataAssigned: [], isLoading: false};
@@ -110,6 +113,23 @@ export function movements(state = initialState, action){
         isLoading: false,
         errors
       };
+    case GET_MOVEMENTS_TO_ANALYZE_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case GET_MOVEMENTS_TO_ANALYZE_SUCCESS:
+      return {
+        ...state,
+        isLoading:false,
+        data
+      };
+    case GET_MOVEMENTS_TO_ANALYZE_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        errors
+      }
     default: return state
   }
 }

@@ -71,3 +71,23 @@
     }
   }
 }
+
+.circle{
+  width: 30px;
+  height: 30px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+
+  &.basic{
+    background-color: #47BF47;
+  }
+
+  &.warning{
+    background-color: #FF8800;
+  }
+
+  &.danger{
+    background-color: #FE0000;
+  }
+}

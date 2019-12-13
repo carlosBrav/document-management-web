@@ -457,3 +457,20 @@ export function createInternDocument(internDocument){
   function success(message){ return {type: Constants.CREATE_INTERN_DOCUMENTS_SUCCESS, message}}
   function failure(errors){ return {type: Constants.CREATE_INTERN_DOCUMENTS_FAILURE, errors}}
 }
+
+export function loadMovementsToAnalyze(){
+  return async dispatch =>{
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.getMovementsToAnalyze()
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+
+    function request(){ return { type: Constants.GET_MOVEMENTS_TO_ANALYZE_REQUEST}}
+    function success(data){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_SUCCESS, data}}
+    function failure(errors){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_FAILURE, errors}}
+  };
+
+}

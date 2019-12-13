@@ -16,7 +16,8 @@ const endPoints = {
   DOCUMENT_INTERN: '/api/internDocument',
   CIRCULAR_DETAILS: '/api/circularDetails',
   USER_MOVEMENTS: '/api/movements/user',
-  ADMIN_MOVEMENTS: '/api/movements/admin'
+  ADMIN_MOVEMENTS: '/api/movements/admin',
+
 };
 
 function getUrlPath(...data){
@@ -183,6 +184,11 @@ export default class Service {
 
   static getInternDocumentByTypeDocument(typeDocument){
     const url = getUrlPath(endPoints.DOCUMENT_INTERN,typeDocument)
+    return ApiIntegration.doGet(url, true)
+  }
+
+  static getMovementsToAnalyze(){
+    const url = getUrlPath(endPoints.ADMIN_MOVEMENTS+'/analyze')
     return ApiIntegration.doGet(url, true)
   }
 }

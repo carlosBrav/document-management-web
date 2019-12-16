@@ -472,5 +472,31 @@ export function loadMovementsToAnalyze(){
     function success(data){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_SUCCESS, data}}
     function failure(errors){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_FAILURE, errors}}
   };
+}
 
+export function loadAdvancedSearch(numTram, observation, officeId){
+  return async dispatch =>{
+    dispatch(request());
+    const numTramValue = numTram && numTram.trim().length>0? numTram : null
+    const observationValue = observation && observation.trim().length>0? observation : null
+    const officeIdValue = officeId && officeId.trim().length>0? officeId : null
+    const {responseCode, data, responseMessage} = await Services.getAdvancedSearch(numTramValue, observationValue, officeIdValue)
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+
+    function request(){ return { type: Constants.GET_MOVEMENTS_ADVANCED_SEARCH_REQUEST}}
+    function success(data){ return {type: Constants.GET_MOVEMENTS_ADVANCED_SEARCH_SUCCESS, data}}
+    function failure(errors){ return {type: Constants.GET_MOVEMENTS_ADVANCED_SEARCH_FAILURE, errors}}
+  };
+}
+
+export function cleanDataMovements(){
+  return dispatch =>{
+    dispatch(cleanData())
+  }
+
+  function cleanData(){return {type: Constants.CLEAN_DATA_MOVEMENTS}}
 }

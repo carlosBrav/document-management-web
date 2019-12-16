@@ -18,10 +18,13 @@ import {
   DERIVE_DOCUMENTS_FAILURE,
   GET_MOVEMENTS_TO_ANALYZE_FAILURE,
   GET_MOVEMENTS_TO_ANALYZE_SUCCESS,
-  GET_MOVEMENTS_TO_ANALYZE_REQUEST
+  GET_MOVEMENTS_TO_ANALYZE_REQUEST,
+  GET_MOVEMENTS_ADVANCED_SEARCH_FAILURE,
+  GET_MOVEMENTS_ADVANCED_SEARCH_SUCCESS,
+  GET_MOVEMENTS_ADVANCED_SEARCH_REQUEST, CLEAN_DATA_MOVEMENTS
 } from "../actions/Constants";
 
-const initialState =  {errors: [], message: [], data: [], dataAssigned: [], isLoading: false};
+const initialState =  {errors: [], message: [], data: [], dataAdvancedSearch: [], dataAssigned: [], isLoading: false};
 
 export function movements(state = initialState, action){
   const {errors, data} = action;
@@ -113,10 +116,17 @@ export function movements(state = initialState, action){
         isLoading: false,
         errors
       };
+    case GET_MOVEMENTS_ADVANCED_SEARCH_REQUEST:
     case GET_MOVEMENTS_TO_ANALYZE_REQUEST:
       return {
         ...state,
         isLoading: true
+      };
+    case GET_MOVEMENTS_ADVANCED_SEARCH_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        dataAdvancedSearch: data
       };
     case GET_MOVEMENTS_TO_ANALYZE_SUCCESS:
       return {
@@ -124,11 +134,19 @@ export function movements(state = initialState, action){
         isLoading:false,
         data
       };
+    case GET_MOVEMENTS_ADVANCED_SEARCH_FAILURE:
     case GET_MOVEMENTS_TO_ANALYZE_FAILURE:
       return {
         ...state,
         isLoading: false,
         errors
+      };
+    case CLEAN_DATA_MOVEMENTS:
+      return {
+        ...state,
+        dataAdvancedSearch: [],
+        data: [],
+        dataAssigned: []
       }
     default: return state
   }

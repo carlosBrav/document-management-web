@@ -191,4 +191,10 @@ export default class Service {
     const url = getUrlPath(endPoints.ADMIN_MOVEMENTS+'/analyze')
     return ApiIntegration.doGet(url, true)
   }
+
+  static getAdvancedSearch(numTram,observation,officeId){
+    const body = JSON.stringify({numTram,observation,officeId});
+    const url = getUrlPath(endPoints.MOVEMENTS+'/advanced/search');
+    return ApiIntegration.doPost(url, body, true)
+  }
 }

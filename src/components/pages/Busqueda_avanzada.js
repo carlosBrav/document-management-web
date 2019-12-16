@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import {list_busqueda_avanzada, list_dependencies} from "../../fakedata/ListDataDocuments";
 import CommonTableManage from "../commons/CommonTableManage";
+import {loadAdvancedSearch,cleanDataMovements} from "../../actions/actions";
+import map from "lodash/map";
+import {connect} from 'react-redux';
 
 class Busqueda_avanzada extends Component{
 
   state={
-    valueMap:{}
+    valueMap:{},
+    data: []
+  };
+
+  componentDidMount(){
+    const {cleanDataMovements}=this.props
+    cleanDataMovements()
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -19,25 +28,25 @@ class Busqueda_avanzada extends Component{
       },
       {
         columnHeader: 'Documento',
-        rowProp: 'documento',
+        rowProp: 'numTram',
         classSearchRow: 'container-search-field normal-size',
         filterHeader: true
       },
       {
-        columnHeader: 'Fech. Tram.',
-        rowProp: 'fech_tram'
+        columnHeader: 'Fech. Ingreso.',
+        rowProp: 'fechaIngreso'
       },
       {
-        columnHeader: 'Fech. Ingreso',
-        rowProp: 'fech_ingreso',
+        columnHeader: 'Fech. Envio',
+        rowProp: 'fechaEnvio',
       },
       {
-        columnHeader: 'Asunto',
-        rowProp: 'asunto'
+        columnHeader: 'Observacion',
+        rowProp: 'observacion'
       },
       {
         columnHeader: 'Derivado a',
-        rowProp: 'derivado_a',
+        rowProp: 'destinoNombre',
       }
     ])
   }
@@ -48,7 +57,8 @@ class Busqueda_avanzada extends Component{
 
   onSearch=()=>{
     const {valueMap}= this.state
-    console.log('VALUE MAP ', valueMap)
+    const {loadAdvancedSearch} = this.props
+    loadAdvancedSearch(valueMap['inputNumTram'],valueMap['inputObservation'],valueMap['inputState'])
   }
 
   getContainHeaderBusqAvanz=()=>{
@@ -61,8 +71,12 @@ class Busqueda_avanzada extends Component{
               <input type="text" className="form-control" id="inputNumTram" onChange={(e)=> this.onChangeValueMap('inputNumTram',e.target.value)}/>
             </div>
             <div className="form-group">
-              <label htmlFor="inputAsunto">Asunto:</label>
-              <input type="text" className="form-control" id="inputAsunto" onChange={(e)=> this.onChangeValueMap('inputAsunto',e.target.value)}/>
+              <label htmlFor="inputAsunto">Observacion:</label>
+              <textarea rows="2"
+                        className={`form-control`}
+                        style={{width: 280}}
+                        id={"inputObservation"}
+                        onChange={(e)=> this.onChangeValueMap('inputObservation',e.target.value)}/>
             </div>
           </div>
           <div className="form-row"  style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginRight: 0, marginLeft: 0}}>
@@ -79,7 +93,7 @@ class Busqueda_avanzada extends Component{
 
                 </select>
             </div>
-            <div className="form-group" style={{width: 210,paddingTop: 35}}>
+            <div className="form-group" style={{width: 290,paddingTop: 35}}>
               <button type='button' className='btn btn-dark' style={{backgroundColor: '#222', height: 35,borderColor: '#222', marginLeft: 10}} onClick={()=> this.onSearch()}>
                 Buscar
               </button>
@@ -99,11 +113,13 @@ class Busqueda_avanzada extends Component{
   }
 
   render(){
+    const {data} = this.props
+    console.log('data' , data)
     return(
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'BUSQUEDA AVANZADA'}
-        listData={list_busqueda_avanzada}
+        listData={data}
         getFooterTableStructure={this.getFooterTableStructureBusqAvanz}
         containHeader={this.getContainHeaderBusqAvanz()}
       />
@@ -111,4 +127,19 @@ class Busqueda_avanzada extends Component{
   }
 }
 
-export default Busqueda_avanzada
+const mapDispatchToProps = (dispatch) => ({
+  loadAdvancedSearch: (numTram, observation, officeId)=> dispatch(loadAdvancedSearch(numTram, observation, officeId)),
+  cleanDataMovements: ()=>dispatch(cleanDataMovements())
+});
+function mapStateToProps(state) {
+  const getMovements = (listData) => {
+    return map(listData, data => ({
+      ...data,
+      document: data.docuNum ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`:'SIN DOCUMENTO'
+    }))
+  };
+  return {
+    data: getMovements(state.movements.dataAdvancedSearch)
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Busqueda_avanzada)

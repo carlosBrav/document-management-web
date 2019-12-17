@@ -16,13 +16,14 @@ import {
   deleteDocuments
 } from "../../actions/actions";
 import {getParseObj} from "../../utils/Utils";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {DOCUMENT_INTERN, getFormattedDate, MOVEMENT, TYPE_DOCUMENT} from "../../utils/Constants";
 import filter from "lodash/filter";
 import parseInt from "lodash/parseInt";
 import isEmpty from 'lodash/isEmpty';
+import {ClipLoader} from "react-spinners";
 
-class DocRespuesta extends Component{
+class DocRespuesta extends Component {
 
   state = {
     search: '',
@@ -38,7 +39,7 @@ class DocRespuesta extends Component{
 
   };
 
-  async componentDidMount(){
+  async componentDidMount() {
     const currentUser = await getParseObj('CURRENT_USER');
     this.setState({currentUser});
     const {getTypeDocuments} = this.props;
@@ -46,33 +47,33 @@ class DocRespuesta extends Component{
     await this.fillMovementsByOffice()
   }
 
-  fillMovementsByOffice=()=>{
+  fillMovementsByOffice = () => {
     const {currentUser} = this.state
     const {getAdminMovementsByOffice} = this.props
     getAdminMovementsByOffice(currentUser.dependencyId)
   };
 
-  fillInternDocumentsByOffice=()=>{
+  fillInternDocumentsByOffice = () => {
     const {currentUser} = this.state;
     const {getOficios} = this.props;
     getOficios(TYPE_DOCUMENT.oficios, currentUser.dependencyId)
   };
 
-  onChangeValueMap=(prop, value)=>{
+  onChangeValueMap = (prop, value) => {
     this.setState({valueMap: {...this.state.valueMap, [prop]: value}})
   };
 
-  onSetSelectedToDeleteOficio=(listDataSelectedToDelete)=>{
+  onSetSelectedToDeleteOficio = (listDataSelectedToDelete) => {
     this.setState({listDataSelectedToDelete})
   };
 
-  onSetSelectToCreateOficio=(listDataSelectedDocInt)=>{
-  this.setState({listDataSelectedDocInt})
+  onSetSelectToCreateOficio = (listDataSelectedDocInt) => {
+    this.setState({listDataSelectedDocInt})
   };
 
-  onChangeTypeDestination=(type)=>{
+  onChangeTypeDestination = (type) => {
     const {dependencies} = this.props;
-    const destinations = map(filter(dependencies, dependency => dependency.tipo === type), value =>({
+    const destinations = map(filter(dependencies, dependency => dependency.tipo === type), value => ({
       ...value,
       value: value.nombre
     }));
@@ -182,27 +183,27 @@ class DocRespuesta extends Component{
   }
 
   onToggleOpenCreateOficio = () => {
-    const {listDataSelectedDocInt,currentUser} = this.state;
-    const {getTypeDocuments,getCorrelativeMax} = this.props;
+    const {listDataSelectedDocInt, currentUser} = this.state;
+    const {getTypeDocuments, getCorrelativeMax} = this.props;
     const documentValue = {...listDataSelectedDocInt[0]}
-    getTypeDocuments().then(()=>{
+    getTypeDocuments().then(() => {
       const {typeDocuments} = this.props;
       const typeOficio = find(typeDocuments, value => value.nombreTipo === 'OFICIO')
-      getCorrelativeMax(currentUser.dependencyId, typeOficio.id,currentUser.dependencySiglas).then(()=>{
-        const {documentNumber,documentSiglas,documentYear} = this.props;
+      getCorrelativeMax(currentUser.dependencyId, typeOficio.id, currentUser.dependencySiglas).then(() => {
+        const {documentNumber, documentSiglas, documentYear} = this.props;
         this.setState({correlativeOficio: `${documentNumber}-${documentSiglas}-${documentYear}`});
         this.onChangeValueMap('numTram', documentValue['numTram']);
         this.onChangeValueMap('asunto', documentValue['observacion']);
-        this.onChangeValueMap('fecha',getFormattedDate());
-        this.onChangeValueMap('origen',documentValue.origenNombre);
-        this.onChangeValueMap('responsable',currentUser.dependencyName);
-        this.onChangeValueMap('currentDate',getFormattedDate());
+        this.onChangeValueMap('fecha', getFormattedDate());
+        this.onChangeValueMap('origen', documentValue.origenNombre);
+        this.onChangeValueMap('responsable', currentUser.dependencyName);
+        this.onChangeValueMap('currentDate', getFormattedDate());
         this.setState({showCreateModal: !this.state.showCreateModal})
       })
     });
   };
 
-  onToggleCloseCreateOficio=()=>{
+  onToggleCloseCreateOficio = () => {
     this.setState({valueMap: {}})
     this.setState({showCreateModal: !this.state.showCreateModal})
   }
@@ -211,16 +212,16 @@ class DocRespuesta extends Component{
     this.setState({valueMap: {}})
     const {currentUser} = this.state;
     const {getCorrelativeMax} = this.props;
-    getCorrelativeMax(currentUser.dependencyId, TYPE_DOCUMENT.oficios,currentUser.dependencySiglas).then(()=>{
-      const {documentNumber,documentSiglas,documentYear} = this.props;
+    getCorrelativeMax(currentUser.dependencyId, TYPE_DOCUMENT.oficios, currentUser.dependencySiglas).then(() => {
+      const {documentNumber, documentSiglas, documentYear} = this.props;
       this.onChangeValueMap('document', `OFICIO Nº ${documentNumber}-${documentSiglas}-${documentYear}`);
-      this.onChangeValueMap('currentDate',getFormattedDate());
-      this.onChangeValueMap('origen',currentUser.dependencyName);
+      this.onChangeValueMap('currentDate', getFormattedDate());
+      this.onChangeValueMap('origen', currentUser.dependencyName);
       this.setState({showCreateSecondModal: !this.state.showCreateSecondModal})
     });
   };
 
-  onToggleCloseCreateOnlyOficio=()=>{
+  onToggleCloseCreateOnlyOficio = () => {
     this.setState({valueMap: {}});
     this.setState({showCreateSecondModal: !this.state.showCreateSecondModal})
   };
@@ -229,29 +230,29 @@ class DocRespuesta extends Component{
     const {listDataSelectedToDelete} = this.state;
     const {deleteDocuments} = this.props;
     const documentsIds = map(listDataSelectedToDelete, data => data.id);
-    deleteDocuments(documentsIds).then(()=>{
+    deleteDocuments(documentsIds).then(() => {
       this.fillInternDocumentsByOffice();
       this.setState({showDeleteModal: !this.state.showDeleteModal})
     });
   };
 
   getFooterTableStructureOficios = () => {
-    return([
+    return ([
       {text: 'Crear', action: this.onToggleOpenCreateOnlyOficio},
       {text: 'Eliminar', action: this.onToggleDeleteDocuments}
     ])
   }
 
   getFooterTableStructureDocInt = () => {
-    return([
+    return ([
       {text: 'Oficios', action: this.onToggleOpenCreateOficio}
     ])
   };
 
-  generateObjectMovement=()=>{
+  generateObjectMovement = () => {
     const {listDataSelectedDocInt, valueMap} = this.state;
     const movement = {...listDataSelectedDocInt[0]};
-    return({
+    return ({
       [MOVEMENT.ID]: movement['id'],
       [MOVEMENT.MOVEMENT]: movement[MOVEMENT.MOVEMENT],
       [MOVEMENT.NUM_TRAM]: movement[MOVEMENT.NUM_TRAM],
@@ -271,10 +272,10 @@ class DocRespuesta extends Component{
     });
   };
 
-  generateObjectInternDocument=()=>{
-    const { documentNumber,documentSiglas,documentYear} = this.props;
+  generateObjectInternDocument = () => {
+    const {documentNumber, documentSiglas, documentYear} = this.props;
     const {valueMap, currentUser} = this.state;
-    return({
+    return ({
       [DOCUMENT_INTERN.DOCUMENT_STATE]: 'GENERADO',
       [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: TYPE_DOCUMENT.oficios,
       [DOCUMENT_INTERN.DOCUMENT_NUMBER]: parseInt(documentNumber),
@@ -289,42 +290,44 @@ class DocRespuesta extends Component{
       [DOCUMENT_INTERN.ACTIVE]: true,
       [DOCUMENT_INTERN.CURRENT_DATE]: valueMap[DOCUMENT_INTERN.CURRENT_DATE],
       [DOCUMENT_INTERN.REFERENCE_DOCUMENT]: '',
-      [DOCUMENT_INTERN.RESPONSABLE_AREA] : ''
+      [DOCUMENT_INTERN.RESPONSABLE_AREA]: ''
     })
   };
 
-  onCreateOficio=()=>{
+  onCreateOficio = () => {
     const {currentUser} = this.state;
     const {generateResponseToMovementAdmin} = this.props;
     const movementObject = this.generateObjectMovement();
     const documentObject = this.generateObjectInternDocument();
-    generateResponseToMovementAdmin(currentUser.id,currentUser.dependencyId,documentObject,movementObject).then(()=>{
+    generateResponseToMovementAdmin(currentUser.id, currentUser.dependencyId, documentObject, movementObject).then(() => {
       this.fillMovementsByOffice()
       this.onToggleCloseCreateOficio()
     })
   }
 
-  onCreateOnlyOficio=()=>{
+  onCreateOnlyOficio = () => {
     const {createInternDocument} = this.props
     const internDocument = this.generateObjectInternDocument();
-    createInternDocument(internDocument).then(()=>{
+    createInternDocument(internDocument).then(() => {
       this.fillInternDocumentsByOffice();
       this.onToggleCloseCreateOnlyOficio()
     })
   };
 
-  render(){
+  render() {
 
-    const {showDeleteModal,
+    const {
+      showDeleteModal,
       listDataSelectedToDelete,
       showCreateModal,
       listDataSelectedDocInt,
       showCreateSecondModal,
       valueMap,
       correlativeOficio,
-      destinations} = this.state
+      destinations
+    } = this.state
 
-    const {movements,internDocument} = this.props
+    const {movements, internDocument, isLoadingUser, isLoadingInternDoc} = this.props
 
 
     const modalProps = [
@@ -335,66 +338,84 @@ class DocRespuesta extends Component{
         yesText: 'Crear Oficio',
         noFunction: this.onToggleCloseCreateOnlyOficio,
         noText: 'Cancelar',
-        content: <FormRender formTemplate={formOficios(this.onChangeTypeDestination,destinations)}
+        content: <FormRender formTemplate={formOficios(this.onChangeTypeDestination, destinations)}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       },
       {
         showModal: showCreateModal,
         title: `Crear Oficio Nº ${correlativeOficio}`,
-        message: (listDataSelectedDocInt.length === 1)? null: 'Debe seleccionar 1 documento',
-        yesFunction: (listDataSelectedDocInt.length === 1) ? this.onCreateOficio:this.onToggleCloseCreateOficio,
-        yesText: (listDataSelectedDocInt.length === 1) ? 'Crear Oficio':'Ok',
-        noFunction: (listDataSelectedDocInt.length === 1) ? this.onToggleCloseCreateOficio:null,
-        noText: (listDataSelectedDocInt.length === 1) ? 'Cancelar':null,
-        content: <FormRender formTemplate={formOficiosToExp(this.onChangeTypeDestination,destinations)}
+        message: (listDataSelectedDocInt.length === 1) ? null : 'Debe seleccionar 1 documento',
+        yesFunction: (listDataSelectedDocInt.length === 1) ? this.onCreateOficio : this.onToggleCloseCreateOficio,
+        yesText: (listDataSelectedDocInt.length === 1) ? 'Crear Oficio' : 'Ok',
+        noFunction: (listDataSelectedDocInt.length === 1) ? this.onToggleCloseCreateOficio : null,
+        noText: (listDataSelectedDocInt.length === 1) ? 'Cancelar' : null,
+        content: <FormRender formTemplate={formOficiosToExp(this.onChangeTypeDestination, destinations)}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       },
       {
         showModal: showDeleteModal,
         title: 'Eliminar Documentos',
-        message: (listDataSelectedToDelete.length>0)?`¿Desea eliminar ${listDataSelectedToDelete.length} documento(s) ?`:`Debe seleccionar al menos un documento`,
-        yesFunction: (listDataSelectedToDelete.length>0)?this.onDeleteDocuments:this.onToggleDeleteDocuments,
-        yesText: (listDataSelectedToDelete.length>0)?'Sí':'Ok',
-        noFunction: (listDataSelectedToDelete.length>0)?this.onToggleDeleteDocuments:null
+        message: (listDataSelectedToDelete.length > 0) ? `¿Desea eliminar ${listDataSelectedToDelete.length} documento(s) ?` : `Debe seleccionar al menos un documento`,
+        yesFunction: (listDataSelectedToDelete.length > 0) ? this.onDeleteDocuments : this.onToggleDeleteDocuments,
+        yesText: (listDataSelectedToDelete.length > 0) ? 'Sí' : 'Ok',
+        noFunction: (listDataSelectedToDelete.length > 0) ? this.onToggleDeleteDocuments : null
       }
     ]
 
-    const tableDocumentInt = () =>{
-      return (<CommonTableManage
-        tableStructure={this.getTableStructure}
-        title={'DOCUMENTOS INTERNOS'}
-        listData={movements}
-        getFooterTableStructure={this.getFooterTableStructureDocInt}
-        onSetSelected={this.onSetSelectToCreateOficio}
-      />)
+    const tableDocumentInt = () => {
+      return (
+        isLoadingUser ?
+          <div className='spinner-tab'>
+            <ClipLoader
+              size={150} // or 150px
+              color={"#EEE2E0"}
+              loading={isLoadingUser}
+            />
+          </div> :
+          <CommonTableManage
+            tableStructure={this.getTableStructure}
+            title={'DOCUMENTOS INTERNOS'}
+            listData={movements}
+            getFooterTableStructure={this.getFooterTableStructureDocInt}
+            onSetSelected={this.onSetSelectToCreateOficio}
+          />
+      )
     };
 
-    const tableOficios =()=> {
+    const tableOficios = () => {
       return (
-        <CommonTableManage
-          tableStructure={this.getTableStructureOficios}
-          title={'OFICIOS'}
-          listData={internDocument}
-          getFooterTableStructure={this.getFooterTableStructureOficios}
-          onSetSelected={this.onSetSelectedToDeleteOficio}
-        />
+        isLoadingInternDoc ?
+          <div className='spinner-tab'>
+            <ClipLoader
+              size={150} // or 150px
+              color={"#EEE2E0"}
+              loading={isLoadingInternDoc}
+            />
+          </div> :
+          <CommonTableManage
+            tableStructure={this.getTableStructureOficios}
+            title={'OFICIOS'}
+            listData={internDocument}
+            getFooterTableStructure={this.getFooterTableStructureOficios}
+            onSetSelected={this.onSetSelectedToDeleteOficio}
+          />
       )
     };
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt, onClick: this.fillMovementsByOffice},
+      [{title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt, onClick: this.fillMovementsByOffice},
         {title: 'Oficios', id: 'oficios', action: tableOficios, onClick: this.fillInternDocumentsByOffice}
       ];
 
 
-    return(
+    return (
       <Fragment>
         {
-          modalProps && modalProps.length>0 ?
-            map(modalProps, (modal, index)=>{
-              return <CommonModal key={'modal'+index} {...modal}/>
+          modalProps && modalProps.length > 0 ?
+            map(modalProps, (modal, index) => {
+              return <CommonModal key={'modal' + index} {...modal}/>
             }) : null
         }
         <CommonTab tabList={tabs}/>
@@ -413,10 +434,10 @@ const mapDispatchToProps = (dispatch) => ({
   createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument))
 });
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   const listDocuments = (listData) => {
     return map(listData, (data) => {
-        const document = data.tipoDocuId && find(state.typeDocuments.data, x=>x.id === data.tipoDocuId)
+        const document = data.tipoDocuId && find(state.typeDocuments.data, x => x.id === data.tipoDocuId)
         return ({
           ...data,
           document: (!isEmpty(data.docuNombre)) ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}` : 'SIN DOCUMENTO',
@@ -439,13 +460,15 @@ function mapStateToProps(state){
 
   return {
     movements: listDocuments(state.user.adminMovements),
+    isLoadingUser: state.user.isLoading,
     typeDocuments: state.typeDocuments.data,
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
     dependencies: state.initialData.dependencies,
-    internDocument: listInternDocuments(state.documentIntern.data)
+    internDocument: listInternDocuments(state.documentIntern.data),
+    isLoadingInternDoc: state.documentIntern.isLoading
   }
 }
 
-export default connect (mapStateToProps, mapDispatchToProps)(DocRespuesta)
+export default connect(mapStateToProps, mapDispatchToProps)(DocRespuesta)

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {getMovements, cleanMovementsList, deleteMovement} from "../../actions/actions"
 import isEmpty from "lodash/isEmpty";
 import map from "lodash/map";
+import { ClipLoader } from "react-spinners";
 
 class DocConfirmados extends Component{
 
@@ -136,7 +137,7 @@ class DocConfirmados extends Component{
   render(){
 
     const {showDeleteModal,listDataSelected} = this.state
-    const {data} = this.props
+    const {data, isLoading} = this.props
     const modalProps = [{
       showModal: showDeleteModal,
       title: 'Eliminar Documentos',
@@ -154,15 +155,25 @@ class DocConfirmados extends Component{
               return <CommonModal key={'modal'+index} {...modal}/>
             }) : null
         }
-        <CommonTableManage
-          tableStructure={this.getTableStructure}
-          title={'DOCUMENTOS CONFIRMADOS'}
-          listData={data}
-          containHeader={this.getContainHeader()}
-          modalProps={modalProps}
-          getFooterTableStructure={this.getFooterTableStructure}
-          onSetSelected={this.onSetSelectDocuments}
-        />
+        {
+          isLoading ?
+            <div className='spinner'>
+              <ClipLoader
+                size={150} // or 150px
+                color={"#EEE2E0"}
+                loading={isLoading}
+              />
+            </div> :
+            <CommonTableManage
+              tableStructure={this.getTableStructure}
+              title={'DOCUMENTOS CONFIRMADOS'}
+              listData={data}
+              containHeader={this.getContainHeader()}
+              modalProps={modalProps}
+              getFooterTableStructure={this.getFooterTableStructure}
+              onSetSelected={this.onSetSelectDocuments}
+            />
+        }
       </Fragment>
 
     )
@@ -186,6 +197,7 @@ function mapStateToProps(state){
   };
   return {
     data: listDocuments(state.movements.data),
+    isLoading: state.movements.isLoading,
     dependencies: state.initialData.dependencies,
     errors: state.movements.errors
   }

@@ -4,8 +4,10 @@ import {BUTTON_TYPE} from '../../constants/Constants';
 import {getView2Data, insertMovements} from "../../actions/actions"
 import { connect } from 'react-redux';
 import map from "lodash/map";
+import isEqual from "lodash/isEqual";
 import {getParseObj} from "../../utils/Utils";
 import CommonModal from "../commons/CommonModal";
+import { ClipLoader } from "react-spinners";
 
 class DocRecibidos extends Component{
 
@@ -14,7 +16,7 @@ class DocRecibidos extends Component{
     isModalOpen: false
   };
 
-  async componentDidMount(){
+  async componentDidMount() {
     const {getView2Data} = this.props
     getView2Data()
   }
@@ -101,20 +103,34 @@ class DocRecibidos extends Component{
 
   render(){
 
-    const {data, errors, message} = this.props
-    const {isModalOpen} = this.state
-    const modalProps =
+    const {errors, message,isLoading,data} = this.props;
+    const {isModalOpen} = this.state;
+    const modalProps =[
       {
         showModal: isModalOpen,
         title: (errors && errors.length>0) ? 'Error al confirmar' : 'Confirmados correctamente',
         yesFunction: this.onAcceptConfirmation,
         yesText: 'Aceptar',
         content: <div><h5>{message}</h5></div>
-      };
+      }];
 
     return(
       <Fragment>
         {
+          modalProps && modalProps.length>0 ?
+            map(modalProps, (modal, index)=>{
+              return <CommonModal key={'modal'+index} {...modal}/>
+            }) : null
+        }
+        {
+          isLoading ?
+            <div className='spinner'>
+              <ClipLoader
+                size={150} // or 150px
+                color={"#EEE2E0"}
+                loading={isLoading}
+              />
+            </div> :
             <CommonTableManage
               tableStructure={this.getTableStructure}
               title={'DOCUMENTOS RECIBIDOS'}
@@ -125,7 +141,6 @@ class DocRecibidos extends Component{
               onSubtract={this.onChangeInitialIndex}
             />
         }
-        <CommonModal key={'modalView'} {...modalProps}/>
       </Fragment>
     )
   }
@@ -150,7 +165,8 @@ function mapStateToProps(state){
     data: listDocuments(state.dataView.data),
     dependencies: state.initialData.dependencies,
     errors: state.movements.errors,
-    message: state.movements.data
+    message: state.movements.data,
+    isLoading: state.dataView.isLoading
   }
 }
 

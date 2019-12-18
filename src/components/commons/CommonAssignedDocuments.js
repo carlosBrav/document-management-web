@@ -14,6 +14,7 @@ import map from "lodash/map";
 import CommonModal from "./CommonModal";
 import find from "lodash/find";
 import parseInt from "lodash/parseInt";
+import {ClipLoader} from "react-spinners";
 
 class CommonAssignedDocuments extends Component{
 
@@ -199,7 +200,7 @@ class CommonAssignedDocuments extends Component{
   };
 
   render(){
-    const {typeDocuments} = this.props;
+    const {typeDocuments,isLoadingMovements} = this.props;
     const {showDeriveAssignedModal,listDataAssignedSelected,valueMap,data} = this.state;
     const modalProps = [
       {
@@ -225,13 +226,24 @@ class CommonAssignedDocuments extends Component{
               return <CommonModal key={'modalAssigned' + index} {...modal}/>
             }) : null
         }
-        <CommonTableManage
-          tableStructure={this.getTableStructureAssigned}
-          title={'DOCUMENTOS ASIGNADOS'}
-          listData={data}
-          getFooterTableStructure={this.getFooterTableAssignedStructure}
-          onSetSelected={this.onSetSelectAssignedDocuments}
-        />
+        {
+          isLoadingMovements ?
+            <div className='spinner-tab'>
+              <ClipLoader
+                size={150} // or 150px
+                color={"#EEE2E0"}
+                loading={isLoadingMovements}
+              />
+            </div>
+             : <CommonTableManage
+            tableStructure={this.getTableStructureAssigned}
+            title={'DOCUMENTOS ASIGNADOS'}
+            listData={data}
+            getFooterTableStructure={this.getFooterTableAssignedStructure}
+            onSetSelected={this.onSetSelectAssignedDocuments}
+          />
+        }
+
       </Fragment>
       )
   }

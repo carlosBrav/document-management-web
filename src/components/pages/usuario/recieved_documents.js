@@ -20,6 +20,7 @@ import {formConfirmDocuments} from "../../../forms/templates/TemplateConfirmDocu
 import {getFormattedDate} from "../../../utils/Constants";
 import CommonTab from '../../commons/CommonTab';
 import CommonAssignedDocuments from "../../commons/CommonAssignedDocuments";
+import {ClipLoader} from "react-spinners";
 
 class DocumentsReceived extends Component{
 
@@ -144,7 +145,7 @@ class DocumentsReceived extends Component{
   };
 
   render(){
-    const {users} = this.props;
+    const {users, isLoadingData} = this.props;
     const {showConfirmationModal,listDataSelected, valueMap,currentUser,dataReceived} = this.state;
     const {dependencyName} = currentUser;
     const modalProps = [
@@ -163,7 +164,13 @@ class DocumentsReceived extends Component{
     ];
 
     const tableDocumentsReceived = () =>{
-      return(<CommonTableManage
+      return(isLoadingData ? <div className='spinner-tab'>
+        <ClipLoader
+          size={150} // or 150px
+          color={"#EEE2E0"}
+          loading={isLoadingData}
+        />
+      </div>:  <CommonTableManage
         tableStructure={this.getTableStructureReceived}
         title={'DOCUMENTOS RECIBIDOS: '+dependencyName}
         listData={dataReceived}
@@ -235,9 +242,11 @@ function mapStateToProps(state){
   return {
     typeDocuments: getTypeDocuments(state.typeDocuments.data),
     data: listDocuments(state.user.movements),
+    isLoadingData: state.user.isLoading,
     errors: state.user.errors,
     users: listUsers(state.initialData.users),
     dataAssigned: listDocuments(state.movements.dataAssigned),
+    isLoadingMovements: state.movements.isLoading,
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,

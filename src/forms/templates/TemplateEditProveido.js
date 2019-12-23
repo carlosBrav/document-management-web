@@ -1,9 +1,8 @@
-import {list_dependencies,list_dependencies_2} from "../../fakedata/ListDataDocuments";
 import {TYPE_INPUT} from "../../constants/Constants";
 
-export const formEditProveido = [
+export const formEditProveido = dependencies => [
   {
-    "id": "documento",
+    "id": "referenceDocument",
     "label": "Documento:",
     "type": TYPE_INPUT.INPUT_TEXT,
     "readOnly": true
@@ -16,18 +15,18 @@ export const formEditProveido = [
     "required": true
   },
   {
-    "id": "origen",
+    "id": "origenId",
     "label": "Origen:",
     "type": TYPE_INPUT.INPUT_SELECT,
-    "listItems":list_dependencies,
+    "listItems":dependencies,
     "required": true,
     "useOnChange": false
   },
   {
-    "id": "destino",
+    "id": "destinoId",
     "label": "Destino:",
     "type": TYPE_INPUT.INPUT_SELECT,
-    "listItems":list_dependencies_2,
+    "listItems":dependencies,
     "required": true,
     "useOnChange": false
   }

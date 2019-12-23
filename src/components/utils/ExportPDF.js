@@ -1,6 +1,5 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import {listData_1} from '../../fakedata/ListDataDocuments';
 import omit from 'lodash/omit';
 
 function appendZero(n){
@@ -42,13 +41,151 @@ function appendZero(n){
   }
 })(jsPDF.API);
 
+export function exportCircularDocuments(documents, userName){
 
-export function exportPDF(documents, userName, officeDestiny) {
+}
+
+export function exportAdvancedSearch(documents, userName){
+  let doc = new jsPDF('p', 'px', 'a4');
+  let title = 'UNMSM - SISTEMA DE TRAMITE DOCUMENTARIO OGPL';
+  let user = `Usuario: ${userName}`;//llega por parametro
+  let subtitle = 'REPORTE DE BUSQUEDA AVANZADA';
+
+  doc.setProperties({
+    title: 'Reporte de Bsuqeda Avanzada'
+  });
+
+  doc.setFont('Courier', 'bold');
+  doc.setFontSize(11);
+  doc.text(title, 21, 40);
+
+  doc.setFont('Courier', 'normal');
+  doc.setFontSize(7);
+  doc.text('Fec. Impresion:', 310, 40);
+
+  let date = new Date()
+  let date_format = `${appendZero(date.getDate())}/${appendZero(date.getMonth() + 1)}/${date.getFullYear()} ${appendZero(date.getHours())}:${date.getMinutes()}:${date.getSeconds()}`
+  doc.setFont('Courier', 'normal');
+  doc.setFontSize(7);
+  doc.text(date_format, 360, 40);
+
+  doc.setFont('Courier', 'normal');
+  doc.setFontSize(7);
+  doc.text(user, 310, 50);
+
+  doc.setFont('Courier', 'bold');
+  doc.setFontSize(12);
+  doc.myText(subtitle,{align: "center"}, 0, 85);
+
+  let headers = [
+    {header: 'CORRELATIVO', dataKey: 'numTram'},
+    {header: 'FECHA ING.', dataKey: 'fechaIngreso'},
+    {header: 'FECHA ENV.', dataKey: 'fechaEnvio'},
+    {header: 'OBSERVACION', dataKey: 'observacion'},
+    {header: 'ORIGEN', dataKey: 'origenNombre'},
+    {header: 'DERIVADO A', dataKey: 'destinoNombre'}
+  ];
+
+  doc.autoTable({
+
+    columns: headers,
+    body: documents,
+    bodyStyles: {minCellWidth: 100, fontSize: 6, minCellHeight: 'auto', fontWeight: 'bold'},
+    columnStyles: {
+      'numTram': {halign: 'center', valign: 'middle', cellWidth: 25},
+      'fechaIngreso': {halign: 'center', valign: 'middle', cellWidth: 35},
+      'fechaEnvio': {halign: 'center',valign: 'middle', cellWidth: 35},
+      'observacion': {halign: 'left',valign: 'middle', cellWidth: 75},
+      'origenNombre': {halign: 'left',valign: 'middle', cellWidth: 70},
+      'destinoNombre': {halign: 'left',valign: 'middle', cellWidth: 70},
+    },
+    headStyles: {halign: 'center', fillColor: '#222', fontSize: 6, textColor: '#FFF'},
+    margin: {top: 100, right: 50, bottom: 0, left: 10},
+    theme: 'grid',
+    tableWidth: 430,
+
+  });
+
+  doc.save("BusquedaAvanzada.pdf")
+
+}
+
+export function exportControlDocuments(documents, userName) {
+  let doc = new jsPDF('p', 'px', 'a4');
+  let title = 'UNMSM - SISTEMA DE TRAMITE DOCUMENTARIO OGPL';
+  let user = `Usuario: ${userName}`;//llega por parametro
+  let subtitle = 'REPORTE DEL CONTROL DE DOCUMENTOS';
+
+  doc.setProperties({
+    title: 'Control de Documentos Internos'
+  });
+
+  doc.setFont('Courier', 'bold');
+  doc.setFontSize(11);
+  doc.text(title, 21, 40);
+
+  doc.setFont('Courier', 'normal');
+  doc.setFontSize(7);
+  doc.text('Fec. Impresion:', 310, 40);
+
+  let date = new Date()
+  let date_format = `${appendZero(date.getDate())}/${appendZero(date.getMonth() + 1)}/${date.getFullYear()} ${appendZero(date.getHours())}:${date.getMinutes()}:${date.getSeconds()}`
+  doc.setFont('Courier', 'normal');
+  doc.setFontSize(7);
+  doc.text(date_format, 360, 40);
+
+  doc.setFont('Courier', 'normal');
+  doc.setFontSize(7);
+  doc.text(user, 310, 50);
+
+  doc.setFont('Courier', 'bold');
+  doc.setFontSize(12);
+  doc.myText(subtitle,{align: "center"}, 0, 85);
+
+  let headers = [
+    {header: 'CORRELATIVO', dataKey: 'numTram'},
+    {header: 'DESTINO', dataKey: 'destinoNombre'},
+    {header: 'F. ENVIO', dataKey: 'fechaEnvio'},
+    {header: 'INDICADOR', dataKey: 'indiNombre'},
+    {header: 'OBSERVACION', dataKey: 'observacion'},
+    {header: 'DOCUMENTO', dataKey: 'document'},
+    {header: 'ESTADO', dataKey: 'status'}
+  ];
+
+  doc.autoTable({
+
+    columns: headers,
+    body: documents,
+    bodyStyles: {minCellWidth: 100, fontSize: 6, minCellHeight: 'auto', fontWeight: 'bold'},
+    columnStyles: {
+      'numTram': {halign: 'center', valign: 'middle', cellWidth: 45},
+      'destinoNombre': {halign: 'center', valign: 'middle', cellWidth: 65},
+      'fechaEnvio': {halign: 'center',valign: 'middle', cellWidth: 35},
+      'indiNombre': {halign: 'left',valign: 'middle', cellWidth: 40},
+      'observacion': {halign: 'left',valign: 'middle', cellWidth: 85},
+      'document': {halign: 'left',valign: 'middle', cellWidth: 50},
+      'status': {halign: 'left',valign: 'middle', cellWidth: 40},
+    },
+    headStyles: {halign: 'center', fillColor: '#222', fontSize: 6, textColor: '#FFF'},
+    margin: {top: 100, right: 50, bottom: 0, left: 10},
+    theme: 'grid',
+    tableWidth: 430,
+
+  });
+
+  doc.save("ControlDocumentos.pdf")
+}
+
+export function exportProveidosDocuments(documents, userName){
+
+}
+
+export function exportConfirmDocuments(documents, userName) {
   let doc = new jsPDF('p', 'px','a4');
   let title = 'UNMSM - SISTEMA DE TRAMITE DOCUMENTARIO OGPL';
-  let user = 'Usuario: CHUCHON OCHOA, ANA';//llega por parametro
+  let user = `Usuario: ${userName}`;//llega por parametro
   let typeDocument = 'REPORTE DE DOCUMENTOS DERIVADOS A OFICINAS INTERNAS';//tipo de documento, viene de constants
-  let subtitle = 'OFICINA INTERNA: OGPL - OFICINA DE RACIONALIZACION';
+  //let subtitle = 'OFICINA INTERNA: OGPL - OFICINA DE RACIONALIZACION';
 
   doc.setProperties({
     title: 'Documentos Confirmados'
@@ -70,26 +207,26 @@ export function exportPDF(documents, userName, officeDestiny) {
 
   doc.setFont('Courier', 'normal');
   doc.setFontSize(7);
-  doc.text(user, 332, 50);
+  doc.text(user, 310, 50);
 
   doc.setFont('Courier', 'bold');
   doc.setFontSize(12);
-  doc.myText(typeDocument,{align: "center"}, 0, 70);
+  doc.myText(typeDocument,{align: "center"}, 0, 85);
 
-  doc.setFont('Courier', 'bold');
+  /*doc.setFont('Courier', 'bold');
   doc.setFontSize(12);
-  doc.myText(subtitle,{align: "center"}, 0, 90)
+  doc.myText(subtitle,{align: "center"}, 0, 90)*/
 
-  let tableDocuments = listData_1.map((data) => {
-    return omit(data, ['id', 'movimiento', 'destino', 'indic', 'estado', 'check'])
+  let tableDocuments = documents.map((data) => {
+    return omit(data, ['moviNum', 'depeCod', 'destCod', 'moviFecIng', 'indiNombre','indiCod','estaNombre','docuNombre','docuNum','docuSiglas','docuAnio'])
   });
 
   let headers = [
-    {header: 'Documento', dataKey: 'num_tram'},
-    {header: 'Fecha', dataKey: 'fech_envio'},
-    {header: 'TIPO DOC.', dataKey: 'docum_nomb'},
-    {header: 'ASUNTO', dataKey: 'observacion'},
-    {header: 'FIRMA DE CONFORMIDAD', dataKey: 'conformidad'}
+    {header: 'CORRELATIVO', dataKey: 'tramNum'},
+    {header: 'FECHA', dataKey: 'moviFecEnv'},
+    {header: 'DESTINO', dataKey: 'moviDestino'},
+    {header: 'ASUNTO', dataKey: 'moviObs'},
+    {header: 'FIRMA', dataKey: 'conformidad'}
   ];
 
 
@@ -97,20 +234,22 @@ export function exportPDF(documents, userName, officeDestiny) {
 
     columns: headers,
     body: tableDocuments,
-    bodyStyles: {minCellWidth: 100, fontSize: 8, minCellHeight: '25', fontWeight: 'bold'},
+    bodyStyles: {minCellWidth: 100, fontSize: 6, minCellHeight: 'auto', fontWeight: 'bold'},
     columnStyles: {
-      'num_tram': {halign: 'center', valign: 'middle', cellWidth: 65},
-      'fech_envio': {halign: 'center', cellWidth: 40},
-      'docum_nomb': {halign: 'center', valign: 'middle', cellWidth: 50},
-      'observacion': {halign: 'left', cellWidth: 120},
+      'tramNum': {halign: 'center', valign: 'middle', cellWidth: 45},
+      'moviFecEnv': {halign: 'center', valign: 'middle', cellWidth: 45},
+      'moviDestino': {halign: 'center', valign: 'middle', cellWidth: 95},
+      'moviObs': {halign: 'left', cellWidth: 130},
+      'conformidad': {halign: 'left', cellWidth: 40},
     },
-    headStyles: {halign: 'center', fillColor: '#222', fontSize: 8, textColor: '#FFF'},
-    margin: {top: 100, right: 50, bottom: 0, left: 20},
+    headStyles: {halign: 'center', fillColor: '#222', fontSize: 6, textColor: '#FFF'},
+    margin: {top: 100, right: 50, bottom: 0, left: 10},
     theme: 'grid',
-    tableWidth: 400,
+    tableWidth: 430,
 
   });
 
-  let blob = doc.output("blob");
-  window.open(URL.createObjectURL(blob));
+  /*let blob = doc.output("blob");
+  window.open(URL.createObjectURL(blob));*/
+  doc.save("DocumentosInternos.pdf")
 }

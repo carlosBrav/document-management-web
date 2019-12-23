@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import CommonTableManage from "../commons/CommonTableManage";
 import CommonTab from "../commons/CommonTab";
 import {ICON_TYPE} from "../commons/CommonIcon";
-import {exportPDF} from "../utils/ExportPDF";
+import {exportProveidosDocuments} from "../utils/ExportPDF";
 import FormRender from "../../forms/FormRender";
 import {formProveidosInternos, formProveidosExternos} from "../../forms/templates/TemplateCreateProveido";
 import {formEditProveido} from "../../forms/templates/TemplateEditProveido";
@@ -152,7 +152,7 @@ class DocProveidos extends Component{
   };
 
   onExportDocuments=()=>{
-    exportPDF()
+    exportProveidosDocuments()
   }
 
   onToggleDeleteDocuments = () => {
@@ -300,7 +300,7 @@ class DocProveidos extends Component{
     const {listTypeDocuments} = this.props;
     const document = find(listTypeDocuments, doc => doc.id===typeDocumentId);
     this.onChangeValueMap([DOCUMENT_INTERN.REFERENCE_DOCUMENT], `${document.nombreTipo} Nº `);
-  }
+  };
 
 
   render(){
@@ -316,7 +316,7 @@ class DocProveidos extends Component{
       destinationsOrigin,
       destinationsFinal} = this.state;
 
-    const {listTypeDocuments} = this.props;
+    const {listTypeDocuments,dependenciesParam} = this.props;
     const modalProps = [
       {
         showModal: showDeleteModal,
@@ -360,12 +360,12 @@ class DocProveidos extends Component{
       },
       {
         showModal: showEditModal,
-        title: 'Proveido N° 00488-OGPL-2019',
+        title: valueMap.document,
         yesFunction: this.onEditProveido,
         yesText: 'Editar proveido',
         noFunction: this.onToggleEditProveido,
         noText: 'Cancelar',
-        content: <FormRender formTemplate={formEditProveido}
+        content: <FormRender formTemplate={formEditProveido(dependenciesParam)}
                              onChange={this.onChangeValueMap}
                              valueMap={valueMap}/>
       }]
@@ -442,6 +442,13 @@ function mapStateToProps(state){
     }))
   };
 
+  const getDependencies = (listData) => {
+    return map(listData, data =>({
+      ...data,
+      value: data.nombre
+    }))
+  };
+
   return {
     listTypeDocuments: getTypeDocuments(state.typeDocuments.data),
     internDocuments: listInternDocuments(state.documentIntern.dataAdmin),
@@ -450,6 +457,7 @@ function mapStateToProps(state){
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
     dependencies: state.initialData.dependencies,
+    dependenciesParam: getDependencies(state.initialData.dependencies)
   }
 }
 

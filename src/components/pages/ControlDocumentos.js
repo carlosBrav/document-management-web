@@ -1,11 +1,10 @@
 import React, {Component, Fragment} from 'react';
-import {list_control_documents} from '../../fakedata/ListDataDocuments';
 import CommonTableManage from '../commons/CommonTableManage';
-import {exportPDF} from "../utils/ExportPDF";
+import {exportControlDocuments} from "../utils/ExportPDF";
 import {loadMovementsToAnalyze} from "../../actions/actions";
 import {connect} from 'react-redux';
 import map from "lodash/map";
-import {transformToDate,subtractDates} from "../../utils/Utils";
+import {transformToDate, subtractDates, getParseObj} from "../../utils/Utils";
 import CommonCircle,{STATUS_LEVEL} from "../commons/CommonCircle";
 
 class ControlDocumentos extends Component{
@@ -76,7 +75,9 @@ class ControlDocumentos extends Component{
   }
 
   onExportDocuments=()=>{
-    exportPDF()
+    const {listDataSelected} = this.state;
+    const currentUser = getParseObj('CURRENT_USER');
+    exportControlDocuments(listDataSelected, currentUser.apellido+", "+currentUser.nombre)
   }
 
   getFooterTableStructure=()=>{
@@ -86,7 +87,8 @@ class ControlDocumentos extends Component{
   }
 
   render(){
-    const {data} = this.props
+    const {data} = this.props;
+    console.log('DATA', data)
     return(
       <Fragment>
         <CommonTableManage

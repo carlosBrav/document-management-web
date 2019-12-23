@@ -8,6 +8,7 @@ import isEqual from "lodash/isEqual";
 import {getParseObj} from "../../utils/Utils";
 import CommonModal from "../commons/CommonModal";
 import { ClipLoader } from "react-spinners";
+import {exportConfirmDocuments} from "../utils/ExportPDF";
 
 class DocRecibidos extends Component{
 
@@ -85,9 +86,11 @@ class DocRecibidos extends Component{
   };
 
   onAcceptConfirmation= async ()=>{
-    this.setState({listDataSelected: []})
+    let {listDataSelected} = this.state;
+    const currentUser = getParseObj('CURRENT_USER');
+    exportConfirmDocuments(listDataSelected,currentUser.apellido+", "+currentUser.nombre);
+    this.setState({listDataSelected: []});
     this.toggleModal()
-    //exportPDF()
   };
 
   getFooterTableStructure = () => {

@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {list_busqueda_avanzada, list_dependencies} from "../../fakedata/ListDataDocuments";
+import {list_dependencies} from "../../fakedata/ListDataDocuments";
 import CommonTableManage from "../commons/CommonTableManage";
 import {loadAdvancedSearch,cleanDataMovements} from "../../actions/actions";
 import map from "lodash/map";
 import {connect} from 'react-redux';
+import {exportAdvancedSearch} from "../utils/ExportPDF";
+import {getParseObj} from "../../utils/Utils";
 
 class Busqueda_avanzada extends Component{
 
@@ -45,6 +47,10 @@ class Busqueda_avanzada extends Component{
         rowProp: 'observacion'
       },
       {
+        columnHeader: 'Origen',
+        rowProp: 'origenNombre',
+      },
+      {
         columnHeader: 'Derivado a',
         rowProp: 'destinoNombre',
       }
@@ -53,6 +59,12 @@ class Busqueda_avanzada extends Component{
 
   onChangeValueMap=(prop,value)=>{
     this.setState({valueMap: {...this.state.valueMap, [prop]: value}})
+  };
+
+  onExportAdvancedSearch=()=>{
+    const currentUser = getParseObj('CURRENT_USER');
+    const {data} = this.props;
+    exportAdvancedSearch(data, currentUser.apellido+", "+currentUser.nombre)
   }
 
   onSearch=()=>{
@@ -63,8 +75,8 @@ class Busqueda_avanzada extends Component{
 
   getContainHeaderBusqAvanz=()=>{
     return(
-      <div style={{display: 'flex', justifyContent: 'row', paddingLeft: 25, paddingTop: 20,height: 250}}>
-        <form style={{width: '40%', display: 'flex',flexDirection: 'column'}}>
+      <div style={{display: 'flex', justifyContent: 'row', paddingLeft: 25, paddingTop: 20}}>
+        <form style={{width: '40%', display: 'flex',flexDirection: 'column'}} onSubmit={this.onSearch}>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginRight: 0, marginLeft: 0}}>
             <div>
               <label htmlFor="inputNumTram">Numero de tramite:</label>
@@ -108,7 +120,7 @@ class Busqueda_avanzada extends Component{
   getFooterTableStructureBusqAvanz=()=>{
     return [
       {text: 'Detalle', action: ()=> {}},
-      {text: 'Imprimir', action: ()=> this.onExportDocuments()}
+      {text: 'Imprimir', action: ()=> this.onExportAdvancedSearch()}
     ]
   }
 
@@ -134,7 +146,8 @@ function mapStateToProps(state) {
   const getMovements = (listData) => {
     return map(listData, data => ({
       ...data,
-      document: data.docuNum ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`:'SIN DOCUMENTO'
+      document: data.docuNum ? `${data.docuNombre} Nº ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`:'SIN DOCUMENTO',
+      check: false
     }))
   };
   return {

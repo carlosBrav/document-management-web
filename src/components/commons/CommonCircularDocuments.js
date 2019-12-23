@@ -7,7 +7,7 @@ import FormRender from "../../forms/FormRender";
 import CommonModal from "./CommonModal";
 import CommonTableManage from "./CommonTableManage";
 import {ICON_TYPE} from "./CommonIcon";
-import {exportPDF} from "../utils/ExportPDF";
+import {exportCircularDocuments} from "../utils/ExportPDF";
 import formOficiosCirculares from "../../forms/templates/TemplateOficiosCirculares";
 import {TYPE_CONTENT_MODAL} from "../../constants/Constants";
 import CommonListGroup from "./CommonListGroup";
@@ -114,7 +114,7 @@ class CommonCircularDocuments extends Component{
   }
 
   onExportDocuments = () => {
-    exportPDF()
+    exportCircularDocuments()
   }
 
   onToggleDeleteDocuments = () => {

@@ -21,6 +21,7 @@ import parseInt from "lodash/parseInt";
 import {getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../../utils/Constants";
 import CommonCircularDocuments from "../../commons/CommonCircularDocuments";
 import CommonTab from "../../commons/CommonTab";
+import {getUsersOfCurrentOffice} from "../../../constants/Constants";
 
 class InternDocuments extends Component{
 
@@ -261,13 +262,6 @@ function mapStateToProps(state){
     }))
   };
 
-  const getUsersOfCurrentOffice=(listData)=>{
-    return map(filter(listData, data => data.dependenciaId === currentUser.dependencyId), user =>({
-      ...user,
-      value: `${user.apellido}, ${user.nombre}`
-    }))
-  };
-
   const getTypeDocuments = (listData) => {
     return map(filter(listData, data => data.flag2 !== 'NPC'), data => ({
       ...data,
@@ -293,7 +287,7 @@ function mapStateToProps(state){
     typeDocuments: getTypeDocuments(state.typeDocuments.data),
     documents: listDocuments(state.documentIntern.data),
     dependencies: state.initialData.dependencies,
-    users: getUsersOfCurrentOffice(state.initialData.users),
+    users: getUsersOfCurrentOffice(state.initialData.users,currentUser.dependencyId),
     documentNumber: state.correlative.documentNumber,
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,

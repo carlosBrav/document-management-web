@@ -1,13 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import {ICON_TYPE} from "../commons/CommonIcon";
 import CommonTableManage from "../commons/CommonTableManage";
-import {lista_generados} from "../../fakedata/ListDataDocuments";
 import {exportPDF} from "../utils/ExportPDF";
 import map from "lodash/map";
 import CommonModal from '../commons/CommonModal';
-import {formDocumGenerado} from "../../forms/templates/TemplateDocumentGen";
+import {formDocumGenerado, formEditDocument} from "../../forms/templates/TemplateDocumentGen";
 import FormRender from "../../forms/FormRender";
-import {getInternDocuments, getTypeDocuments, getCorrelativeMax, createInternDocument,deleteDocuments} from "../../actions/actions";
+import {getInternDocuments, getTypeDocuments, getCorrelativeMax, createInternDocument,deleteDocuments, editDocuments} from "../../actions/actions";
 import isEmpty from "lodash/isEmpty";
 import {getParseObj} from "../../utils/Utils";
 import { connect } from 'react-redux';
@@ -15,6 +14,7 @@ import filter from "lodash/filter";
 import parseInt from "lodash/parseInt";
 import find from "lodash/find";
 import {DOCUMENT_INTERN, getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../utils/Constants";
+import {getUsersOfCurrentOffice} from "../../constants/Constants";
 
 class DocGenerados extends Component{
 
@@ -23,6 +23,7 @@ class DocGenerados extends Component{
     listDataToDeleteSelected: [],
     showDeleteModal: false,
     showCreateModal: false,
+    showEditModal: false,
     valueMap: {},
     data: [],
     destinations: []
@@ -48,15 +49,33 @@ class DocGenerados extends Component{
 
   toggleViewDocumentGenerado=(data)=>{
     console.log('DOCUMENT GENERADO VIEW ', data)
-  }
+  };
 
   toggleEditDocumentGenerado=(data)=>{
-    console.log('DOCUMENT GENERADO EDIT ', data)
-  }
+    this.setState({showEditModal: !this.state.showEditModal, valueMap: data})
+  };
+
+  onToggleCloseEditDocument=()=>{
+    this.setState({showEditModal: false})
+  };
+
+  onEditDocument=()=>{
+    const {valueMap} = this.state;
+    const {editDocuments,getInternDocuments} = this.props
+    const currentUser = getParseObj('CURRENT_USER');
+    this.setState({showEditModal: !this.state.showEditModal})
+    editDocuments(valueMap.id, valueMap).then((response)=>{
+      if(response.responseCode === 0){
+        getInternDocuments(currentUser.id).then(()=>{
+          this.setState({data: this.props.internDocument})
+        })
+      }
+    })
+  };
 
   onSetListDataToDelete=(listDataToDeleteSelected)=>{
     this.setState({listDataToDeleteSelected})
-  }
+  };
 
   getTableStructure = (onToggleAddDocSelect) => {
     return ([
@@ -194,7 +213,7 @@ class DocGenerados extends Component{
   generateObjectInternDocument=()=>{
     const {valueMap} = this.state;
     return({
-      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'EN PROCESO',
+      [DOCUMENT_INTERN.DOCUMENT_STATE]: 'GENERADO',
       [DOCUMENT_INTERN.TYPE_DOCUMENT_ID]: valueMap[DOCUMENT_INTERN.TYPE_DOCUMENT_ID],
       [DOCUMENT_INTERN.DOCUMENT_NUMBER]: valueMap[DOCUMENT_INTERN.DOCUMENT_NUMBER],
       [DOCUMENT_INTERN.SIGLAS]: valueMap[DOCUMENT_INTERN.SIGLAS],
@@ -213,8 +232,8 @@ class DocGenerados extends Component{
 
   render(){
 
-    const {listTypeDocuments} = this.props;
-    const {showDeleteModal, showCreateModal,listDataToDeleteSelected,valueMap,data,destinations} = this.state
+    const {listTypeDocuments,users} = this.props;
+    const {showDeleteModal, showCreateModal, showEditModal,listDataToDeleteSelected,valueMap,data,destinations} = this.state
 
     const modalProps = [{
       showModal: showDeleteModal,
@@ -237,7 +256,18 @@ class DocGenerados extends Component{
                                                           (type) => this.onChangeTypeDestination(type))}
                            onChange={this.onChangeValueMap}
                            valueMap={valueMap}/>
-    }]
+    },
+    {
+      showModal: showEditModal,
+      title: 'Editar Documento Interno',
+      yesFunction: this.onEditDocument,
+      yesText: 'Editar documento',
+      noText: 'Cancelar',
+      noFunction: this.onToggleCloseEditDocument,
+      content: <FormRender formTemplate={formEditDocument(users)}
+                           onChange={this.onChangeValueMap}
+                           valueMap={valueMap}/>
+    }];
 
     return(
       <Fragment>
@@ -265,10 +295,13 @@ const mapDispatchToProps = (dispatch) => ({
   getInternDocuments: (userId)=> dispatch(getInternDocuments(userId)),
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
   deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
-  createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument))
+  createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument)),
+  editDocuments: (id, userId, asunto) => dispatch(editDocuments(id, userId, asunto))
 });
 
 function mapStateToProps(state){
+  const currentUser = getParseObj('CURRENT_USER');
+
   const listInternDocuments = (listData) => {
     return map(listData, data => ({
       ...data,
@@ -292,6 +325,7 @@ function mapStateToProps(state){
     documentSiglas: state.correlative.documentSiglas,
     documentYear: state.correlative.documentYear,
     dependencies: state.initialData.dependencies,
+    users: getUsersOfCurrentOffice(state.initialData.users,currentUser.dependencyId)
   }
 }
 export default connect (mapStateToProps, mapDispatchToProps)(DocGenerados)

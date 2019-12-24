@@ -185,10 +185,10 @@ export function createCircularDocuments(documentIntern, destinations, officeId, 
   function failure(errors) { return {type: Constants.CREATE_CIRCULAR_DOCUMENTS_FAILURE, errors}}
 }
 
-export function editCircularDocuments(id, asunto, dependencyId){
+export function editCircularDocuments(id, valueMap){
   return async dispatch => {
     dispatch(request());
-    const {responseCode,errors, message} = await Services.editCircularDocuments(id, asunto, dependencyId)
+    const {responseCode,errors, message} = await Services.editDocuments(id, valueMap)
     if(responseCode === 0){
       dispatch(success(message))
     }else{
@@ -199,6 +199,24 @@ export function editCircularDocuments(id, asunto, dependencyId){
   function request(){ return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_REQUEST}}
   function success(message) { return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_SUCCESS, message}}
   function failure(errors){ return { type: Constants.EDIT_CIRCULAR_DOCUMENTS_FAILURE, errors}}
+}
+
+export function editDocuments(id, valueMap){
+  return async dispatch => {
+    dispatch(request());
+    const response =  await Services.editDocuments(id, valueMap)
+    const {responseCode,errors} = response
+    if(responseCode === 0){
+      dispatch(success())
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.UPDATE_INTERN_DOCUMENTS_REQUEST}}
+  function success() { return { type: Constants.UPDATE_INTERN_DOCUMENTS_SUCCESS}}
+  function failure(errors){ return { type: Constants.UPDATE_INTERN_DOCUMENTS_FAILURE, errors}}
 }
 
 export function getInternDocuments(userId){

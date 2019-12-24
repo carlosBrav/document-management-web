@@ -53,4 +53,28 @@ export const formDocumGenerado = (typeDocuments, onChange1, destinations, onChan
     "required": true,
     "listItems":destinations
   }
+];
+
+export const formEditDocument= users => [
+  {
+    "id": "document",
+    "label": "Documento:",
+    "type": TYPE_INPUT.INPUT_TEXT,
+    "readOnly": true
+  },
+  {
+    "id": "asunto",
+    "label": "Asunto:",
+    "type": TYPE_INPUT.INPUT_TEXT_AREA,
+    "readOnly": false,
+    "required":true
+  },
+  {
+    "id": "userId",
+    "label": "Responsable:",
+    "type": TYPE_INPUT.INPUT_SELECT,
+    "readOnly": false,
+    "required": true,
+    "listItems":users
+  }
 ]

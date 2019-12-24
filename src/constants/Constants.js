@@ -1,3 +1,5 @@
+import map from "lodash/map";
+import filter from "lodash/filter";
 
 export const BUTTON_TYPE = {
   CHECKBOX : 1,
@@ -19,14 +21,20 @@ export const TYPE_INPUT = {
   INPUT_TEXT_AREA: 'textArea',
   INPUT_CIRCULAR: 'circular',
   LIST_GROUP: 'list-group'
-}
+};
 
 export const TYPE_CONTENT_MODAL = {
   TYPE_CIRCULAR: 'circular'
-}
+};
 
 export const TYPE_ACTION ={
   ADD: 'add',
   SUBTRACT: 'subtract'
-}
+};
 
+export const getUsersOfCurrentOffice=(listData, userOfficeId)=>{
+  return map(filter(listData, data => data.dependenciaId === userOfficeId), user =>({
+    ...user,
+    value: `${user.apellido}, ${user.nombre}`
+  }))
+};

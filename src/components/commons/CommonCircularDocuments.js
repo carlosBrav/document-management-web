@@ -163,7 +163,7 @@ class CommonCircularDocuments extends Component{
   onEditCircular = () => {
     const {valueMapCircular} = this.state;
     const {editCircularDocuments, getCircularDocuments, listTypeDocuments,currentUser} = this.props;
-    editCircularDocuments(valueMapCircular.id,valueMapCircular.asunto,valueMapCircular.origenId).then(()=>{
+    editCircularDocuments(valueMapCircular.id,valueMapCircular).then(()=>{
       const typeDocuments = map(listTypeDocuments, document => document.id);
       getCircularDocuments(typeDocuments, currentUser.id)
       this.onToggleEditDocument()

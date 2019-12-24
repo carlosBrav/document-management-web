@@ -30,9 +30,10 @@
       .data-container-style{
         font-size: 11px;
         padding-left: 8px;
-        height: 28px;
+        height: auto;
         display: flex;
         align-items: center;
+        margin-bottom: 5px;
 
         &.selected{
           background-color: #1246FF;

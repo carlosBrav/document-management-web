@@ -7,6 +7,7 @@ const initialState =  {message: [], isLoading: false, data: [], dataAdmin: [], c
 export function documentIntern(state = initialState, action) {
   const {message, errors, data} = action
   switch (action.type) {
+    case Constants.UPDATE_INTERN_DOCUMENTS_REQUEST:
     case Constants.GET_INTERN_DOCUMENTS_REQUEST:
       return {
         ...state,
@@ -18,12 +19,18 @@ export function documentIntern(state = initialState, action) {
         isLoading: false,
         data
       };
+    case Constants.UPDATE_INTERN_DOCUMENTS_FAILURE:
     case Constants.GET_INTERN_DOCUMENTS_FAILURE:
       return {
         ...state,
         isLoading: false,
         errors
       };
+    case Constants.UPDATE_INTERN_DOCUMENTS_SUCCESS:
+      return{
+        ...state,
+        isLoading: false
+      }
     case Constants.CREATE_CIRCULAR_DOCUMENTS_REQUEST:
       return {
         ...state,

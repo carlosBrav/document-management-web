@@ -109,8 +109,9 @@ export default class Service {
     return ApiIntegration.doGet(url, true)
   }
 
-  static editCircularDocuments(id, asunto, origenId){
-    const body = JSON.stringify({asunto, origenId});
+  static editDocuments(id, valueMap){
+    const {asunto, userId, origenId} = valueMap
+    const body = JSON.stringify({asunto, userId, origenId});
     const url = getUrlPath(endPoints.DOCUMENT_INTERN,id);
     return ApiIntegration.doPut(url, body, true)
   }

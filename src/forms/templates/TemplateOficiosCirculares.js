@@ -1,13 +1,5 @@
 import {TYPE_INPUT} from "../../constants/Constants";
-
-const typeDestinations = [
-  {id: "0", value: "Facultad"},
-  {id: "1", value: "Oficina Interna"},
-  {id: "2", value: "Instituacion Externa"},
-  {id: "3", value: "Dependencia Int. UNMSM"},
-  {id: "4", value: "Dependencia Ext. UNMSM"},
-  {id: "5", value: "Dependencia Sede Central"}
-]
+import {typeDestinations} from "../../fakedata/ListDataDocuments";
 
 const formOficiosCirculares = (typeDocuments, onChange)=> [
   {

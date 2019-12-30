@@ -54,10 +54,6 @@ class ContainerAdmin extends Component{
         thirdColumn: {
           title: 'Búsqueda avanzada',
           url: '/usuario/busqueda_avanzada'
-        }
-        ,
-        fourthColumn: {
-          title: 'Mantenimiento'
         },
         fifthColumn: {
           title: currentUser.nombre,

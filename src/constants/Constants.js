@@ -20,7 +20,8 @@ export const TYPE_INPUT = {
   INPUT_SELECT: 'select',
   INPUT_TEXT_AREA: 'textArea',
   INPUT_CIRCULAR: 'circular',
-  LIST_GROUP: 'list-group'
+  LIST_GROUP: 'list-group',
+  INPUT_TEXT_PASSWORD: 'password'
 };
 
 export const TYPE_CONTENT_MODAL = {

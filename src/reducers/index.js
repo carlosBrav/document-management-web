@@ -7,6 +7,7 @@ import {typeDocuments} from "./typeDocument";
 import {correlative} from "./correlative";
 import {user} from "./user";
 import {documentIntern} from "./documentIntern";
+import {office} from "./office";
 
 const rootReducer = combineReducers({
   authentication,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   typeDocuments,
   correlative,
   user,
-  documentIntern
+  documentIntern,
+  office
 });
 
 export default rootReducer

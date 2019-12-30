@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 class CommonTextInput extends Component{
 
   render(){
-    const {idSection, isFormCircular, label, onChange, classContainer, classInput, isRequired, isReadOnly, value} = this.props
+    const {idSection, isFormCircular, label, onChange, classContainer, classInput, isRequired, isReadOnly, value, type='text'} = this.props
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
-        <input type="text"
+        <input type={type}
                className={`form-control ${(classInput)?classInput:''}`}
                id={idSection}
                style={(isFormCircular)? {width: '40%'}: {}}

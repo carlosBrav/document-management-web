@@ -17,6 +17,8 @@ const endPoints = {
   CIRCULAR_DETAILS: '/api/circularDetails',
   USER_MOVEMENTS: '/api/movements/user',
   ADMIN_MOVEMENTS: '/api/movements/admin',
+  ADMIN_USERS: '/api/admin/user',
+  ADMIN_OFFICES: '/api/admin/office'
 
 };
 
@@ -29,6 +31,62 @@ function getUrlPath(...data){
 }
 
 export default class Service {
+
+  static loadAllUsers(){
+    const url = getUrlPath(endPoints.ADMIN_USERS+'/getAll');
+    return ApiIntegration.doGet(url,true);
+  }
+
+  static deleteUser(userId){
+    const url = getUrlPath(endPoints.ADMIN_USERS+`/${userId}`);
+    return ApiIntegration.doDelete(url,true);
+  }
+
+  static updateUser(user){
+    const postBody = JSON.stringify({user})
+    const url = getUrlPath(endPoints.ADMIN_USERS);
+    return ApiIntegration.doPut(url, postBody,true);
+  }
+
+  static createUser(user){
+    const postBody = JSON.stringify({user})
+    const url = getUrlPath(endPoints.ADMIN_USERS);
+    return ApiIntegration.doPost(url, postBody,true);
+  }
+
+  static getUserById(userId){
+    const url = getUrlPath(endPoints.ADMIN_USERS+`/${userId}`);
+    return ApiIntegration.doGet(url, true);
+  }
+
+
+  static loadAllOffices(){
+    const url = getUrlPath(endPoints.ADMIN_OFFICES+'/getAll')
+    return ApiIntegration.doGet(url,true);
+  }
+
+  static deleteOffice(officeId){
+    const url = getUrlPath(endPoints.ADMIN_OFFICES+`/${officeId}`);
+    return ApiIntegration.doDelete(url,true);
+  }
+
+  static updateOffice(office){
+    const postBody = JSON.stringify({office})
+    const url = getUrlPath(endPoints.ADMIN_OFFICES);
+    return ApiIntegration.doPut(url, postBody,true);
+  }
+
+  static createOffice(office){
+    const postBody = JSON.stringify({office})
+    const url = getUrlPath(endPoints.ADMIN_OFFICES);
+    return ApiIntegration.doPost(url, postBody,true);
+  }
+
+  static getOfficeById(officeId){
+    const url = getUrlPath(endPoints.ADMIN_OFFICES+`/${officeId}`);
+    return ApiIntegration.doGet(url, true);
+  }
+
 
   static login(user, password) {
     const postBody = JSON.stringify({user,password})

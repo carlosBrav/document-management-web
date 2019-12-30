@@ -11,15 +11,18 @@ class CommonSelectInput extends Component{
   };
 
   render(){
-    const {idSection, isFormCircular, listItems, label , classContainer, classInput, isRequired, value} = this.props
+    const {idSection, isFormCircular, listItems, label , classContainer, classInput, isRequired, value, isReadOnly} = this.props
     return(
       <div className={`form-group section-form ${(classContainer) ? classContainer : ''}`}>
         <label className={'label-form '+(isFormCircular ? 'circular':'')} htmlFor={idSection}>{label}</label>
         <select id={idSection+'select'}
                 className={`form-control ${classInput}`}
                 style={(isFormCircular)? {width: '40%'}: {}}
-                onChange={(e)=> this.onChange(idSection, e)} required={isRequired} defaultValue={value}>
-          <option selected value={'-1'}>Seleccione</option>
+                onChange={(e)=> this.onChange(idSection, e)}
+                required={isRequired}
+                value={value}
+                disabled={isReadOnly}>
+          <option value={' '}>Seleccione</option>
           {
             listItems && listItems.length>0 ?
               listItems.map((item, index)=>{

@@ -46,12 +46,17 @@ class CommonTableManage extends Component{
   }
 
   onToggleAddDocSelect=(id)=>{
-    const {onSetSelected} = this.props;
-    let {documentsDataList} = this.state;
-    const index = findIndex(documentsDataList, {id: id});
-    documentsDataList[index].check = !documentsDataList[index].check;
-    this.setState({documentsDataList});
-    onSetSelected(filter(this.state.documentsDataList, (data)=> data.check))
+    const {onSetSelected,onClick} = this.props;
+    if(onClick){
+      onClick(id)
+    }else{
+      let {documentsDataList} = this.state;
+      const index = findIndex(documentsDataList, {id: id});
+      documentsDataList[index].check = !documentsDataList[index].check;
+      this.setState({documentsDataList});
+      onSetSelected(filter(this.state.documentsDataList, (data)=> data.check))
+    }
+
   };
 
   renderRowsChecked=()=>{
@@ -103,7 +108,7 @@ class CommonTableManage extends Component{
   }
 
   render(){
-    const {title, containHeader, getFooterTableStructure} = this.props
+    const {title, containHeader, getFooterTableStructure,className} = this.props
     const {totalPages, currentPage, documentsTableStructure} = this.state;
     const contentFooterTable = (getFooterTableStructure) ? getFooterTableStructure() : []
     return(
@@ -122,7 +127,7 @@ class CommonTableManage extends Component{
                                 onChangeCurrentPageSubtract={this.onChangeInitialIndex}
                                 onChangeCurrentPageAdd={this.onChangeInitialIndex}/>
             </div>
-            <div className='container-table'>
+            <div className={'container-table '+(className? className: '')}>
               {(documentsTableStructure && documentsTableStructure.length > 0) ?
                 <CommonTable tableStructure={documentsTableStructure} data={this.renderRows()}
                              onClick={(index) => this.onToggleAddDocSelect(index)} onChange={this.changeSearchColumn}/> : null

@@ -1,6 +1,6 @@
 import * as Constants from '../actions/Constants';
 
-const initialState =  {userBossOffice: {}, isLoading: false, movements: [], adminMovements:[]};
+const initialState =  {userBossOffice: {}, isLoading: false, movements: [], adminMovements:[], user: null};
 
 export function user(state = initialState, action) {
   const {data, errors} = action
@@ -50,6 +50,29 @@ export function user(state = initialState, action) {
         isLoading: false,
         errors
       };
+    case Constants.UPDATE_USER_REQUEST:
+    case Constants.DELETE_USER_REQUEST:
+    case Constants.LOAD_USER_BY_ID_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        errors: []
+      };
+    case Constants.LOAD_USER_BY_ID_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        errors: [],
+        user: data
+      };
+    case Constants.DELETE_USER_FAILURE:
+    case Constants.UPDATE_USER_FAILURE:
+    case Constants.LOAD_USER_BY_ID_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        errors
+      }
     default:
       return state
   }

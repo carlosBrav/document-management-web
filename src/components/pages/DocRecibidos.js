@@ -4,7 +4,6 @@ import {BUTTON_TYPE} from '../../constants/Constants';
 import {getView2Data, insertMovements} from "../../actions/actions"
 import { connect } from 'react-redux';
 import map from "lodash/map";
-import isEqual from "lodash/isEqual";
 import {getParseObj} from "../../utils/Utils";
 import CommonModal from "../commons/CommonModal";
 import { ClipLoader } from "react-spinners";

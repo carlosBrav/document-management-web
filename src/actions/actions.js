@@ -485,11 +485,11 @@ export function loadMovementsToAnalyze(){
     }else{
       dispatch(failure(responseMessage))
     }
-
-    function request(){ return { type: Constants.GET_MOVEMENTS_TO_ANALYZE_REQUEST}}
-    function success(data){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_SUCCESS, data}}
-    function failure(errors){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_FAILURE, errors}}
   };
+
+  function request(){ return { type: Constants.GET_MOVEMENTS_TO_ANALYZE_REQUEST}}
+  function success(data){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.GET_MOVEMENTS_TO_ANALYZE_FAILURE, errors}}
 }
 
 export function loadAdvancedSearch(numTram, observation, officeId){
@@ -518,3 +518,201 @@ export function cleanDataMovements(){
 
   function cleanData(){return {type: Constants.CLEAN_DATA_MOVEMENTS}}
 }
+
+export function loadAllUsers(){
+  return async dispatch =>{
+    dispatch(request());
+    const {responseCode, users, responseMessage} = await Services.loadAllUsers()
+    if(responseCode === 0){
+      dispatch(success(users))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.LOAD_ALL_USERS_REQUEST}}
+  function success(data){ return {type: Constants.LOAD_ALL_USERS_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.LOAD_ALL_USERS_FAILURE, errors}}
+}
+
+export function updateUser(user, cb){
+  return async dispatch =>{
+    dispatch(request());
+    const response  = await Services.updateUser(user)
+    const {responseCode, data, errors} = response
+    if(responseCode === 0){
+      dispatch(success(data))
+      if(cb){
+        setTimeout(()=>{cb()}, 2000)
+      }
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.UPDATE_USER_REQUEST}}
+  function success(data){ return {type: Constants.UPDATE_USER_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.UPDATE_USER_FAILURE, errors}}
+}
+
+export function getUserById(userId){
+  return async dispatch =>{
+    dispatch(request());
+    const response  = await Services.getUserById(userId);
+    const {responseCode, data, errors} = response;
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.LOAD_USER_BY_ID_REQUEST}}
+  function success(data){ return {type: Constants.LOAD_USER_BY_ID_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.LOAD_USER_BY_ID_FAILURE, errors}}
+}
+
+export function deleteUser(userId, cb){
+  return async dispatch =>{
+    dispatch(request());
+    const response = await Services.deleteUser(userId)
+    const {responseCode, data, errors} = response
+    if(responseCode === 0){
+      dispatch(success(data))
+      if(cb){
+        setTimeout(()=>{cb()}, 2000)
+      }
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.DELETE_USER_REQUEST}}
+  function success(data){ return {type: Constants.DELETE_USER_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.DELETE_USER_FAILURE, errors}}
+}
+
+export function createUser(user,cb){
+  return async dispatch =>{
+    dispatch(request());
+    const response = await Services.createUser(user)
+    const {responseCode, data, errors} = response
+    if(responseCode === 0){
+      dispatch(success(data))
+      if(cb){
+        setTimeout(()=>{cb()}, 3000)
+      }
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.CREATE_USER_REQUEST}}
+  function success(data){ return {type: Constants.CREATE_USER_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.CREATE_USER_FAILURE, errors}}
+}
+
+export function loadAllOffices(){
+  return async dispatch =>{
+    dispatch(request());
+    const {responseCode, data, responseMessage} = await Services.loadAllOffices()
+    if(responseCode === 0){
+      dispatch(success(data))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request(){ return { type: Constants.LOAD_ALL_OFFICES_REQUEST}}
+  function success(data){ return {type: Constants.LOAD_ALL_OFFICES_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.LOAD_ALL_OFFICES_FAILURE, errors}}
+}
+
+export function getOfficeById(officeId){
+  return async dispatch =>{
+    dispatch(request());
+    const response  = await Services.getOfficeById(officeId);
+    const {responseCode, office, errors} = response;
+    if(responseCode === 0){
+      dispatch(success(office))
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.LOAD_OFFICE_BY_ID_REQUEST}}
+  function success(data){ return {type: Constants.LOAD_OFFICE_BY_ID_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.LOAD_OFFICE_BY_ID_FAILURE, errors}}
+}
+
+export function deleteOffice(officeId, cb){
+  return async dispatch =>{
+    dispatch(request());
+    const response = await Services.deleteOffice(officeId)
+    const {responseCode, data, errors} = response
+    if(responseCode === 0){
+      dispatch(success(data))
+      if(cb){
+        setTimeout(()=>{cb()}, 2000)
+      }
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.DELETE_OFFICE_REQUEST}}
+  function success(data){ return {type: Constants.DELETE_OFFICE_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.DELETE_OFFICE_FAILURE, errors}}
+}
+
+export function createOffice(office,cb){
+  return async dispatch =>{
+    dispatch(request());
+    const response = await Services.createOffice(office)
+    const {responseCode, data, errors} = response
+    if(responseCode === 0){
+      dispatch(success(data))
+      if(cb){
+        setTimeout(()=>{cb()}, 3000)
+      }
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.CREATE_OFFICE_REQUEST}}
+  function success(data){ return {type: Constants.CREATE_OFFICE_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.CREATE_OFFICE_FAILURE, errors}}
+}
+
+export function updateOffice(office, cb){
+  return async dispatch =>{
+    dispatch(request());
+    const response  = await Services.updateOffice(office)
+    const {responseCode, data, errors} = response
+    if(responseCode === 0){
+      dispatch(success(data))
+      if(cb){
+        setTimeout(()=>{cb()}, 2000)
+      }
+    }else{
+      dispatch(failure(errors))
+    }
+    return response
+  };
+
+  function request(){ return { type: Constants.UPDATE_OFFICE_REQUEST}}
+  function success(data){ return {type: Constants.UPDATE_OFFICE_SUCCESS, data}}
+  function failure(errors){ return {type: Constants.UPDATE_OFFICE_FAILURE, errors}}
+}
+
+
+
+

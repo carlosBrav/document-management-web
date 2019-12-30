@@ -45,6 +45,19 @@ const InputSelect=(props)=>(
                      onChangeCustom={props.onChangeCustom}/>
 );
 
+const InputPassword=(props)=>(
+  <CommonTextInput idSection={props.id}
+                   label={props.label}
+                   onChange={props.onChange}
+                   classContainer={props.classContainer}
+                   classInput={props.classInput}
+                   isRequired={props.required}
+                   isReadOnly={props.readOnly}
+                   value={get(props.valueMap,props.id,'')}
+                   type="password"
+                   isFormCircular={props.isFormCircular}/>
+)
+
 class CommonElement extends Component{
 
   getElementComponent = (type) =>{
@@ -58,6 +71,8 @@ class CommonElement extends Component{
         return <InputSelect  {...this.props} />;
       case TYPE_INPUT.INPUT_CIRCULAR:
         return <CommonPickList {...this.props}/>;
+      case TYPE_INPUT.INPUT_TEXT_PASSWORD:
+        return <InputPassword {...this.props}/>;
       default:
         return null
     }

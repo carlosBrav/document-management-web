@@ -51,6 +51,31 @@ export const MOVEMENT = {
   PREVIOUS_MOVEMENT: 'previousMovementId'
 };
 
+export const USER = {
+  ID: 'id',
+  STATUS: 'estado',
+  NOMBRE: 'nombre',
+  APELLIDO: 'apellido',
+  TELEFONO: 'telefono',
+  DEPENDENCIA_ID: 'dependenciaId',
+  ROL: 'rolId',
+  IS_SUB_OFFICE_BOSS : 'isSubOfficeBoss',
+  IS_OFFICE_BOSS: 'isOfficeBoss',
+  USER_NAME: 'usuario',
+  PASSWORD: 'password',
+  CONFIRM_PASSWORD: 'confirmPassword',
+  EMAIL: 'email'
+};
+
+export const OFFICES = {
+  ID: 'id',
+  STATUS: 'estado',
+  NOMBRE: 'nombre',
+  CODIGO: 'codigo',
+  SIGLAS: 'siglas',
+  TIPO: 'tipo'
+}
+
 export const TYPE_DOCUMENT = {
   oficios: '44545',
   proveidos: '84545'

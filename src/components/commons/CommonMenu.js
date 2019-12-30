@@ -76,10 +76,12 @@ class CommonMenu extends Component {
                        onClick={() => goToPage(thirdColumn.url)}>{thirdColumn.title}</div>
                 </li> : null
             }
-
-            <li className="nav-item">
-              <a className="nav-link" href="/#">{fourthColumn.title}</a>
-            </li>
+            {
+              fourthColumn ? <li className="nav-item">
+                <div className="nav-link hover-pointer"
+                     onClick={() => goToPage(fourthColumn.url)}>{fourthColumn.title}</div>
+              </li> : null
+            }
           </ul>
           <ul className="navbar-nav">
             {

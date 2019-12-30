@@ -8,7 +8,8 @@ export const ICON_TYPE = {
   ARROW_RIGHT: 'arrow-right',
   TRASH: 'trash-icon',
   SEARCH: 'search-icon',
-  EDIT: 'edit-icon'
+  EDIT: 'edit-icon',
+  ARROW: 'arrow'
 }
 
 
@@ -4026,6 +4027,15 @@ function getEdit(){
   )
 }
 
+function getArrow(){
+  return(
+    <svg xmlns="http://www.w3.org/2000/svg" width="66.556" height="111.612" viewBox="0 0 66.556 111.612">
+      <path id="Union_25" data-name="Union 25" d="M5.576,110.372,5.2,110a11,11,0,0,1,0-15.556L41.858,57.787,5.2,21.133a11,11,0,0,1,0-15.556L5.577,5.2a11,11,0,0,1,15.557,0L65.315,49.384a10.973,10.973,0,0,1,3.2,8.411,10.972,10.972,0,0,1-3.2,8.4L21.133,110.372a11,11,0,0,1-15.556,0Z" transform="translate(-1.981 -1.981)"/>
+    </svg>
+
+  )
+}
+
 function getIcon(type){
   switch(type){
     case ICON_TYPE.SHIELD_UNMSM:
@@ -4040,6 +4050,8 @@ function getIcon(type){
       return getSearch();
     case ICON_TYPE.EDIT:
       return getEdit();
+    case ICON_TYPE.ARROW:
+      return getArrow();
     default: return null;
   }
 }

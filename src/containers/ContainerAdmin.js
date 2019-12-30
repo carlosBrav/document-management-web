@@ -9,8 +9,11 @@ import DocProveidos from "../components/pages/DocProveidos";
 import DocGenerados from "../components/pages/DocGenerados";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import ControlDocumentos from "../components/pages/ControlDocumentos";
+import Maintenance from "../components/pages/Maintenance";
 import Test from '../components/utils/test';
 import {getParseObj, removeUser, delete_cookie} from "../utils/Utils";
+import ManageUser from "../components/pages/ManageUser";
+import ManageOffice from "../components/pages/ManageOffice";
 
 class ContainerAdmin extends Component{
 
@@ -85,7 +88,8 @@ class ContainerAdmin extends Component{
           }
         ,
         fourthColumn: {
-            title: 'Mantenimiento'
+            title: 'Mantenimiento',
+            url: '/admin/Maintenance'
         },
         fifthColumn: {
           title: currentUser.nombre,
@@ -114,7 +118,12 @@ class ContainerAdmin extends Component{
               <Route exact path='/admin/document_generado' component={DocGenerados}/>
               <Route exact path='/admin/busqueda_avanzada' component={Busqueda_avanzada}/>
               <Route exact path='/admin/control_documentos' component={ControlDocumentos}/>
+              <Route exact path='/admin/Maintenance' component={Maintenance} />
               <Route exact path='/admin/test' component={Test}/>
+              <Route exact path='/admin/user/:id' component={ManageUser}/>
+              <Route exact path='/admin/user' component={ManageUser}/>
+              <Route exact path='/admin/office/:id' component={ManageOffice}/>
+              <Route exact path='/admin/office' component={ManageOffice}/>
             </Switch>
           </Route>
         </div>

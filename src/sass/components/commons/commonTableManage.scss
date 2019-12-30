@@ -63,6 +63,13 @@
         height: 100%;
 
         @import "table";
+
+        &.offices-table{
+          table{
+            width: 60%;
+          }
+        }
+
       }
 
       .container-buttons-footer{

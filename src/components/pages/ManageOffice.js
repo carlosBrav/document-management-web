@@ -59,7 +59,7 @@ class ManageOffice extends Component{
 
   goToMaintenance=()=>{
     const {history} = this.props
-    history.push('/admin/Maintenance')
+    history.push('/admin/Maintenance/offices')
   };
 
   onSaveOffice=()=>{
@@ -70,7 +70,7 @@ class ManageOffice extends Component{
     if(id){
       updateOffice(office,this.goToMaintenance)
     }else {
-      createOffice(office, this.goToMaintenance)
+      createOffice(office,this.goToMaintenance)
     }
   };
 

@@ -4,7 +4,7 @@ import * as Constants from '../actions/Constants';
 const initialState =  {dependencies: [], users: []};
 
 export function initialData(state = initialState, action){
-  const {initialData, data,users, errors} = action
+  const {initialData, data, errors} = action
   switch(action.type){
     case Constants.GET_INITIAL_DATA:
       const {dependencies, users} = initialData
@@ -19,8 +19,13 @@ export function initialData(state = initialState, action){
         ...state,
         isLoading: true
       };
-    case Constants.LOAD_ALL_USERS_SUCCESS:
     case Constants.LOAD_ALL_OFFICES_SUCCESS:
+      return{
+        ...state,
+        isLoading: false,
+        dependencies: data
+      }
+    case Constants.LOAD_ALL_USERS_SUCCESS:
       return {
         ...state,
         isLoading: false,

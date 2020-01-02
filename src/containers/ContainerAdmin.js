@@ -9,7 +9,8 @@ import DocProveidos from "../components/pages/DocProveidos";
 import DocGenerados from "../components/pages/DocGenerados";
 import Busqueda_avanzada from "../components/pages/Busqueda_avanzada";
 import ControlDocumentos from "../components/pages/ControlDocumentos";
-import Maintenance from "../components/pages/Maintenance";
+import Maintenance_users from "../components/pages/Maintenance_users";
+import Maintenance_offices from "../components/pages/Maintenance_offices";
 import Test from '../components/utils/test';
 import {getParseObj, removeUser, delete_cookie} from "../utils/Utils";
 import ManageUser from "../components/pages/ManageUser";
@@ -89,7 +90,16 @@ class ContainerAdmin extends Component{
         ,
         fourthColumn: {
             title: 'Mantenimiento',
-            url: '/admin/Maintenance'
+            subMenus: [
+              {
+                title: 'Gestión Usuarios',
+                url: '/admin/Maintenance/users'
+              },
+              {
+                title: 'Gestión Oficinas',
+                url: '/admin/Maintenance/offices'
+              },
+            ],
         },
         fifthColumn: {
           title: currentUser.nombre,
@@ -118,7 +128,8 @@ class ContainerAdmin extends Component{
               <Route exact path='/admin/document_generado' component={DocGenerados}/>
               <Route exact path='/admin/busqueda_avanzada' component={Busqueda_avanzada}/>
               <Route exact path='/admin/control_documentos' component={ControlDocumentos}/>
-              <Route exact path='/admin/Maintenance' component={Maintenance} />
+              <Route exact path='/admin/Maintenance/users' component={Maintenance_users} />
+              <Route exact path='/admin/Maintenance/offices' component={Maintenance_offices} />
               <Route exact path='/admin/test' component={Test}/>
               <Route exact path='/admin/user/:id' component={ManageUser}/>
               <Route exact path='/admin/user' component={ManageUser}/>

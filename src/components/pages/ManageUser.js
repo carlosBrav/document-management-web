@@ -59,7 +59,7 @@ class ManageUser extends Component{
 
   goToMaintenance=()=>{
     const {history} = this.props
-    history.push('/admin/Maintenance')
+    history.push('/admin/Maintenance/users')
   };
 
   footerForm = (user,currentUser) => {

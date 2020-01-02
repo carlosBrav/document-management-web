@@ -405,8 +405,8 @@ class DocRespuesta extends Component {
     };
 
     const tabs =
-      [{title: 'Doc. Internos', id: 'docuInt', action: tableDocumentInt, onClick: this.fillMovementsByOffice},
-        {title: 'Oficios', id: 'oficios', action: tableOficios, onClick: this.fillInternDocumentsByOffice}
+      [{title: 'Doc. Internos', id: 'docuInt', content: tableDocumentInt, onClick: this.fillMovementsByOffice},
+        {title: 'Oficios', id: 'oficios', content: tableOficios, onClick: this.fillInternDocumentsByOffice}
       ];
 
 

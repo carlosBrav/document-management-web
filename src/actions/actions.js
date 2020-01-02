@@ -619,12 +619,14 @@ export function createUser(user,cb){
 export function loadAllOffices(){
   return async dispatch =>{
     dispatch(request());
-    const {responseCode, data, responseMessage} = await Services.loadAllOffices()
+    const response = await Services.loadAllOffices();
+    const {responseCode, data, responseMessage} = response;
     if(responseCode === 0){
       dispatch(success(data))
     }else{
       dispatch(failure(responseMessage))
     }
+    return response;
   };
 
   function request(){ return { type: Constants.LOAD_ALL_OFFICES_REQUEST}}
@@ -696,9 +698,9 @@ export function updateOffice(office, cb){
   return async dispatch =>{
     dispatch(request());
     const response  = await Services.updateOffice(office)
-    const {responseCode, data, errors} = response
+    const {responseCode, data, errors} = response;
     if(responseCode === 0){
-      dispatch(success(data))
+      dispatch(success(data));
       if(cb){
         setTimeout(()=>{cb()}, 2000)
       }

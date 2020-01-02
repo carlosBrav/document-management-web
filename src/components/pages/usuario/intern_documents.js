@@ -235,8 +235,8 @@ class InternDocuments extends Component{
     };
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuInt', action: tableRegularDocuments, onClick: this.onGetRegularDocuments},
-        {title: 'Doc. Circulares', id: 'docCirculares', action: tableCircularDocuments, onClick: this.onGetCircularDocuments}
+      [ {title: 'Doc. Internos', id: 'docuInt', content: tableRegularDocuments, onClick: this.onGetRegularDocuments},
+        {title: 'Doc. Circulares', id: 'docCirculares', content: tableCircularDocuments, onClick: this.onGetCircularDocuments}
       ];
 
     return(

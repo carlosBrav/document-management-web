@@ -185,9 +185,9 @@ class DocumentsReceived extends Component{
     };
 
     const tabs =
-      [ {title: 'Doc. Recibidos', id: 'docReceived', action: tableDocumentsReceived,
+      [ {title: 'Doc. Recibidos', id: 'docReceived', content: tableDocumentsReceived,
         onClick: this.onClickTabDocumentReceived},
-        {title: 'Doc. Asignados', id: 'docAssigned', action: tableDocumentsAssigned,
+        {title: 'Doc. Asignados', id: 'docAssigned', content: tableDocumentsAssigned,
         onClick: this.onClickTabAssignedDocuments}
       ];
 

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {loadAllUsers, loadAllOffices, getTypeDocuments, deleteUser} from "../../actions/actions";
+import {loadAllUsers, loadAllOffices, getTypeDocuments, deleteUser, deleteOffice} from "../../actions/actions";
 import { connect } from 'react-redux';
 import map from "lodash/map";
 import isEqual from "lodash/isEqual";
@@ -11,16 +11,12 @@ import {USER} from "../../utils/Constants";
 import {ICON_TYPE} from "../commons/CommonIcon";
 import CommonModal from "../commons/CommonModal";
 
-class Maintenance extends Component{
+class Maintenance_users extends Component{
 
   state = {
     listUsers: [],
-    listDependencies: [],
-    listTypeUsers: [],
     showDeleteModal: false,
-    showDeleteOffice: false,
-    userSelected: null,
-    officeSelected: null
+    userSelected: null
   };
 
   getTableStructureUsers = () => {
@@ -74,41 +70,6 @@ class Maintenance extends Component{
     ])
   };
 
-  getTableStructureOffices = () => {
-    return ([
-      {
-        columnHeader: 'Código',
-        rowProp: 'codigo',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Nombre',
-        rowProp: 'nombre',
-        classSearchRow: 'container-search-field long-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Siglas',
-        rowProp: 'siglas'
-      },
-      {
-        columnHeader: 'Estado',
-        rowProp: 'status'
-      },
-      {
-        columnHeader: '',
-        rowStyle: 'container-icons',
-        actions: [
-          {
-            actionType: ICON_TYPE.TRASH,
-            action: this.onToggleDeleteOffice
-          }
-        ]
-      }
-    ])
-  }
-
   componentDidMount(){
     const {loadAllUsers} = this.props
     loadAllUsers().then(()=>{
@@ -122,12 +83,6 @@ class Maintenance extends Component{
     }
   }
 
-  fillOffices=()=>{
-    if(!isEqual(this.state.listDependencies, this.props.dependencies)){
-      this.setState({listDependencies: this.props.dependencies})
-    }
-  };
-
   goToManageUser=(id)=>{
     const {history} = this.props
     if(id){
@@ -137,21 +92,8 @@ class Maintenance extends Component{
     }
   };
 
-  goToManageOffice=(id)=>{
-    const {history} = this.props
-    if(id){
-      history.push(`/admin/office/${id}`)
-    }else{
-      history.push(`/admin/office`)
-    }
-  };
-
   onToggleDeleteUser=(user)=>{
     this.setState({showDeleteModal: !this.state.showDeleteModal, userSelected: user})
-  };
-
-  onToggleDeleteOffice=(office)=>{
-    this.setState({showDeleteOffice: !this.state.showDeleteOffice, officeSelected: office})
   };
 
   onDeleteUser=()=>{
@@ -173,15 +115,17 @@ class Maintenance extends Component{
     ]
   };
 
-  footerTableOffices=()=>{
-    return [
-      {text: 'Crear Dependencia', action: ()=> this.goToManageOffice()}
-    ]
+  setRefToTabs = (r) => { this.refToTabs = r};
+
+  goToSelectTab=(tabId)=>{
+    if(this.refToTabs ) {
+      this.refToTabs.toggle(tabId)
+    }
   }
 
   render(){
 
-    const {listUsers,listDependencies,listTypeUsers, showDeleteModal} = this.state
+    const {listUsers, showDeleteModal} = this.state
 
     const modalProps = [{
       showModal: showDeleteModal,
@@ -191,37 +135,7 @@ class Maintenance extends Component{
       yesText: 'Aceptar',
       noFunction: this.onToggleDeleteUser,
       noText: 'Cancelar'
-    }];
-
-    const tableUsers = () => {
-      return (
-          <CommonTableManage
-            tableStructure={this.getTableStructureUsers}
-            title={'USUARIOS'}
-            listData={listUsers}
-            getFooterTableStructure={this.footerTable}
-            onClick={this.goToManageUser}
-          />
-      )
-    };
-
-    const tableOffices=()=>{
-      return (
-        <CommonTableManage
-          tableStructure={this.getTableStructureOffices}
-          title={'DEPENDENCIAS'}
-          listData={listDependencies}
-          getFooterTableStructure={this.footerTableOffices}
-          onClick={this.goToManageOffice}
-          className={'offices-table'}
-        />
-      )
-    }
-
-    const tabs =
-      [{title: 'Usuarios', id: 'usersId', action: tableUsers, onClick: this.fillUsers},
-        {title: 'Oficinas', id: 'officesId', action: tableOffices, onClick: this.fillOffices}
-      ];
+      }];
 
     return(
       <Fragment>
@@ -231,7 +145,13 @@ class Maintenance extends Component{
               return <CommonModal key={'modal'+index} {...modal}/>
             }) : null
         }
-        <CommonTab tabList={tabs}/>
+        <CommonTableManage
+          tableStructure={this.getTableStructureUsers}
+          title={'USUARIOS'}
+          listData={listUsers}
+          getFooterTableStructure={this.footerTable}
+          onClick={this.goToManageUser}
+        />
       </Fragment>
 
     )
@@ -240,7 +160,6 @@ class Maintenance extends Component{
 
 const mapDispatchToProps = (dispatch) => ({
   loadAllUsers: () => dispatch(loadAllUsers()),
-  loadAllOffices: () => dispatch(loadAllOffices()),
   getTypeDocuments: () => dispatch(getTypeDocuments()),
   deleteUser: (userId,cb) => dispatch(deleteUser(userId,cb))
 });
@@ -254,18 +173,10 @@ function mapStateToProps(state){
     }))
   };
 
-  const getOffices=(listData)=>{
-    return map(listData, office =>({
-      ...office,
-      status: office.estado? 'Activo': 'Inactivo'
-    }))
-  };
-
   return {
-    dependencies: getOffices(state.initialData.dependencies),
     users: getUsers(state.initialData.users),
     typesDocument: state.typeDocuments.data
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Maintenance)
+export default connect(mapStateToProps, mapDispatchToProps)(Maintenance_users)

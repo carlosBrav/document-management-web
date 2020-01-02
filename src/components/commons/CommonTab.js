@@ -1,43 +1,50 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+import {TabContent, TabPane, Nav, NavItem, NavLink, Row, Col} from 'reactstrap';
+import map from 'lodash/map';
 
 class CommonTab extends Component{
+
+  state = {
+    activeTab: this.props.tabList[0].id
+  };
+
+  toggle(tab, cb) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+    cb()
+  }
 
   render(){
     const {tabList} = this.props
     return(
-      <div style={{paddingLeft: 10, paddingRight: 10, paddingTop: 10}}>
+      <div className='tabs-navigation'>
         {
           tabList && tabList.length>0 ?
-            <div>
-              <nav style={{marginBottom: 5}}>
-                <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                  {
-                    tabList.map((tab, index)=>{
-                      return <a key={'link'+index} className={"nav-item nav-link "+(index === 0 ? 'active':'')}
-                                id={`nav-${tab.id}-tab`}
-                                data-toggle="tab"
-                                href={`#nav-${tab.id}`}
-                                role="tab"
-                                aria-controls={`nav-${tab.id}`}
-                                aria-selected="true"
-                                onClick={tab.onClick}>{tab.title}</a>
-                    })
-                  }
-                </div>
-              </nav>
-              <div className="tab-content" id="nav-tabContent">
-                {
-                  tabList.map((tab, index)=>{
-                    return <div key={'tabContent'+index} className={"tab-pane fade "+(index === 0 ? 'show active' : '') }
-                                id={`nav-${tab.id}`}
-                                role="tabpanel"
-                                aria-labelledby={`nav-${tab.id}-tab`}>
-                      {tab.action()}
+            <Fragment>
+              <Nav tabs className='tab-common' >
+                {map(tabList, tab =>
+                    <NavItem key={tab.id}  className={'nav-item'} data-test={'item-tab-' + tab.id}>
+                      <NavLink className={this.state.activeTab === tab.id ? 'active' : ''}
+                               onClick={()=>this.toggle(tab.id, tab.onClick)}
+                      >
+                        {tab.title}
+                      </NavLink>
+                    </NavItem>
+                )}
+              </Nav>
+              <TabContent activeTab={this.state.activeTab}>
+                {map(tabList, tab =>
+                  <TabPane tabId={tab.id} key={tab.id}>
+                    <div>
+                      {tab.content()}
                     </div>
-                  })
-                }
-              </div>
-            </div> : null
+                  </TabPane>
+                )}
+              </TabContent>
+            </Fragment> : null
         }
       </div>
     )

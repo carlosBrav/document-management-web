@@ -77,10 +77,35 @@ class CommonMenu extends Component {
                 </li> : null
             }
             {
-              fourthColumn ? <li className="nav-item">
-                <div className="nav-link hover-pointer"
-                     onClick={() => goToPage(fourthColumn.url)}>{fourthColumn.title}</div>
-              </li> : null
+              fourthColumn ? <li className="nav-item dropdown">
+                  <a className="nav-link  dropdown-toggle" href="/#" role="button" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">
+                    {fourthColumn.title}</a>
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {
+                      fourthColumn.subMenus && fourthColumn.subMenus.length > 0 ?
+                        fourthColumn.subMenus.map((column, index) =>
+                          column.subMenus && column.subMenus.length > 0 ?
+                            <li key={"columnLi"+index} className="dropdown-submenu">
+                              <a className="dropdown-item dropdown-toggle" data-toggle="dropdown"
+                                 href="/#">{column.title}</a>
+                              <ul className="dropdown-menu">
+                                {
+                                  column.subMenus.map((col,index) => {
+                                    return <div key={"subCol"+index} className="dropdown-item hover-pointer"
+                                                onClick={() => goToPage(col.url)}>{col.title}</div>
+                                  })
+                                }
+                              </ul>
+                            </li>
+                            : <div  key={"divColumn"+index} className="dropdown-item hover-pointer"
+                                    onClick={() => goToPage(column.url)}>{column.title}</div>
+                        )
+                        : null
+                    }
+                  </div>
+                </li>
+                : null
             }
           </ul>
           <ul className="navbar-nav">

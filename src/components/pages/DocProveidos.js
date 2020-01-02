@@ -396,8 +396,8 @@ class DocProveidos extends Component{
     }
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuIntProv', action: tableDocumentInt,onClick: this.onGetInternDocument},
-        {title: 'Proveidos', id: 'proveidos', action: tableProveidos,onClick: this.onGetProveidos}
+      [ {title: 'Doc. Internos', id: 'docuIntProv', content: tableDocumentInt,onClick: this.onGetInternDocument},
+        {title: 'Proveidos', id: 'proveidos', content: tableProveidos,onClick: this.onGetProveidos}
       ];
 
     return(

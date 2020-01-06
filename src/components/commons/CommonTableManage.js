@@ -75,8 +75,6 @@ class CommonTableManage extends Component{
   componentDidUpdate(prevProps){
     const keysList = keys(this.state.searchList);
     if(isEmpty(keysList)){
-      console.log('this.props.listData ', this.props.listData)
-      console.log('this.state.documentsDataList ', this.state.documentsDataList)
       if(!isEqual(this.state.documentsDataList, this.props.listData)){
         this.setState({documentsDataList: this.props.listData})
       }

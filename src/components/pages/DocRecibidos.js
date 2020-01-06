@@ -113,7 +113,7 @@ class DocRecibidos extends Component{
         title: (errors && errors.length>0) ? 'Error al confirmar' : 'Confirmados correctamente',
         yesFunction: this.onAcceptConfirmation,
         yesText: 'Aceptar',
-        content: <div><h5>{message}</h5></div>
+        content: <div><h5 style={{fontSize: 15}}>{message}</h5></div>
       }];
 
     return(

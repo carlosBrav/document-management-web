@@ -60,12 +60,11 @@ class CommonTableManage extends Component{
   };
 
   renderRowsChecked=()=>{
-    const changeCheck =(element)=>{
-      return {...element, ['check']:!element.check}
-    };
-    const {documentsDataList} = this.state;
-    const listChecked = documentsDataList.map((element)=> changeCheck(element));
-    this.setState({documentsDataList: listChecked})
+    let {documentsDataList} = this.state;
+    for (let index = 0; index < documentsDataList.length; index++) {
+      documentsDataList[index].check = !documentsDataList[index].check;
+    }
+    this.setState({documentsDataList})
   };
 
   componentDidMount(){
@@ -76,6 +75,8 @@ class CommonTableManage extends Component{
   componentDidUpdate(prevProps){
     const keysList = keys(this.state.searchList);
     if(isEmpty(keysList)){
+      console.log('this.props.listData ', this.props.listData)
+      console.log('this.state.documentsDataList ', this.state.documentsDataList)
       if(!isEqual(this.state.documentsDataList, this.props.listData)){
         this.setState({documentsDataList: this.props.listData})
       }

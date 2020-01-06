@@ -25,7 +25,7 @@ class DocRecibidos extends Component{
     this.setState({listDataSelected})
   }
 
-  getTableStructure = (onChangeCheck,onToggleAddDocSelect) => {
+  getTableStructure = (onChangeCheck,onToggleCheckRow) => {
     return ([
       {
         columnHeader: '',
@@ -33,7 +33,7 @@ class DocRecibidos extends Component{
         actionHeader: onChangeCheck,
         actions: [{
           actionType: 'button',
-          action: (index) => onToggleAddDocSelect(index)
+          action: (index) => onToggleCheckRow(index)
         }]
       },
       {
@@ -128,7 +128,7 @@ class DocRecibidos extends Component{
           isLoading ?
             <div className='spinner'>
               <ClipLoader
-                size={150} // or 150px
+                size={150}
                 color={"#EEE2E0"}
                 loading={isLoading}
               />

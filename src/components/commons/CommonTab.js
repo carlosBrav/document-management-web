@@ -39,7 +39,7 @@ class CommonTab extends Component{
                 {map(tabList, tab =>
                   <TabPane tabId={tab.id} key={tab.id}>
                     <div>
-                      {tab.content()}
+                      {tab.content}
                     </div>
                   </TabPane>
                 )}

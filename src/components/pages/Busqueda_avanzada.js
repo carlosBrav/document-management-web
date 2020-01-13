@@ -11,7 +11,7 @@ class Busqueda_avanzada extends Component{
 
   state={
     valueMap:{},
-    data: []
+    listDataSelected:[]
   };
 
   componentDidMount(){
@@ -55,6 +55,10 @@ class Busqueda_avanzada extends Component{
         rowProp: 'destinoNombre',
       }
     ])
+  }
+
+  onSetListDataToDeleteSelected=(listDataSelected)=>{
+    this.setState({listDataSelected})
   }
 
   onChangeValueMap=(prop,value)=>{
@@ -132,7 +136,8 @@ class Busqueda_avanzada extends Component{
         title={'BUSQUEDA AVANZADA'}
         listData={data}
         getFooterTableStructure={this.getFooterTableStructureBusqAvanz}
-        containHeader={this.getContainHeaderBusqAvanz()}
+        containHeader={this.getContainHeaderBusqAvanz}
+        onSetSelected={this.onSetListDataToDeleteSelected}
       />
     )
   }

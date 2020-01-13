@@ -2,14 +2,13 @@ import React, {Component, Fragment} from 'react';
 import CommonTableManage from '../commons/CommonTableManage';
 import {BUTTON_TYPE} from '../../constants/Constants';
 import {getView2Data, insertMovements} from "../../actions/actions"
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import map from "lodash/map";
 import {getParseObj} from "../../utils/Utils";
 import CommonModal from "../commons/CommonModal";
-import { ClipLoader } from "react-spinners";
 import {exportConfirmDocuments} from "../utils/ExportPDF";
 
-class DocRecibidos extends Component{
+class DocRecibidos extends Component {
 
   state = {
     listDataSelected: [],
@@ -21,11 +20,11 @@ class DocRecibidos extends Component{
     getView2Data()
   }
 
-  onSetSelectDocuments=(listDataSelected)=>{
+  onSetSelectDocuments = (listDataSelected) => {
     this.setState({listDataSelected})
   }
 
-  getTableStructure = (onChangeCheck,onToggleCheckRow) => {
+  getTableStructure = (onChangeCheck, onToggleCheckRow) => {
     return ([
       {
         columnHeader: '',
@@ -74,89 +73,83 @@ class DocRecibidos extends Component{
     ])
   }
 
-  onConfirmDocuments= async ()=>{
+  onConfirmDocuments = async () => {
     const {listDataSelected} = this.state
     const {insertMovements, getView2Data} = this.props
     const currentUser = getParseObj('CURRENT_USER')
-    await insertMovements(listDataSelected, currentUser.id).then(()=>{
+    await insertMovements(listDataSelected, currentUser.id).then(() => {
       getView2Data()
     });
     this.toggleModal()
   };
 
-  onAcceptConfirmation= async ()=>{
+  onAcceptConfirmation = async () => {
     let {listDataSelected} = this.state;
     const currentUser = getParseObj('CURRENT_USER');
-    exportConfirmDocuments(listDataSelected,currentUser.apellido+", "+currentUser.nombre);
+    exportConfirmDocuments(listDataSelected, currentUser.apellido + ", " + currentUser.nombre);
     this.setState({listDataSelected: []});
     this.toggleModal()
   };
 
   getFooterTableStructure = () => {
-    return([
-      {text: 'Seguimiento', action: ()=>{}},
+    return ([
+      {
+        text: 'Seguimiento', action: () => {
+        }
+      },
       {text: 'Imprimir', action: this.onConfirmDocuments}
     ])
   };
 
-  toggleModal = ()=>{
-    this.setState({isModalOpen : !this.state.isModalOpen})
+  toggleModal = () => {
+    this.setState({isModalOpen: !this.state.isModalOpen})
   };
 
-  render(){
+  render() {
 
-    const {errors, message,isLoading,data} = this.props;
+    const {errors, message, isLoading, data} = this.props;
     const {isModalOpen} = this.state;
-    const modalProps =[
+    const modalProps = [
       {
         showModal: isModalOpen,
-        title: (errors && errors.length>0) ? 'Error al confirmar' : 'Confirmados correctamente',
+        title: (errors && errors.length > 0) ? 'Error al confirmar' : 'Confirmados correctamente',
         yesFunction: this.onAcceptConfirmation,
         yesText: 'Aceptar',
         content: <div><h5 style={{fontSize: 15}}>{message}</h5></div>
       }];
 
-    return(
+    return (
       <Fragment>
         {
-          modalProps && modalProps.length>0 ?
-            map(modalProps, (modal, index)=>{
-              return <CommonModal key={'modal'+index} {...modal}/>
+          modalProps && modalProps.length > 0 ?
+            map(modalProps, (modal, index) => {
+              return <CommonModal key={'modal' + index} {...modal}/>
             }) : null
         }
-        {
-          isLoading ?
-            <div className='spinner'>
-              <ClipLoader
-                size={150}
-                color={"#EEE2E0"}
-                loading={isLoading}
-              />
-            </div> :
-            <CommonTableManage
-              tableStructure={this.getTableStructure}
-              title={'DOCUMENTOS RECIBIDOS'}
-              listData={data}
-              getFooterTableStructure={this.getFooterTableStructure}
-              onSetSelected={this.onSetSelectDocuments}
-              onAdd={this.onChangeInitialIndex}
-              onSubtract={this.onChangeInitialIndex}
-            />
-        }
+        <CommonTableManage
+          tableStructure={this.getTableStructure}
+          title={'DOCUMENTOS RECIBIDOS'}
+          listData={data}
+          getFooterTableStructure={this.getFooterTableStructure}
+          onSetSelected={this.onSetSelectDocuments}
+          onAdd={this.onChangeInitialIndex}
+          onSubtract={this.onChangeInitialIndex}
+          isLoading={isLoading}
+        />
       </Fragment>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getView2Data: ()=>dispatch(getView2Data()),
+  getView2Data: () => dispatch(getView2Data()),
   insertMovements: (movements, userId) => dispatch(insertMovements(movements, userId))
 });
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
 
   const listDocuments = (listData) => {
-    return map(listData, (data,index) => ({
+    return map(listData, (data, index) => ({
       ...data,
       document: `${data.docuNombre} ${data.docuNum}-${data.docuSiglas}-${data.docuAnio}`,
       check: false,

@@ -8,8 +8,11 @@ import {BUTTON_TYPE} from "../../constants/Constants";
 const getButton = (actions, rowData) => {
   return actions.map((action, iterator) =>
     (action.actionType === 'button') ?
-    <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
-           onChange={(e) => {e.stopPropagation(); action.action(rowData['id'])}}/>
+      <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
+             onChange={(e) => {
+               e.stopPropagation();
+               action.action(rowData['id'])
+             }}/>
       : <CommonIcon key={iterator + 'icon'} type={action.actionType}
                     onClick={e => {
                       e.stopPropagation();
@@ -36,7 +39,7 @@ const Rows = ({data, tableStructure, onClick}) => {
       });
 
       return (
-        <tr key={value['id']+'tr'} onClick={() => onClick(value['id'])}
+        <tr key={value['id'] + 'tr'} onClick={() => onClick(value['id'])}
             className={(value['check'] ? 'selected-row' : 'unselected-row ' + (index % 2 === 0 ? 'row-par' : 'row-impar'))}>
           {columns}
         </tr>
@@ -69,7 +72,7 @@ class CommonTable extends Component {
   }
 
   render() {
-    const {tableStructure, onClick,onChange} = this.props;
+    const {tableStructure, onClick, onChange} = this.props;
     const {filteredList} = this.state;
     return (
       <table>
@@ -83,11 +86,11 @@ class CommonTable extends Component {
                     {value.columnHeader}
                     {getInputFilter(value.rowProp, onChange)}
                     </span>
-                  : (value.elementHeader)?
+                  : (value.elementHeader) ?
                     <span>
                       <CommonButton onClick={value.actionHeader} type={BUTTON_TYPE.CHECKBOX}/>
                     </span>
-                    :value.columnHeader
+                    : value.columnHeader
                 }
               </th>
             )

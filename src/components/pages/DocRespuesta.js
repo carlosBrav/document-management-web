@@ -314,6 +314,33 @@ class DocRespuesta extends Component {
     })
   };
 
+  tableDocumentInt = () => {
+    const {isLoadingUser,movements} = this.props
+    return (
+      <CommonTableManage
+        tableStructure={this.getTableStructure}
+        title={'DOCUMENTOS INTERNOS'}
+        listData={movements}
+        getFooterTableStructure={this.getFooterTableStructureDocInt}
+        onSetSelected={this.onSetSelectToCreateOficio}
+        isLoading={isLoadingUser}/>
+    )
+  };
+
+  tableOficios = () => {
+    const {isLoadingInternDoc,internDocument} = this.props
+    return (
+      <CommonTableManage
+        tableStructure={this.getTableStructureOficios}
+        title={'OFICIOS'}
+        listData={internDocument}
+        getFooterTableStructure={this.getFooterTableStructureOficios}
+        onSetSelected={this.onSetSelectedToDeleteOficio}
+        isLoading={isLoadingInternDoc}
+      />
+    )
+  };
+
   render() {
 
     const {
@@ -325,9 +352,8 @@ class DocRespuesta extends Component {
       valueMap,
       correlativeOficio,
       destinations
-    } = this.state
+    } = this.state;
 
-    const {movements, internDocument, isLoadingUser, isLoadingInternDoc} = this.props
 
 
     const modalProps = [
@@ -364,51 +390,10 @@ class DocRespuesta extends Component {
       }
     ]
 
-    const tableDocumentInt = () => {
-      return (
-        isLoadingUser ?
-          <div className='spinner-tab'>
-            <ClipLoader
-              size={150} // or 150px
-              color={"#EEE2E0"}
-              loading={isLoadingUser}
-            />
-          </div> :
-          <CommonTableManage
-            tableStructure={this.getTableStructure}
-            title={'DOCUMENTOS INTERNOS'}
-            listData={movements}
-            getFooterTableStructure={this.getFooterTableStructureDocInt}
-            onSetSelected={this.onSetSelectToCreateOficio}
-          />
-      )
-    };
-
-    const tableOficios = () => {
-      return (
-        isLoadingInternDoc ?
-          <div className='spinner-tab'>
-            <ClipLoader
-              size={150} // or 150px
-              color={"#EEE2E0"}
-              loading={isLoadingInternDoc}
-            />
-          </div> :
-          <CommonTableManage
-            tableStructure={this.getTableStructureOficios}
-            title={'OFICIOS'}
-            listData={internDocument}
-            getFooterTableStructure={this.getFooterTableStructureOficios}
-            onSetSelected={this.onSetSelectedToDeleteOficio}
-          />
-      )
-    };
-
     const tabs =
-      [{title: 'Doc. Internos', id: 'docuInt', content: tableDocumentInt, onClick: this.fillMovementsByOffice},
-        {title: 'Oficios', id: 'oficios', content: tableOficios, onClick: this.fillInternDocumentsByOffice}
+      [{title: 'Doc. Internos', id: 'docuInt', content: this.tableDocumentInt(), onClick: this.fillMovementsByOffice},
+        {title: 'Oficios', id: 'oficios', content: this.tableOficios(), onClick: this.fillInternDocumentsByOffice}
       ];
-
 
     return (
       <Fragment>

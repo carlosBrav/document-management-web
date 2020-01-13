@@ -181,10 +181,34 @@ class InternDocuments extends Component{
     ])
   };
 
+  tableRegularDocuments =()=>{
+    const {documents} = this.props
+    return (
+      <CommonTableManage
+        tableStructure={this.getTableStructure}
+        title={'DOCUMENTOS INTERNOS'}
+        listData={documents}
+        getFooterTableStructure={this.getFooterTableStructure}
+        onSetSelected={this.onSetSelectDocuments}
+      />
+    )
+  };
+
+  tableCircularDocuments =()=>{
+    const currentUser = getParseObj('CURRENT_USER');
+
+    return (
+      <CommonCircularDocuments
+        currentUser={currentUser}
+        {...this.props}
+      />
+    )
+  };
+
   render(){
 
     const {isShowModalCreate,valueMap,destinations,isShowModalDelete,listDataSelected} = this.state;
-    const {documents,typeDocuments,users} = this.props;
+    const {typeDocuments,users} = this.props;
     const modalProps = [
       {
         showModal: isShowModalCreate,
@@ -211,32 +235,9 @@ class InternDocuments extends Component{
       }
     ];
 
-    const tableRegularDocuments =()=>{
-      return (
-        <CommonTableManage
-          tableStructure={this.getTableStructure}
-          title={'DOCUMENTOS INTERNOS'}
-          listData={documents}
-          getFooterTableStructure={this.getFooterTableStructure}
-          onSetSelected={this.onSetSelectDocuments}
-        />
-      )
-    };
-
-    const tableCircularDocuments =()=>{
-      const currentUser = getParseObj('CURRENT_USER');
-
-      return (
-        <CommonCircularDocuments
-          currentUser={currentUser}
-          {...this.props}
-        />
-      )
-    };
-
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuInt', content: tableRegularDocuments, onClick: this.onGetRegularDocuments},
-        {title: 'Doc. Circulares', id: 'docCirculares', content: tableCircularDocuments, onClick: this.onGetCircularDocuments}
+      [ {title: 'Doc. Internos', id: 'docuInt', content: this.tableRegularDocuments(), onClick: this.onGetRegularDocuments},
+        {title: 'Doc. Circulares', id: 'docCirculares', content: this.tableCircularDocuments(), onClick: this.onGetCircularDocuments}
       ];
 
     return(

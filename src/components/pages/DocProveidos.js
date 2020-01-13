@@ -302,6 +302,31 @@ class DocProveidos extends Component{
     this.onChangeValueMap([DOCUMENT_INTERN.REFERENCE_DOCUMENT], `${document.nombreTipo} Nº `);
   };
 
+  tableDocumentInt =()=>{
+    const {data} = this.state
+    return(
+      <CommonTableManage
+        tableStructure={this.getTableStructureInternDocuments}
+        title={'DOCUMENTOS INTERNOS'}
+        listData={data}
+        getFooterTableStructure={this.getFooterTableInternDocument}
+        onSetSelected={this.onSetListDataProvIntSelected}
+      />
+    )
+  }
+
+  tableProveidos =()=>{
+    const {dataProveido} = this.state
+    return(
+      <CommonTableManage
+        tableStructure={this.getTableStructureProveido}
+        title={'PROVEIDOS'}
+        listData={dataProveido}
+        getFooterTableStructure={this.getFooterTableProveido}
+        onSetSelected={this.onSetListDataToDeleteSelected}
+      />
+    )
+  }
 
   render(){
 
@@ -311,8 +336,6 @@ class DocProveidos extends Component{
       showExternalModal,
       showEditModal,
       valueMap,
-      data,
-      dataProveido,
       destinationsOrigin,
       destinationsFinal} = this.state;
 
@@ -370,34 +393,11 @@ class DocProveidos extends Component{
                              valueMap={valueMap}/>
       }]
 
-    const tableDocumentInt =()=>{
-      return(
-        <CommonTableManage
-          tableStructure={this.getTableStructureInternDocuments}
-          title={'DOCUMENTOS INTERNOS'}
-          listData={data}
-          getFooterTableStructure={this.getFooterTableInternDocument}
-          onSetSelected={this.onSetListDataProvIntSelected}
-        />
-      )
-    }
 
-    const tableProveidos =()=>{
-      return(
-        <CommonTableManage
-          tableStructure={this.getTableStructureProveido}
-          title={'PROVEIDOS'}
-          listData={dataProveido}
-          modalProps={modalProps}
-          getFooterTableStructure={this.getFooterTableProveido}
-          onSetSelected={this.onSetListDataToDeleteSelected}
-        />
-      )
-    }
 
     const tabs =
-      [ {title: 'Doc. Internos', id: 'docuIntProv', content: tableDocumentInt,onClick: this.onGetInternDocument},
-        {title: 'Proveidos', id: 'proveidos', content: tableProveidos,onClick: this.onGetProveidos}
+      [ {title: 'Doc. Internos', id: 'docuIntProv', content: this.tableDocumentInt(),onClick: this.onGetInternDocument},
+        {title: 'Proveidos', id: 'proveidos', content: this.tableProveidos(),onClick: this.onGetProveidos}
       ];
 
     return(

@@ -17,7 +17,6 @@ import CommonCircularDocuments from "../commons/CommonCircularDocuments";
 
 class DocCirculares extends Component {
 
-
   render() {
     const currentUser = getParseObj('CURRENT_USER');
 

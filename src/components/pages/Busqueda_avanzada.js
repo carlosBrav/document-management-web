@@ -17,6 +17,7 @@ class Busqueda_avanzada extends Component{
   componentDidMount(){
     const {cleanDataMovements}=this.props
     cleanDataMovements()
+
   }
 
   getTableStructure = (onToggleAddDocSelect) => {

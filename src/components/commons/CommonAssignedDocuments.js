@@ -26,15 +26,16 @@ class CommonAssignedDocuments extends Component{
     data: []
   };
 
-  fillMovementsByAssigned=()=>{
+  fillMovementsByAssigned= async ()=>{
     const {getUserMovementsByAssignedTo,currentUser} = this.props;
     if(currentUser.id){
-      getUserMovementsByAssignedTo(currentUser.id)
+      await getUserMovementsByAssignedTo(currentUser.id)
+
     }
   };
 
   async componentDidMount(){
-    this.fillMovementsByAssigned()
+    await this.fillMovementsByAssigned()
   };
 
   componentDidUpdate(){
@@ -226,24 +227,14 @@ class CommonAssignedDocuments extends Component{
               return <CommonModal key={'modalAssigned' + index} {...modal}/>
             }) : null
         }
-        {
-          isLoadingMovements ?
-            <div className='spinner-tab'>
-              <ClipLoader
-                size={150} // or 150px
-                color={"#EEE2E0"}
-                loading={isLoadingMovements}
-              />
-            </div>
-             : <CommonTableManage
+        <CommonTableManage
             tableStructure={this.getTableStructureAssigned}
             title={'DOCUMENTOS ASIGNADOS'}
             listData={data}
             getFooterTableStructure={this.getFooterTableAssignedStructure}
             onSetSelected={this.onSetSelectAssignedDocuments}
+            isLoading={isLoadingMovements}
           />
-        }
-
       </Fragment>
       )
   }

@@ -12,12 +12,14 @@ import formOficiosCirculares from "../../forms/templates/TemplateOficiosCircular
 import {TYPE_CONTENT_MODAL} from "../../constants/Constants";
 import CommonListGroup from "./CommonListGroup";
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
+import isEqual from "lodash/isEqual";
 
 class CommonCircularDocuments extends Component{
 
   state = {
     search: '',
     listDataSelected: [],
+    listCircularDocuments: [],
     showDeleteModal: false,
     showCreateCircularModal: false,
     valueMapCircular: {},
@@ -29,11 +31,18 @@ class CommonCircularDocuments extends Component{
 
   async componentDidMount() {
     const {getTypeDocuments, getCircularDocuments,currentUser} = this.props
-    getTypeDocuments().then(()=>{
-      const {listTypeDocuments} = this.props
-      const typeDocuments = map(listTypeDocuments, document => document.id);
-      getCircularDocuments(typeDocuments, currentUser.id)
-    });
+    await getTypeDocuments()
+    const {listTypeDocuments} = this.props
+    const typeDocuments = map(listTypeDocuments, document => document.id);
+    await getCircularDocuments(typeDocuments, currentUser.id)
+    const {circularDocuments} = this.props
+    this.setState({listCircularDocuments: circularDocuments})
+  }
+
+  componentDidUpdate(){
+    if(!isEqual(this.state.listCircularDocuments.length, this.props.circularDocuments.length)){
+      this.setState({listCircularDocuments: this.props.circularDocuments})
+    }
   }
 
   getTableStructure = (onToggleAddDocSelect) => {
@@ -202,7 +211,8 @@ class CommonCircularDocuments extends Component{
       showCreateCircularModal,
       valueMapCircular,
       showEditCircularModal,
-      showViewCircularModal
+      showViewCircularModal,
+      listCircularDocuments
     } = this.state
 
     const titleEdit = showEditCircularModal? valueMapCircular.correlative : null
@@ -266,7 +276,7 @@ class CommonCircularDocuments extends Component{
           <CommonTableManage
             tableStructure={this.getTableStructure}
             title={'OFICIOS CIRCULARES - OGPL'}
-            listData={circularDocuments}
+            listData={listCircularDocuments}
             getFooterTableStructure={this.getFooterTableStructure}
             onSetSelected={this.onSetSelectOficiosCirculares}
           />

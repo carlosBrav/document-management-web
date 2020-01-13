@@ -21,7 +21,7 @@ import {DOCUMENT_INTERN, getFormattedDate, MOVEMENT, TYPE_DOCUMENT} from "../../
 import filter from "lodash/filter";
 import parseInt from "lodash/parseInt";
 import isEmpty from 'lodash/isEmpty';
-import {ClipLoader} from "react-spinners";
+import isEqual from "lodash/isEqual";
 
 class DocRespuesta extends Component {
 
@@ -35,28 +35,39 @@ class DocRespuesta extends Component {
     valueMap: {},
     currentUser: {},
     correlativeOficio: '',
-    destinations: []
-
+    destinations: [],
+    listMovements: [],
+    listOficios: []
   };
 
   async componentDidMount() {
     const currentUser = await getParseObj('CURRENT_USER');
     this.setState({currentUser});
-    const {getTypeDocuments} = this.props;
+    const {getTypeDocuments, getAdminMovementsByOffice} = this.props;
     await getTypeDocuments();
-    await this.fillMovementsByOffice()
+    await getAdminMovementsByOffice(currentUser.dependencyId)
+    const {movements} = this.props
+    this.setState({listMovements: movements, currentUser})
   }
 
-  fillMovementsByOffice = () => {
+  componentDidUpdate(){
+    if(!isEqual(this.state.listMovements.length,this.props.movements.length)){
+      this.setState({listMovements: this.props.movements})
+    }
+  }
+
+  fillMovementsByOffice = async () => {
     const {currentUser} = this.state
     const {getAdminMovementsByOffice} = this.props
     getAdminMovementsByOffice(currentUser.dependencyId)
   };
 
-  fillInternDocumentsByOffice = () => {
+  fillInternDocumentsByOffice = async () => {
     const {currentUser} = this.state;
     const {getOficios} = this.props;
-    getOficios(TYPE_DOCUMENT.oficios, currentUser.dependencyId)
+    await getOficios(TYPE_DOCUMENT.oficios, currentUser.dependencyId)
+    const {internDocument} = this.props
+    this.setState({listOficios: internDocument})
   };
 
   onChangeValueMap = (prop, value) => {
@@ -226,14 +237,13 @@ class DocRespuesta extends Component {
     this.setState({showCreateSecondModal: !this.state.showCreateSecondModal})
   };
 
-  onDeleteDocuments = () => {
+  onDeleteDocuments = async () => {
     const {listDataSelectedToDelete} = this.state;
     const {deleteDocuments} = this.props;
     const documentsIds = map(listDataSelectedToDelete, data => data.id);
-    deleteDocuments(documentsIds).then(() => {
-      this.fillInternDocumentsByOffice();
-      this.setState({showDeleteModal: !this.state.showDeleteModal})
-    });
+    await deleteDocuments(documentsIds)
+    await this.fillInternDocumentsByOffice();
+    this.setState({showDeleteModal: !this.state.showDeleteModal});
   };
 
   getFooterTableStructureOficios = () => {
@@ -315,12 +325,13 @@ class DocRespuesta extends Component {
   };
 
   tableDocumentInt = () => {
-    const {isLoadingUser,movements} = this.props
+    const {isLoadingUser} = this.props
+    const {listMovements} = this.state
     return (
       <CommonTableManage
         tableStructure={this.getTableStructure}
         title={'DOCUMENTOS INTERNOS'}
-        listData={movements}
+        listData={listMovements}
         getFooterTableStructure={this.getFooterTableStructureDocInt}
         onSetSelected={this.onSetSelectToCreateOficio}
         isLoading={isLoadingUser}/>
@@ -328,12 +339,13 @@ class DocRespuesta extends Component {
   };
 
   tableOficios = () => {
-    const {isLoadingInternDoc,internDocument} = this.props
+    const {isLoadingInternDoc} = this.props
+    const {listOficios} = this.state
     return (
       <CommonTableManage
         tableStructure={this.getTableStructureOficios}
         title={'OFICIOS'}
-        listData={internDocument}
+        listData={listOficios}
         getFooterTableStructure={this.getFooterTableStructureOficios}
         onSetSelected={this.onSetSelectedToDeleteOficio}
         isLoading={isLoadingInternDoc}

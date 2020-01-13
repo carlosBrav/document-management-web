@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {getParseObj, getDecodedToken} from "../../utils/Utils";
 import { Redirect } from 'react-router-dom';
+import {getParseObj, getDecodedToken} from '../../utils/Utils'
 
 function isExpired(token) {
   if (!token)
@@ -16,7 +16,7 @@ const AuthorizedRoute = InnerComponent => class extends Component {
     const token = getDecodedToken()
 
     if(isExpired(token))
-      return <Redirect to="/login"/>;
+      return <Redirect to="/login"/>
     return (<InnerComponent {...this.props} currentUser={currentUser} />);
   }
 

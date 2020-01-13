@@ -15,6 +15,7 @@ import Test from '../components/utils/test';
 import {getParseObj, removeUser, delete_cookie} from "../utils/Utils";
 import ManageUser from "../components/pages/ManageUser";
 import ManageOffice from "../components/pages/ManageOffice";
+import {ValidateComponent} from "../utils/Utils";
 
 class ContainerAdmin extends Component{
 
@@ -31,7 +32,11 @@ class ContainerAdmin extends Component{
   }
 
   render(){
-
+    const {history} = this.props
+    const redirect = () => {
+      if(currentUser)
+        history.push(`/${currentUser.role}`)
+    };
     const currentUser = getParseObj('CURRENT_USER');
     const columns =
       {
@@ -120,21 +125,21 @@ class ContainerAdmin extends Component{
         <div className='admin-content'>
           <Route>
             <Switch>
-              <Route exact path="/admin/document_recibidos" component={DocRecibidos}/>
-              <Route exact path="/admin/document_confirmados" component={DocConfirmados}/>
-              <Route exact path='/admin/document_respuesta' component={DocRespuesta}/>
-              <Route exact path='/admin/document_circular' component={DocCirculares}/>
-              <Route exact path='/admin/document_proveido' component={DocProveidos}/>
-              <Route exact path='/admin/document_generado' component={DocGenerados}/>
-              <Route exact path='/admin/busqueda_avanzada' component={Busqueda_avanzada}/>
-              <Route exact path='/admin/control_documentos' component={ControlDocumentos}/>
-              <Route exact path='/admin/Maintenance/users' component={Maintenance_users} />
-              <Route exact path='/admin/Maintenance/offices' component={Maintenance_offices} />
+              <Route exact path="/admin/document_recibidos" component={ValidateComponent('admin',DocRecibidos, redirect)}/>
+              <Route exact path="/admin/document_confirmados" component={ValidateComponent('admin',DocConfirmados, redirect)}/>
+              <Route exact path='/admin/document_respuesta' component={ValidateComponent('admin',DocRespuesta, redirect)}/>
+              <Route exact path='/admin/document_circular' component={ValidateComponent('admin',DocCirculares, redirect)}/>
+              <Route exact path='/admin/document_proveido' component={ValidateComponent('admin',DocProveidos, redirect)}/>
+              <Route exact path='/admin/document_generado' component={ValidateComponent('admin',DocGenerados, redirect)}/>
+              <Route exact path='/admin/busqueda_avanzada' component={ValidateComponent('admin',Busqueda_avanzada, redirect)}/>
+              <Route exact path='/admin/control_documentos' component={ValidateComponent('admin',ControlDocumentos, redirect)}/>
+              <Route exact path='/admin/Maintenance/users' component={ValidateComponent('admin',Maintenance_users, redirect)} />
+              <Route exact path='/admin/Maintenance/offices' component={ValidateComponent('admin',Maintenance_offices, redirect)} />
               <Route exact path='/admin/test' component={Test}/>
-              <Route exact path='/admin/user/:id' component={ManageUser}/>
-              <Route exact path='/admin/user' component={ManageUser}/>
-              <Route exact path='/admin/office/:id' component={ManageOffice}/>
-              <Route exact path='/admin/office' component={ManageOffice}/>
+              <Route exact path='/admin/user/:id' component={ValidateComponent(ManageUser, redirect)}/>
+              <Route exact path='/admin/user' component={ValidateComponent(ManageUser, redirect)}/>
+              <Route exact path='/admin/office/:id' component={ValidateComponent(ManageOffice, redirect)}/>
+              <Route exact path='/admin/office' component={ValidateComponent(ManageOffice, redirect)}/>
             </Switch>
           </Route>
         </div>

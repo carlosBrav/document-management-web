@@ -33,16 +33,15 @@ class DocumentsReceived extends Component{
     showDeriveAssignedModal: false,
     valueMap : {},
     currentUser: {},
-    dataReceived: []
+    dataReceived: [],
+    listDocumentAssigned: []
   };
 
   async componentDidMount(){
     const currentUser = getParseObj('CURRENT_USER');
-    this.setState({currentUser});
     const {getUserMovementsByOffice} = this.props;
-    getUserMovementsByOffice(currentUser.dependencyId).then(()=>{
-      this.setState({dataReceived: this.props.data})
-    })
+    await getUserMovementsByOffice(currentUser.dependencyId)
+    this.setState({dataReceived: this.props.data, currentUser})
   };
 
   componentDidUpdate(){
@@ -138,16 +137,38 @@ class DocumentsReceived extends Component{
     getUserMovementsByOffice(currentUser.dependencyId)
   };
 
-  onClickTabAssignedDocuments=()=>{
+  onClickTabAssignedDocuments= async ()=>{
     const {currentUser}=this.state;
     const {getUserMovementsByAssignedTo} = this.props;
-    getUserMovementsByAssignedTo(currentUser.id)
+    await getUserMovementsByAssignedTo(currentUser.id);
+    const {dataAssigned} = this.props
+    this.setState({listDocumentAssigned: dataAssigned})
+  };
+
+  tableDocumentsAssigned=()=>{
+    const {currentUser, listDocumentAssigned} = this.state;
+    return(<CommonAssignedDocuments currentUser={currentUser}
+                                    {...this.props}/>)
+  };
+
+  tableDocumentsReceived = () =>{
+    const {currentUser,dataReceived} = this.state;
+    const {isLoadingData} = this.props;
+    const {dependencyName} = currentUser;
+    return( <CommonTableManage
+      tableStructure={this.getTableStructureReceived}
+      title={'DOCUMENTOS RECIBIDOS: '+dependencyName}
+      listData={dataReceived}
+      getFooterTableStructure={this.getFooterTableStructure}
+      onSetSelected={this.onSetSelectDocuments}
+      isLoading={isLoadingData}
+    />)
   };
 
   render(){
-    const {users, isLoadingData} = this.props;
-    const {showConfirmationModal,listDataSelected, valueMap,currentUser,dataReceived} = this.state;
-    const {dependencyName} = currentUser;
+    const {users} = this.props;
+    const {showConfirmationModal,listDataSelected, valueMap,currentUser} = this.state;
+
     const modalProps = [
       {
         showModal: showConfirmationModal,
@@ -163,32 +184,10 @@ class DocumentsReceived extends Component{
       }
     ];
 
-    const tableDocumentsReceived = () =>{
-      return(isLoadingData ? <div className='spinner-tab'>
-        <ClipLoader
-          size={150} // or 150px
-          color={"#EEE2E0"}
-          loading={isLoadingData}
-        />
-      </div>:  <CommonTableManage
-        tableStructure={this.getTableStructureReceived}
-        title={'DOCUMENTOS RECIBIDOS: '+dependencyName}
-        listData={dataReceived}
-        getFooterTableStructure={this.getFooterTableStructure}
-        onSetSelected={this.onSetSelectDocuments}
-      />)
-    };
-
-    const tableDocumentsAssigned=()=>{
-      return(<CommonAssignedDocuments currentUser={currentUser}
-                                      {...this.props}/>)
-    };
 
     const tabs =
-      [ {title: 'Doc. Recibidos', id: 'docReceived', content: tableDocumentsReceived,
-        onClick: this.onClickTabDocumentReceived},
-        {title: 'Doc. Asignados', id: 'docAssigned', content: tableDocumentsAssigned,
-        onClick: this.onClickTabAssignedDocuments}
+      [ {title: 'Doc. Recibidos', id: 'docReceived', content: this.tableDocumentsReceived(), onClick: this.onClickTabDocumentReceived},
+        {title: 'Doc. Asignados', id: 'docAssigned', content: this.tableDocumentsAssigned(), onClick: this.onClickTabAssignedDocuments}
       ];
 
     return(

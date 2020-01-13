@@ -8,6 +8,17 @@ export function delete_cookie (name) {
   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
+export function ValidateComponent(role, component, redirect){
+
+  const currentUser = getParseObj('CURRENT_USER');
+  if( currentUser && currentUser.rolName.toLowerCase() === role){
+    return component
+  }else {
+    if(redirect)
+      redirect()
+  }
+}
+
 export function saveObj(key,obj){
   try{
     const stringObj = JSON.stringify(obj);

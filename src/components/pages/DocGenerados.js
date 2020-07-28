@@ -15,6 +15,7 @@ import parseInt from "lodash/parseInt";
 import find from "lodash/find";
 import {DOCUMENT_INTERN, getFormattedDate, getFormattedOnlyDate, getFormattedOnlyTime} from "../../utils/Constants";
 import {getUsersOfCurrentOffice} from "../../constants/Constants";
+import {getStructureForDocGenerados} from '../../components/utils/StructureTables';
 
 class DocGenerados extends Component{
 
@@ -77,7 +78,7 @@ class DocGenerados extends Component{
     this.setState({listDataToDeleteSelected})
   };
 
-  getTableStructure = (onToggleAddDocSelect) => {
+  /*getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
         columnHeader: '',
@@ -127,7 +128,7 @@ class DocGenerados extends Component{
         ]
       }
     ])
-  }
+  }*/
 
   onToggleDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
@@ -278,7 +279,8 @@ class DocGenerados extends Component{
             }) : null
         }
       <CommonTableManage
-        tableStructure={this.getTableStructure}
+        tableStructure={getStructureForDocGenerados}
+        listFunctions={[this.toggleViewDocumentGenerado,this.toggleEditDocumentGenerado]}
         title={'DOCUMENTOS GENERADOS INTERNOS'}
         listData={data}
         modalProps={modalProps}

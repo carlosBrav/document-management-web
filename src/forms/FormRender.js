@@ -8,9 +8,11 @@ class FormRender extends Component{
     const {formTemplate, onChange, isFormCircular, valueMap, onChangeInputSelect} = this.props
 
     const rows = map(formTemplate, (section, index)=>{
-      return (<CommonElement key={"element"+index} onChangeInputSelect={onChangeInputSelect}
+      return (<CommonElement key={"element"+index}
+                             onChangeInputSelect={onChangeInputSelect}
                              isFormCircular={isFormCircular}
-                             valueMap={valueMap} onChange={onChange}
+                             valueMap={valueMap}
+                             onChange={onChange}
                              {...section}/>)
     });
     return(

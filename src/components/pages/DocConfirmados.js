@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {getMovements, cleanMovementsList, deleteMovement} from "../../actions/actions"
 import isEmpty from "lodash/isEmpty";
 import map from "lodash/map";
+import {getStructureForDocConfirmados} from '../../components/utils/StructureTables';
 import { ClipLoader } from "react-spinners";
 
 class DocConfirmados extends Component{
@@ -42,53 +43,7 @@ class DocConfirmados extends Component{
       {text: 'Eliminar', action: (listFiltered)=> this.onToggleDeleteDocuments(listFiltered)}
     ])
   }
-
-  getTableStructure = (onToggleAddDocSelect) => {
-    return ([
-      {
-        columnHeader: '',
-        actions: [{
-          actionType: 'button',
-          action: (index) => onToggleAddDocSelect(index)
-        }]
-      },
-      {
-        columnHeader: 'Num. Tram.',
-        rowProp: 'numTram',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Mov.',
-        rowProp: 'movimiento'
-      },
-      {
-        columnHeader: 'Destino',
-        rowProp: 'destinoNombre',
-        classSearchRow: 'container-search-field long-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'F. Envio',
-        rowProp: 'fechaEnvio',
-        classSearchRow: 'container-search-field medium-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Indicador',
-        rowProp: 'indiNombre'
-      },
-      {
-        columnHeader: 'Observación',
-        rowProp: 'observacion'
-      },
-      {
-        columnHeader: 'Doc. Nombre',
-        rowProp: 'document'
-      }
-    ])
-  }
-
+  
   onToggleDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
@@ -165,10 +120,10 @@ class DocConfirmados extends Component{
               />
             </div> :
             <CommonTableManage
-              tableStructure={this.getTableStructure}
+              tableStructure={getStructureForDocConfirmados}
               title={'DOCUMENTOS CONFIRMADOS'}
               listData={data}
-              containHeader={this.getContainHeader()}
+              containHeader={this.getContainHeader}
               modalProps={modalProps}
               getFooterTableStructure={this.getFooterTableStructure}
               onSetSelected={this.onSetSelectDocuments}

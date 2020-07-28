@@ -9,9 +9,9 @@ const getButton = (actions, rowData) => {
   return actions.map((action, iterator) =>
     (action.actionType === 'button') ?
       <input key={iterator + 'checkbox'} type="checkbox" checked={rowData['check']}
-             onChange={(e) => {
-               e.stopPropagation();
+             onClick={(e) => {
                action.action(rowData['id'])
+               e.stopPropagation();
              }}/>
       : <CommonIcon key={iterator + 'icon'} type={action.actionType}
                     onClick={e => {

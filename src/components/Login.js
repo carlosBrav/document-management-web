@@ -34,21 +34,26 @@ class Login extends Component {
     })
   };
 
+  /**
+   * 
+   */
+
   render(){
 
     const {errors} = this.props
 
     return(
-      <div className='login-form'>
+      <div className="container-login-main">
+        <div className="login-form-titles">
+          <h1>Sistema de Trámite Documentario</h1>
+          <h5>Oficina General de Planificacion</h5>
+        </div>
+        <div className='login-form'>
           <div className='login-form-header-container'>
-            <div className='login-form-header-title'>
-              <p>Oficina General de Planificacion</p>
-            </div>
             <div className='login-form-container-icon'>
               <img src={escudo_unmsm} alt={'escudo_san_marcos'} className='image-escudo-san-marcos'/>
             </div>
           </div>
-
           <div className='login-form-labels'>
             {
               !isEmpty(errors) ? <div style={{width: "65%", height: "auto" }}>
@@ -75,6 +80,7 @@ class Login extends Component {
           <div className='login-form-button-submit'>
             <button className='btn btn-dark button-submit' onClick={this.onLogin}>Ingresar</button>
           </div>
+        </div>
       </div>
     )
   }

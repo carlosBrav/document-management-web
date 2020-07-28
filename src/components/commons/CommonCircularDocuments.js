@@ -13,6 +13,7 @@ import {TYPE_CONTENT_MODAL} from "../../constants/Constants";
 import CommonListGroup from "./CommonListGroup";
 import {formEditOficioCircular} from "../../forms/templates/TemplateEditCircular";
 import isEqual from "lodash/isEqual";
+import {getStructureForCircular} from '../../components/utils/StructureTables';
 
 class CommonCircularDocuments extends Component{
 
@@ -43,60 +44,6 @@ class CommonCircularDocuments extends Component{
     if(!isEqual(this.state.listCircularDocuments.length, this.props.circularDocuments.length)){
       this.setState({listCircularDocuments: this.props.circularDocuments})
     }
-  }
-
-  getTableStructure = (onToggleAddDocSelect) => {
-    return ([
-      {
-        columnHeader: '',
-        actions: [{
-          actionType: 'button',
-          action: (index) => onToggleAddDocSelect(index)
-        }]
-      },
-      {
-        columnHeader: 'Documento',
-        rowProp: 'correlative',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Asunto',
-        rowProp: 'asunto'
-      },
-      {
-        columnHeader: 'Area Resp.',
-        rowProp: 'origenName',
-        classSearchRow: 'container-search-field long-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Fecha Env.',
-        rowProp: 'fechaCreacion'
-      },
-      {
-        columnHeader: 'Firma',
-        rowProp: 'firma',
-      },
-      {
-        columnHeader: 'Responsable',
-        rowProp: 'responsable'
-      },
-      {
-        columnHeader: '',
-        rowStyle: 'container-icons',
-        actions: [
-          {
-            actionType: ICON_TYPE.SEARCH,
-            action: data => this.onToggleViewDocumentDetails(data, true)
-          },
-          {
-            actionType: ICON_TYPE.EDIT,
-            action: data => this.onToggleEditDocument(data)
-          }
-        ]
-      }
-    ])
   }
 
   onChangeValueCircular = (prop, value) => {
@@ -242,7 +189,7 @@ class CommonCircularDocuments extends Component{
       },
       {
         showModal: showViewCircularModal,
-        title: 'Circular Details',
+        title: 'Detalle de oficio circular',
         yesFunction: ()=>this.onToggleViewDocumentDetails(false),
         yesText: 'Aceptar',
         content: <CommonListGroup idSection='list-group'
@@ -274,7 +221,7 @@ class CommonCircularDocuments extends Component{
         {
 
           <CommonTableManage
-            tableStructure={this.getTableStructure}
+            tableStructure={getStructureForCircular}
             title={'OFICIOS CIRCULARES - OGPL'}
             listData={listCircularDocuments}
             getFooterTableStructure={this.getFooterTableStructure}

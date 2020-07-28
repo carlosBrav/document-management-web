@@ -22,6 +22,7 @@ import filter from "lodash/filter";
 import parseInt from "lodash/parseInt";
 import isEmpty from 'lodash/isEmpty';
 import isEqual from "lodash/isEqual";
+import {getStructureForDocResp,getStructureForDocRespOficios} from '../../components/utils/StructureTables';
 
 class DocRespuesta extends Component {
 
@@ -90,104 +91,6 @@ class DocRespuesta extends Component {
     }));
     this.setState({destinations})
   };
-
-  getTableStructure = (onToggleAddDocSelect) => {
-    return ([
-      {
-        columnHeader: '',
-        actions: [{
-          actionType: 'button',
-          action: (index) => onToggleAddDocSelect(index)
-        }]
-      },
-      {
-        columnHeader: 'Num. Tram.',
-        rowProp: 'numTram',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Mov.',
-        rowProp: 'movimiento'
-      },
-      {
-        columnHeader: 'Doc. Rpta.',
-        rowProp: 'internDocument'
-      },
-      {
-        columnHeader: 'Origen',
-        rowProp: 'origenNombre',
-        classSearchRow: 'container-search-field long-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'F. Envio',
-        rowProp: 'fechaEnvio',
-        classSearchRow: 'container-search-field medium-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Indicador',
-        rowProp: 'indiNombre'
-      },
-      {
-        columnHeader: 'Observación',
-        rowProp: 'observacion'
-      },
-      {
-        columnHeader: 'Doc. Nombre',
-        rowProp: 'document'
-      }
-    ])
-  };
-
-  getTableStructureOficios = (onToggleAddDocSelect) => {
-    return ([
-      {
-        columnHeader: '',
-        actions: [{
-          actionType: 'button',
-          action: (index) => onToggleAddDocSelect(index)
-        }]
-      },
-      {
-        columnHeader: 'Documento',
-        rowProp: 'document',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Num. Tram.',
-        rowProp: 'numTram',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Destino',
-        rowProp: 'destinoName',
-        classSearchRow: 'container-search-field long-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'F. Envio',
-        rowProp: 'fechaCreacion',
-        classSearchRow: 'container-search-field medium-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Observación',
-        rowProp: 'observacion'
-      },
-      {
-        columnHeader: 'Asunto',
-        rowProp: 'asunto'
-      },
-      {
-        columnHeader: 'Estado',
-        rowProp: 'estado'
-      }
-    ])
-  }
 
   onToggleDeleteDocuments = () => {
     this.setState({showDeleteModal: !this.state.showDeleteModal})
@@ -329,7 +232,7 @@ class DocRespuesta extends Component {
     const {listMovements} = this.state
     return (
       <CommonTableManage
-        tableStructure={this.getTableStructure}
+        tableStructure={getStructureForDocResp}
         title={'DOCUMENTOS INTERNOS'}
         listData={listMovements}
         getFooterTableStructure={this.getFooterTableStructureDocInt}
@@ -343,7 +246,7 @@ class DocRespuesta extends Component {
     const {listOficios} = this.state
     return (
       <CommonTableManage
-        tableStructure={this.getTableStructureOficios}
+        tableStructure={getStructureForDocRespOficios}
         title={'OFICIOS'}
         listData={listOficios}
         getFooterTableStructure={this.getFooterTableStructureOficios}

@@ -65,6 +65,23 @@ export function getView2Data(){
   function failure(responseMessage) { return { type: Constants.GET_VIEW2_DATA_FAILURE, responseMessage } }
 }
 
+export function getView2ByTramNum(tramNum){
+  return async dispatch => {
+    dispatch(request())
+    const {responseCode, responseMessage, dataView2,dataLocal} = await Services.getMovementByTramNum(tramNum);
+    if(responseCode === 0){
+      dispatch(success(dataView2,dataLocal))
+    }else{
+      dispatch(failure(responseMessage))
+    }
+  };
+
+  function request() { return { type: Constants.GET_VIEW2_BY_TRAM_NUM_REQUEST } }
+  function success(dataView2,dataLocal) { return { type: Constants.GET_VIEW2_BY_TRAM_NUM_SUCCESS, dataView2,dataLocal  } }
+  function failure(responseMessage) { return { type: Constants.GET_VIEW2_BY_TRAM_NUM_FAILURE, responseMessage } }
+}
+
+
 export function loadInitialData(){
   return async dispatch => {
     console.log("initial data exec")
@@ -303,12 +320,14 @@ export function getCircularDetails(documentId){
 export function deleteDocuments(documentsIds){
   return async dispatch => {
     dispatch(request());
-    const {responseCode, data, responseMessage} = await Services.deleteInternDocuments(documentsIds)
+    const response = await Services.deleteInternDocuments(documentsIds)
+    const {responseCode, data, responseMessage} = response
     if(responseCode === 0){
       dispatch(success(data))
     }else{
       dispatch(failure(responseMessage))
     }
+    return response
   };
   function request(){ return {type: Constants.DELETE_INTERN_DOCUMENT_REQUEST}}
   function success(data) { return {type: Constants.DELETE_INTERN_DOCUMENT_SUCCESS, data}}

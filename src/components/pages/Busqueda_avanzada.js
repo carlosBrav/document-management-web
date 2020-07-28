@@ -6,6 +6,7 @@ import map from "lodash/map";
 import {connect} from 'react-redux';
 import {exportAdvancedSearch} from "../utils/ExportPDF";
 import {getParseObj} from "../../utils/Utils";
+import {getStructureBusqAvanzada} from '../../components/utils/StructureTables';
 
 class Busqueda_avanzada extends Component{
 
@@ -20,7 +21,7 @@ class Busqueda_avanzada extends Component{
 
   }
 
-  getTableStructure = (onToggleAddDocSelect) => {
+  /*getTableStructure = (onToggleAddDocSelect) => {
     return ([
       {
         columnHeader: '',
@@ -56,7 +57,7 @@ class Busqueda_avanzada extends Component{
         rowProp: 'destinoNombre',
       }
     ])
-  }
+  }*/
 
   onSetListDataToDeleteSelected=(listDataSelected)=>{
     this.setState({listDataSelected})
@@ -133,7 +134,7 @@ class Busqueda_avanzada extends Component{
     const {data} = this.props
     return(
       <CommonTableManage
-        tableStructure={this.getTableStructure}
+        tableStructure={getStructureBusqAvanzada}
         title={'BUSQUEDA AVANZADA'}
         listData={data}
         getFooterTableStructure={this.getFooterTableStructureBusqAvanz}

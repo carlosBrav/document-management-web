@@ -69,9 +69,9 @@ class CommonTableManage extends Component {
   };
 
   componentDidMount() {
-    const {tableStructure, listData} = this.props
+    const {tableStructure, listData, listFunctions} = this.props
     this.setState({
-      documentsTableStructure: tableStructure(this.renderRowsChecked, this.onToggleAddDocSelect),
+      documentsTableStructure: tableStructure(this.onToggleAddDocSelect,this.renderRowsChecked, listFunctions),
       documentsDataList: listData
     })
   }
@@ -123,7 +123,7 @@ class CommonTableManage extends Component {
 
           <div className='container-content'>
             {
-              (containHeader) ? containHeader() : null
+              containHeader ? containHeader() : null
             }
             {
               isLoading ?
@@ -155,11 +155,9 @@ class CommonTableManage extends Component {
                                       onChangeCurrentPageSubtract={this.onChangeInitialIndex}
                                       onChangeCurrentPageAdd={this.onChangeInitialIndex}/>
                   </div>
-                </Fragment>
-            }
-            {
-              contentFooterTable && contentFooterTable.length > 0 ?
-                <div className='container-buttons-footer'>
+                  {
+                  contentFooterTable && contentFooterTable.length > 0 ?
+                  <div className='container-buttons-footer'>
                   {
                     contentFooterTable.map((content, index) => {
                       return <button key={'button' + index} className='btn btn-dark' style={content.style}
@@ -169,7 +167,10 @@ class CommonTableManage extends Component {
                     })
                   }
                 </div> : null
+                }
+                </Fragment>
             }
+            
           </div>
 
         </div>

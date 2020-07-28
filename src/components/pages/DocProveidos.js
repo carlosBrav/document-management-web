@@ -14,7 +14,8 @@ import {
   getCorrelativeMax,
   getAdminInternDocuments,
   getTypeDocuments,
-  getInternDocumentsByTypeDocument
+  getInternDocumentsByTypeDocument,
+  editDocuments
 } from "../../actions/actions";
 import filter from "lodash/filter";
 import {getParseObj} from "../../utils/Utils";
@@ -22,6 +23,7 @@ import { connect } from 'react-redux';
 import find from "lodash/find";
 import parseInt from "lodash/parseInt";
 import {DOCUMENT_INTERN, getFormattedDate, TYPE_DOCUMENT} from "../../utils/Constants";
+import {getStructureForProveido_1, getStructureForProveido_2} from '../../components/utils/StructureTables';
 
 class DocProveidos extends Component{
 
@@ -53,39 +55,7 @@ class DocProveidos extends Component{
     }
   }
 
-  getTableStructureInternDocuments = (onToggleAddDocSelect) => {
-    return ([
-      {
-        columnHeader: '',
-        actions: [{
-          actionType: 'button',
-          action: (index) => onToggleAddDocSelect(index)
-        }]
-      },
-      {
-        columnHeader: 'Documento',
-        rowProp: 'document',
-        classSearchRow: 'container-search-field normal-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Asunto',
-        rowProp: 'asunto',
-      },
-      {
-        columnHeader: 'Origen',
-        rowProp: 'originName',
-        classSearchRow: 'container-search-field long-size',
-        filterHeader: true
-      },
-      {
-        columnHeader: 'Fecha Reg.',
-        rowProp: 'fechaCreacion'
-      }
-    ])
-  }
-
-  getTableStructureProveido = (onToggleAddDocSelect) => {
+  /*getTableStructureProveido = (onToggleAddDocSelect) => {
     return ([
       {
         columnHeader: '',
@@ -137,7 +107,7 @@ class DocProveidos extends Component{
         ]
       }
     ])
-  }
+  }*/
 
   onSetListDataToDeleteSelected=(listDataSelected)=>{
     this.setState({listDataSelected})
@@ -159,8 +129,14 @@ class DocProveidos extends Component{
     this.setState({showDeleteModal: !this.state.showDeleteModal})
   }
 
-  onDeleteDocuments = () => {
-    this.setState({showDeleteModal: !this.state.showDeleteModal})
+  onDeleteDocuments =  async () => {
+    const {deleteDocuments} = this.props
+    const {listDataSelected} = this.state
+    const response = await deleteDocuments(map(listDataSelected, element => element.id ))
+    if(response.responseCode === 0){
+      await this.onGetProveidos()
+      this.setState({showDeleteModal: !this.state.showDeleteModal})
+    }
   }
 
   onCreateProveido= async (isIntern)=>{
@@ -227,10 +203,17 @@ class DocProveidos extends Component{
     this.setState({showEditModal: !this.state.showEditModal, valueMap: data})
   };
 
-  onEditProveido=()=>{
+  onEditProveido= async ()=>{
     const {valueMap} = this.state
+    const {editDocuments} = this.props
     console.log('VALUE MAP EDIT PROVEIDO ', valueMap)
-    this.onToggleEditProveido()
+    const {id} = valueMap
+    const response = await editDocuments(id, valueMap)
+    console.log('RESPONSE ', response)
+    if(response.responseCode === 0){
+      this.onGetProveidos()
+      this.onToggleEditProveido()
+    }
   };
 
   onToggleCloseProveidoExterno=()=>{
@@ -306,7 +289,7 @@ class DocProveidos extends Component{
     const {data} = this.state
     return(
       <CommonTableManage
-        tableStructure={this.getTableStructureInternDocuments}
+        tableStructure={getStructureForProveido_1}
         title={'DOCUMENTOS INTERNOS'}
         listData={data}
         getFooterTableStructure={this.getFooterTableInternDocument}
@@ -319,7 +302,8 @@ class DocProveidos extends Component{
     const {dataProveido} = this.state
     return(
       <CommonTableManage
-        tableStructure={this.getTableStructureProveido}
+        tableStructure={getStructureForProveido_2}
+        listFunctions={[this.onToggleEditProveido]}
         title={'PROVEIDOS'}
         listData={dataProveido}
         getFooterTableStructure={this.getFooterTableProveido}
@@ -422,7 +406,8 @@ const mapDispatchToProps = (dispatch) => ({
   getCorrelativeMax: (officeId, typeDocumentId, siglas) => dispatch(getCorrelativeMax(officeId, typeDocumentId, siglas)),
   deleteDocuments: (documentsIds) => dispatch(deleteDocuments(documentsIds)),
   getInternDocumentsByTypeDocument: (typeDocumentId) => dispatch(getInternDocumentsByTypeDocument(typeDocumentId)),
-  createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument))
+  createInternDocument: (internDocument) => dispatch(createInternDocument(internDocument)),
+  editDocuments: (id, valueMap) => dispatch(editDocuments(id, valueMap))
 });
 
 function mapStateToProps(state){

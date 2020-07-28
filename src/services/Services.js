@@ -110,6 +110,11 @@ export default class Service {
     return ApiIntegration.doPost(url,postBody,true)
   }
 
+  static getMovementByTramNum(tramNum){
+    const url = getUrlPath(endPoints.VIEW_2,tramNum);
+    return ApiIntegration.doGet(url)
+  }
+
   static getMovements(numTram, officeId){
     let url = "";
     if(numTram && numTram.trim().length>0){
@@ -168,8 +173,8 @@ export default class Service {
   }
 
   static editDocuments(id, valueMap){
-    const {asunto, userId, origenId} = valueMap
-    const body = JSON.stringify({asunto, userId, origenId});
+    const {asunto, userId, origenId, destinoId} = valueMap
+    const body = JSON.stringify({asunto, userId, origenId,destinoId});
     const url = getUrlPath(endPoints.DOCUMENT_INTERN,id);
     return ApiIntegration.doPut(url, body, true)
   }

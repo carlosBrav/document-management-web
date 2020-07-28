@@ -9,12 +9,11 @@ class ContainerLogin extends Component {
     history.push(path)
   }
 
+  /**/
+
   render(){
     return(
       <div className='container-login'>
-        <div className='container-login-header'>
-          <h5>Sistema de Trámite Documentario v3.0</h5>
-        </div>
         <div className='container-login-form'>
           <img src={rectorado_unmsm} alt={'rectorado'} className='image-login'/>
           <Login onLogin={this.onLogin}/>

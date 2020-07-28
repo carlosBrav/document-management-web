@@ -9,7 +9,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "4.17.15",
     "moment": "2.24.0",
-    "node-sass": "4.12.0",
+    "node-sass": "4.14.1",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
@@ -19,7 +19,8 @@
     "react-spinners": "^0.6.1",
     "reactstrap": "8.0.1",
     "redux": "4.0.4",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.3.0",
+    "reselect": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

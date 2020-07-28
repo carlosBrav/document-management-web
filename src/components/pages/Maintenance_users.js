@@ -10,6 +10,7 @@ import CommonTab from "../commons/CommonTab";
 import {USER} from "../../utils/Constants";
 import {ICON_TYPE} from "../commons/CommonIcon";
 import CommonModal from "../commons/CommonModal";
+import {getStructureUsers} from '../../components/utils/StructureTables';
 
 class Maintenance_users extends Component{
 
@@ -19,7 +20,7 @@ class Maintenance_users extends Component{
     userSelected: null
   };
 
-  getTableStructureUsers = () => {
+  /*getTableStructureUsers = () => {
     return ([
       {
         columnHeader: 'Nombre',
@@ -68,7 +69,7 @@ class Maintenance_users extends Component{
         ]
       }
     ])
-  };
+  };*/
 
   componentDidMount(){
     const {loadAllUsers} = this.props
@@ -146,7 +147,8 @@ class Maintenance_users extends Component{
             }) : null
         }
         <CommonTableManage
-          tableStructure={this.getTableStructureUsers}
+          tableStructure={getStructureUsers}
+          listFunctions={[this.onToggleDeleteUser]}
           title={'USUARIOS'}
           listData={listUsers}
           getFooterTableStructure={this.footerTable}
